@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from '../../context/LanguageContext';
 import { Button } from '../../components/ui/Button';
@@ -15,6 +16,26 @@ export const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [showHints, setShowHints] = useState(false);
+
+  const [isRegister, setIsRegister] = useState(false);
+  const [registerSuccess, setRegisterSuccess] = useState(false);
+  const [regName, setRegName] = useState('');
+  const [regEmail, setRegEmail] = useState('');
+  const [regPassword, setRegPassword] = useState('');
+
+  const handleRegisterSubmit = (e) => {
+    e.preventDefault();
+    if (!regName.trim() || !regEmail.trim() || !regPassword.trim()) return;
+    setRegisterSuccess(true);
+    setTimeout(() => {
+      setRegisterSuccess(false);
+      setIsRegister(false);
+      setEmail(regEmail);
+      setRegName('');
+      setRegEmail('');
+      setRegPassword('');
+    }, 2000);
+  };
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
@@ -75,73 +96,171 @@ export const Auth = () => {
         {/* Right pane: Form fields */}
         <div className="w-full md:w-[55%] p-6 sm:p-8 flex flex-col justify-between bg-white dark:bg-navy-950 relative z-10 text-left">
           <div>
-            {/* Top header */}
-            <div className="mb-5">
-              <h2 className="text-xl font-bold text-navy-950 dark:text-white">{t('auth_title')}</h2>
-              <p className="text-xs text-slate-400 mt-1">{t('auth_subtitle')}</p>
+            {/* Sign In / Register Tab Selector */}
+            <div className="flex p-1 bg-slate-100 dark:bg-navy-900/60 rounded-2xl mb-6 text-xs sm:text-sm border border-slate-200/40 dark:border-white/5">
+              <button
+                type="button"
+                onClick={() => { setIsRegister(false); setErrorMsg(''); }}
+                className={`flex-1 py-2 px-4 rounded-xl font-bold text-center transition-all duration-300 transform cursor-pointer hover:scale-[1.02] active:scale-95 ${
+                  !isRegister
+                    ? 'bg-white dark:bg-navy-950 text-navy-950 dark:text-white shadow-md'
+                    : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
+                }`}
+              >
+                Sign In
+              </button>
+              <button
+                type="button"
+                onClick={() => { setIsRegister(true); setErrorMsg(''); }}
+                className={`flex-1 py-2 px-4 rounded-xl font-bold text-center transition-all duration-300 transform cursor-pointer hover:scale-[1.02] active:scale-95 ${
+                  isRegister
+                    ? 'bg-white dark:bg-navy-950 text-navy-950 dark:text-white shadow-md'
+                    : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
+                }`}
+              >
+                Register
+              </button>
             </div>
 
             {/* Error Message Panel */}
-            {errorMsg && (
+            {errorMsg && !isRegister && (
               <div className="mb-4 p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/30 rounded-xl flex items-center space-x-2 text-red-600 dark:text-red-400 text-xs animate-shake">
                 <FaExclamationTriangle className="shrink-0 text-base" />
                 <p className="font-medium">{errorMsg}</p>
               </div>
             )}
 
-            {/* Form */}
-            <form onSubmit={handleLoginSubmit} className="space-y-4 text-xs">
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
-                  Client ID or Email
-                </label>
-                <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                    <FaEnvelope />
-                  </span>
-                  <input
-                    required
-                    type="text"
-                    placeholder="Enter your Client ID"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs"
-                  />
-                </div>
+            {/* Registration Success Overlay */}
+            {registerSuccess && (
+              <div className="mb-4 p-3 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200/50 dark:border-emerald-500/30 rounded-xl flex items-center space-x-2 text-emerald-600 dark:text-emerald-400 text-xs animate-fadeIn">
+                <FaInfoCircle className="shrink-0 text-base" />
+                <p className="font-medium">Registration successful! Redirecting to sign in...</p>
               </div>
+            )}
 
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
-                  Secure Password
-                </label>
-                <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                    <FaKey />
-                  </span>
-                  <input
-                    required
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-9 pr-10 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </button>
-                </div>
-              </div>
+            {/* CONDITIONAL FORMS WITH ANIMATIONS */}
+            <AnimatePresence mode="wait">
+              {!isRegister ? (
+                <motion.div
+                  key="login"
+                  initial={{ opacity: 0, x: -15 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 15 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <form onSubmit={handleLoginSubmit} className="space-y-4 text-xs">
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
+                        Client ID or Email
+                      </label>
+                      <div className="relative">
+                        <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                          <FaEnvelope />
+                        </span>
+                        <input
+                          required
+                          type="text"
+                          placeholder="Enter your Client ID"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="w-full pl-9 pr-3 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs"
+                        />
+                      </div>
+                    </div>
 
-              <div className="pt-2">
-                <Button type="submit" variant="gold" className="w-full py-2.5 font-bold tracking-wider">
-                  {t('sign_in')}
-                </Button>
-              </div>
-            </form>
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
+                        Secure Password
+                      </label>
+                      <div className="relative">
+                        <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                          <FaKey />
+                        </span>
+                        <input
+                          required
+                          type={showPassword ? 'text' : 'password'}
+                          placeholder="••••••••"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="w-full pl-9 pr-10 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                        >
+                          {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="pt-2">
+                      <Button type="submit" variant="gold" className="w-full py-2.5 font-bold tracking-wider">
+                        {t('sign_in')}
+                      </Button>
+                    </div>
+                  </form>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="register"
+                  initial={{ opacity: 0, x: 15 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -15 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <form onSubmit={handleRegisterSubmit} className="space-y-4 text-xs">
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
+                        Full Legal Name
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        placeholder="Your Name"
+                        value={regName}
+                        onChange={(e) => setRegName(e.target.value)}
+                        className="w-full px-3 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
+                        Email Address
+                      </label>
+                      <input
+                        required
+                        type="email"
+                        placeholder="Enter Email"
+                        value={regEmail}
+                        onChange={(e) => setRegEmail(e.target.value)}
+                        className="w-full px-3 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
+                        Secure Password
+                      </label>
+                      <input
+                        required
+                        type="password"
+                        placeholder="••••••••"
+                        value={regPassword}
+                        onChange={(e) => setRegPassword(e.target.value)}
+                        className="w-full px-3 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs"
+                      />
+                    </div>
+
+                    <div className="pt-2">
+                      <Button type="submit" variant="gold" className="w-full py-2.5 font-bold tracking-wider">
+                        Register Account
+                      </Button>
+                    </div>
+                  </form>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <div>

@@ -16,6 +16,23 @@ export const Home = () => {
   // Highlight only top 3 popular plans
   const featuredPlans = PLANS.slice(0, 3);
 
+  const partnerBrands = [
+    { name: 'Tata AIA', type: 'Life', logo: '/logos/tata_aia.png' },
+    { name: 'ICICI Prudential', type: 'Life', logo: '/logos/icici_prudential.png' },
+    { name: 'HDFC Life', type: 'Life', logo: '/logos/hdfc_life.png' },
+    { name: 'SBI Life', type: 'Life', logo: '/logos/sbi_life.png' },
+    { name: 'Bajaj Allianz', type: 'General', logo: '/logos/bajaj_allianz.png' },
+    { name: 'Axis Max', type: 'Life', logo: '/logos/axis_max.png' },
+    { name: 'Policybazaar', type: 'Aggregator', logo: '/logos/policybazaar.png' },
+    { name: 'AE Alliance', type: 'General', logo: '/logos/ae_alliance.png' },
+    { name: 'Niva Bupa', type: 'Health', logo: '/logos/niva_bupa.png' },
+    { name: 'LIC India', type: 'Life', logo: '/logos/lic.png' },
+    { name: 'ManipalCigna', type: 'Health', logo: '/logos/manipal_cigna.png' },
+    { name: 'Care Health', type: 'Health', logo: '/logos/care_health.png' },
+    { name: 'Star Health', type: 'Health', logo: '/logos/star_health.png' },
+    { name: 'Oriental Insurance', type: 'General', logo: '/logos/oriental_insurance.png' }
+  ];
+
   const stats = [
     { number: '98.7%', label: t('claims_rate') },
     { number: '₹420M+', label: t('claims_disbursed') },
@@ -60,26 +77,37 @@ export const Home = () => {
   ];
 
   return (
-    <div className="space-y-20 pb-20">
-      {/* Hero Video Banner Section */}
-      <section className="max-w-7xl mx-auto px-4 pt-6 text-center">
-        <div className="relative aspect-video max-h-[60vh] w-full rounded-3xl overflow-hidden shadow-2xl border border-navy-800/20 bg-navy-950">
-          <video 
-            className="w-full h-full object-cover" 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-          >
-            <source src="/hero_background.mp4" type="video/mp4" />
-          </video>
-          {/* Ambient dark blue vignette */}
-          <div className="absolute inset-0 bg-gradient-to-t from-navy-950/40 via-transparent to-navy-950/20 pointer-events-none" />
+    <div className="relative pb-20">
+      {/* Full-width Fixed Background Video Banner at the Top */}
+      <section className="relative w-full h-screen overflow-hidden">
+        <video 
+          className="fixed top-0 left-0 w-full h-screen object-cover -z-20 pointer-events-none" 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+        >
+          <source src="/hero_background.mp4" type="video/mp4" />
+        </video>
+
+        {/* Scroll indicator overlay */}
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center space-y-2 cursor-pointer z-20 group"
+          onClick={() => {
+            window.scrollTo({
+              top: window.innerHeight - 56,
+              behavior: 'smooth'
+            });
+          }}
+        >
+          <span className="text-[10px] text-white/60 uppercase tracking-widest font-extrabold group-hover:text-gold-400 transition-colors">Explore Skinsurance</span>
+          <span className="text-xl text-white/70 animate-bounce group-hover:text-gold-400 transition-colors">↓</span>
         </div>
       </section>
 
-      {/* Hero Text & Table Content Section */}
-      <section className="max-w-7xl mx-auto px-4 py-8 text-left relative">
+      {/* Parallax Content Overlay Wrap - Scrolls up over the fixed video */}
+      <div className="relative bg-white dark:bg-navy-950 z-10 py-16 space-y-24 border-t border-slate-200/50 dark:border-white/5 shadow-[0_-20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_-20px_50px_rgba(0,0,0,0.4)]">
+        {/* Hero Text & Table Content Section */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-left relative">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-20">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -93,7 +121,7 @@ export const Home = () => {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-navy-950 dark:text-white">
               {t('hero_title')}
             </h1>
-            <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base max-w-lg leading-relaxed">
+            <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base max-w-lg leading-relaxed font-medium">
               {t('hero_subtitle')}
             </p>
             <div className="flex flex-wrap gap-4 pt-2">
@@ -111,7 +139,7 @@ export const Home = () => {
             </div>
           </motion.div>
 
-          {/* Right Glassmorphic Hero Panel */}
+          {/* Right: Glassmorphic Guarantee Card */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -252,6 +280,46 @@ export const Home = () => {
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* Trusted Insurance Partners Section */}
+      <section className="max-w-7xl mx-auto px-4 py-8 border-t border-slate-200/50 dark:border-white/5 space-y-6">
+        <div className="text-center">
+          <span className="text-[10px] font-bold text-gold-500 uppercase tracking-widest bg-gold-500/10 px-3 py-1 rounded-full">
+            Authorized Distribution Partners
+          </span>
+          <h2 className="text-xl sm:text-2xl font-bold text-navy-950 dark:text-white mt-2">
+            Trusted by India's Leading Insurance Providers
+          </h2>
+        </div>
+
+        {/* Sliding grid style container */}
+        <div className="py-6 bg-slate-50 dark:bg-navy-950/20 rounded-3xl border border-slate-200/40 dark:border-white/5 px-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+            {partnerBrands.map((b, idx) => (
+              <div 
+                key={idx} 
+                className="flex flex-col items-center justify-center p-3 bg-white dark:bg-navy-900 rounded-xl shadow-sm border border-slate-200/50 dark:border-white/5 hover:scale-105 transition-transform h-20 relative overflow-hidden group"
+              >
+                {b.logo ? (
+                  <img 
+                    src={b.logo} 
+                    alt={b.name} 
+                    className="h-10 w-full object-contain filter dark:brightness-110" 
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'block';
+                    }}
+                  />
+                ) : null}
+                <span className={`${b.logo ? 'hidden' : 'block'} text-[10px] font-extrabold text-navy-950 dark:text-white tracking-wide text-center leading-tight`}>
+                  {b.name}
+                </span>
+                <span className="text-[7px] font-extrabold text-gold-500 uppercase tracking-widest mt-1 opacity-85">{b.type}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -500,6 +568,7 @@ export const Home = () => {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 };

@@ -84,7 +84,7 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-slate-50 dark:bg-navy-950 text-slate-800 dark:text-slate-100 transition-colors duration-300">
+    <div className="min-h-screen flex bg-slate-50/70 dark:bg-navy-950/75 backdrop-blur-[2px] text-slate-800 dark:text-slate-100 transition-colors duration-300">
       {/* Dynamic Collapsible Sidebar */}
       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
 

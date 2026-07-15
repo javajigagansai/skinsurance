@@ -146,6 +146,86 @@ export const AdminDashboard = ({ tab }) => {
           </div>
         </div>
 
+        {/* SVG Charts Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Bar Chart: User Roles */}
+          <div className="glass-panel rounded-2xl p-5 border border-slate-200/40 dark:border-white/5 space-y-3">
+            <h3 className="text-xs font-bold text-navy-950 dark:text-white uppercase tracking-wider">User Registrations by Role</h3>
+            <div className="h-36 w-full flex items-end justify-around pb-2 relative border-b border-slate-100 dark:border-white/5 pt-4">
+              {/* Customer */}
+              <div className="flex flex-col items-center w-12 group">
+                <span className="text-[9px] font-bold text-gold-500 mb-1">12</span>
+                <div className="w-6 bg-gradient-to-t from-gold-600 to-gold-400 rounded-t-md" style={{ height: '60px' }} />
+                <span className="text-[9px] text-slate-400 font-semibold mt-1">Cust</span>
+              </div>
+              {/* Agent */}
+              <div className="flex flex-col items-center w-12 group">
+                <span className="text-[9px] font-bold text-gold-500 mb-1">8</span>
+                <div className="w-6 bg-gradient-to-t from-gold-600 to-gold-400 rounded-t-md" style={{ height: '40px' }} />
+                <span className="text-[9px] text-slate-400 font-semibold mt-1">Agent</span>
+              </div>
+              {/* Employee */}
+              <div className="flex flex-col items-center w-12 group">
+                <span className="text-[9px] font-bold text-gold-500 mb-1">4</span>
+                <div className="w-6 bg-gradient-to-t from-gold-600 to-gold-400 rounded-t-md" style={{ height: '20px' }} />
+                <span className="text-[9px] text-slate-400 font-semibold mt-1">Emp</span>
+              </div>
+              {/* Manager */}
+              <div className="flex flex-col items-center w-12 group">
+                <span className="text-[9px] font-bold text-gold-500 mb-1">2</span>
+                <div className="w-6 bg-gradient-to-t from-gold-600 to-gold-400 rounded-t-md" style={{ height: '10px' }} />
+                <span className="text-[9px] text-slate-400 font-semibold mt-1">Mgr</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Donut Chart: Claims Underwriting */}
+          <div className="glass-panel rounded-2xl p-5 border border-slate-200/40 dark:border-white/5 space-y-3">
+            <h3 className="text-xs font-bold text-navy-950 dark:text-white uppercase tracking-wider">Claims Underwriting Outcomes</h3>
+            <div className="flex items-center justify-around h-36">
+              {/* SVG Donut */}
+              <div className="relative w-24 h-24">
+                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                  {/* Background segment */}
+                  <circle cx="18" cy="18" r="15.915" fill="none" stroke="transparent" strokeWidth="3" />
+                  
+                  {/* Approved segment (60%) */}
+                  <circle cx="18" cy="18" r="15.915" fill="none" stroke="#10b981" strokeWidth="3.2" 
+                    strokeDasharray="60 40" strokeDashoffset="0" />
+                  
+                  {/* Pending segment (30%) */}
+                  <circle cx="18" cy="18" r="15.915" fill="none" stroke="#f59e0b" strokeWidth="3.2" 
+                    strokeDasharray="30 70" strokeDashoffset="-60" />
+                  
+                  {/* Rejected segment (10%) */}
+                  <circle cx="18" cy="18" r="15.915" fill="none" stroke="#ef4444" strokeWidth="3.2" 
+                    strokeDasharray="10 90" strokeDashoffset="-90" />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-xs font-bold text-navy-950 dark:text-white leading-none">100%</span>
+                  <span className="text-[7px] text-slate-400 uppercase mt-0.5 font-bold">Resolved</span>
+                </div>
+              </div>
+
+              {/* Legends list */}
+              <div className="text-[10px] space-y-2 text-left font-bold">
+                <div className="flex items-center space-x-1.5">
+                  <span className="w-2 h-2 bg-emerald-500 rounded-full inline-block" />
+                  <span className="text-slate-400">Approved (60%)</span>
+                </div>
+                <div className="flex items-center space-x-1.5">
+                  <span className="w-2 h-2 bg-amber-500 rounded-full inline-block" />
+                  <span className="text-slate-400">In Progress (30%)</span>
+                </div>
+                <div className="flex items-center space-x-1.5">
+                  <span className="w-2 h-2 bg-rose-500 rounded-full inline-block" />
+                  <span className="text-slate-400">Rejected (10%)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Global systems health check status card */}
         <div className="glass-panel rounded-2xl p-5 border border-slate-200/40 dark:border-white/5 space-y-4">
           <h3 className="text-base font-bold text-navy-950 dark:text-white">Platform Systems Status</h3>
@@ -196,7 +276,7 @@ export const AdminDashboard = ({ tab }) => {
               <input 
                 type="text" 
                 required 
-                placeholder="e.g. Rachel Green"
+                placeholder="Your Name"
                 value={newUserName}
                 onChange={(e) => setNewUserName(e.target.value)}
                 className="w-full px-3 py-2 bg-slate-50 dark:bg-navy-950 border border-slate-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-gold-500"
@@ -207,7 +287,7 @@ export const AdminDashboard = ({ tab }) => {
               <input 
                 type="email" 
                 required 
-                placeholder="e.g. rachel@mail.com"
+                placeholder="Enter Email"
                 value={newUserEmail}
                 onChange={(e) => setNewUserEmail(e.target.value)}
                 className="w-full px-3 py-2 bg-slate-50 dark:bg-navy-950 border border-slate-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-gold-500"

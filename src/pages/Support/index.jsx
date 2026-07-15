@@ -53,9 +53,9 @@ export const Support = () => {
                   <FaMapMarkerAlt />
                 </div>
                 <div>
-                  <p className="font-semibold text-navy-950 dark:text-white">{t('hq_coordinates')}</p>
+                  <p className="font-semibold text-navy-950 dark:text-white">Corporate Office</p>
                   <p className="text-slate-500 dark:text-slate-400 leading-relaxed mt-0.5">
-                    1st Floor, M D Plaza, No : 104, W Raja St, Kanchipuram, Tamil Nadu 631502
+                    # 104, MD Plaza, 1st Floor, West Raja Street, Kanchipuram - 631502.
                   </p>
                 </div>
               </div>
@@ -80,6 +80,26 @@ export const Support = () => {
                   <p className="font-semibold text-navy-950 dark:text-white">{t('email_comms')}</p>
                   <p className="text-slate-500 dark:text-slate-400 leading-relaxed mt-0.5">
                     skinvestments2025@gmail.com
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-3 text-xs">
+                <span className="p-2.5 bg-slate-100 dark:bg-navy-900 rounded-xl text-gold-500 mt-0.5 shrink-0">📞</span>
+                <div>
+                  <p className="font-semibold text-navy-950 dark:text-white">Phone Hotline</p>
+                  <p className="text-slate-500 dark:text-slate-400 leading-relaxed mt-0.5">
+                    +91 98407 23956
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-3 text-xs">
+                <span className="p-2.5 bg-slate-100 dark:bg-navy-900 rounded-xl text-gold-500 mt-0.5 shrink-0">💼</span>
+                <div>
+                  <p className="font-semibold text-navy-950 dark:text-white">Managing Director</p>
+                  <p className="text-slate-500 dark:text-slate-400 leading-relaxed mt-0.5">
+                    Prakash Gajendiran
                   </p>
                 </div>
               </div>

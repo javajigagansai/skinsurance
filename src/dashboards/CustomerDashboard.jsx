@@ -29,6 +29,11 @@ export const CustomerDashboard = ({ tab }) => {
   const [claimDesc, setClaimDesc] = useState('');
   const [claimSuccess, setClaimSuccess] = useState(false);
 
+  const [claimStep, setClaimStep] = useState(1);
+  const [claimLossDate, setClaimLossDate] = useState('');
+  const [isDragOver, setIsDragOver] = useState(false);
+  const [claimFile, setClaimFile] = useState(null);
+
   // Policy Renewal state
   const [showRenewModal, setShowRenewModal] = useState(false);
   const [renewPolicy, setRenewPolicy] = useState(null);
@@ -36,6 +41,31 @@ export const CustomerDashboard = ({ tab }) => {
 
   // Document upload mock
   const [uploadedFile, setUploadedFile] = useState(null);
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const file = e.dataTransfer.files[0];
+      setClaimFile({ name: file.name, size: `${(file.size / 1024).toFixed(1)} KB` });
+    }
+  };
+
+  const handleFileSelect = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setClaimFile({ name: file.name, size: `${(file.size / 1024).toFixed(1)} KB` });
+    }
+  };
 
   const handleClaimSubmit = (e) => {
     e.preventDefault();
@@ -45,10 +75,11 @@ export const CustomerDashboard = ({ tab }) => {
       policyNumber: claimPolicy,
       planName: targetPolicy ? targetPolicy.planName : 'Custom Claim Policy',
       type: targetPolicy ? targetPolicy.type : 'Health',
-      amount: `$${Number(claimAmount).toLocaleString()}`,
+      amount: `₹${Number(claimAmount).toLocaleString()}`,
       dateFiled: new Date().toISOString().split('T')[0],
       status: 'In Progress',
       description: claimDesc,
+      fileName: claimFile ? claimFile.name : 'Not Provided',
       history: [
         { date: new Date().toISOString().split('T')[0], status: 'Claim Filed', note: 'Claim registered online by user.' }
       ]
@@ -58,8 +89,11 @@ export const CustomerDashboard = ({ tab }) => {
     setTimeout(() => {
       setClaimSuccess(false);
       setShowClaimModal(false);
+      setClaimStep(1);
       setClaimAmount('');
       setClaimDesc('');
+      setClaimLossDate('');
+      setClaimFile(null);
     }, 2000);
   };
 
@@ -232,64 +266,183 @@ export const CustomerDashboard = ({ tab }) => {
               </p>
             </div>
           ) : (
-            <form onSubmit={handleClaimSubmit} className="space-y-4 pt-2">
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Select Policy Account</label>
-                <select
-                  value={claimPolicy}
-                  onChange={(e) => setClaimPolicy(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white"
-                >
-                  {policies.map(p => (
-                    <option key={p.policyNumber} value={p.policyNumber}>
-                      {p.policyNumber} - {p.planName}
-                    </option>
-                  ))}
-                </select>
+            <div className="pt-2">
+              {/* Step Progress Tracker */}
+              <div className="flex items-center justify-between border-b border-slate-200/50 dark:border-white/5 pb-4 mb-4 text-[10px] font-bold text-slate-400">
+                <span className={claimStep === 1 ? "text-gold-500" : claimStep > 1 ? "text-navy-950 dark:text-white font-extrabold" : ""}>1. Incident Details</span>
+                <span className="text-slate-200 dark:text-white/10 font-normal">➔</span>
+                <span className={claimStep === 2 ? "text-gold-500" : claimStep > 2 ? "text-navy-950 dark:text-white font-extrabold" : ""}>2. Proof of Loss</span>
+                <span className="text-slate-200 dark:text-white/10 font-normal">➔</span>
+                <span className={claimStep === 3 ? "text-gold-500" : ""}>3. Summary Preview</span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Estimated Loss Date</label>
-                  <input required type="date" className="w-full px-3 py-2 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white" />
+              {claimStep === 1 && (
+                /* STEP 1: DETAILS */
+                <div className="space-y-4 text-xs">
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Select Policy Account</label>
+                    <select
+                      value={claimPolicy}
+                      onChange={(e) => setClaimPolicy(e.target.value)}
+                      className="w-full px-3 py-2 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white"
+                    >
+                      {policies.map(p => (
+                        <option key={p.policyNumber} value={p.policyNumber}>
+                          {p.policyNumber} - {p.planName}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Estimated Loss Date</label>
+                      <input
+                        required
+                        type="date"
+                        value={claimLossDate}
+                        onChange={(e) => setClaimLossDate(e.target.value)}
+                        className="w-full px-3 py-2 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Claim Amount Requested (₹)</label>
+                      <input
+                        required
+                        type="number"
+                        value={claimAmount}
+                        onChange={(e) => setClaimAmount(e.target.value)}
+                        placeholder="12000"
+                        className="w-full px-3 py-2 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="pt-4 flex justify-end space-x-2 border-t border-slate-200/50 dark:border-white/5">
+                    <Button variant="secondary" onClick={() => setShowClaimModal(false)}>Cancel</Button>
+                    <Button
+                      variant="gold"
+                      disabled={!claimLossDate || !claimAmount}
+                      onClick={() => setClaimStep(2)}
+                    >
+                      Continue
+                    </Button>
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Claim Amount Requested ($)</label>
-                  <input
-                    required
-                    type="number"
-                    value={claimAmount}
-                    onChange={(e) => setClaimAmount(e.target.value)}
-                    placeholder="1200"
-                    className="w-full px-3 py-2 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white"
-                  />
+              )}
+
+              {claimStep === 2 && (
+                /* STEP 2: PROOF & DESCRIPTION */
+                <div className="space-y-4 text-xs">
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Incident Description</label>
+                    <textarea
+                      required
+                      value={claimDesc}
+                      onChange={(e) => setClaimDesc(e.target.value)}
+                      placeholder="Detail the accident, hospital admission diagnosis, or structural damage..."
+                      rows="3"
+                      className="w-full px-3 py-2 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white focus:outline-none focus:border-gold-400"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Upload Receipt Invoice Proof (PDF/Image)</label>
+                    <div
+                      onDragOver={handleDragOver}
+                      onDragLeave={handleDragLeave}
+                      onDrop={handleDrop}
+                      className={`p-6 border-2 border-dashed rounded-2xl text-center transition-all cursor-pointer relative ${
+                        isDragOver 
+                          ? 'border-gold-500 bg-gold-500/5' 
+                          : 'border-slate-300 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-navy-900/40'
+                      }`}
+                    >
+                      <input 
+                        type="file" 
+                        onChange={handleFileSelect} 
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+                        accept="image/*,application/pdf"
+                      />
+                      
+                      {claimFile ? (
+                        <div className="space-y-2">
+                          <FaFileInvoice className="text-3xl text-gold-500 mx-auto" />
+                          <div>
+                            <p className="font-bold text-navy-950 dark:text-white truncate max-w-[200px] mx-auto">{claimFile.name}</p>
+                            <p className="text-[10px] text-slate-400">{claimFile.size}</p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); setClaimFile(null); }}
+                            className="text-[10px] text-red-500 font-bold hover:underline cursor-pointer"
+                          >
+                            Remove File
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="space-y-1">
+                          <FaCloudUploadAlt className="text-3xl text-slate-400 mx-auto animate-pulse" />
+                          <p className="font-bold text-navy-950 dark:text-slate-300">Drag & drop files here</p>
+                          <p className="text-[10px] text-slate-400">or click to browse from device (PDF, PNG, JPG)</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="pt-4 flex justify-between space-x-2 border-t border-slate-200/50 dark:border-white/5">
+                    <Button variant="secondary" onClick={() => setClaimStep(1)}>Back</Button>
+                    <Button
+                      variant="gold"
+                      disabled={!claimDesc}
+                      onClick={() => setClaimStep(3)}
+                    >
+                      Preview Summary
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Incident Description / Proof of Loss</label>
-                <textarea
-                  required
-                  value={claimDesc}
-                  onChange={(e) => setClaimDesc(e.target.value)}
-                  placeholder="Detail the accident, hospital admission diagnosis, or home structure damage..."
-                  rows="3"
-                  className="w-full px-3 py-2 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white focus:outline-none focus:border-gold-400"
-                ></textarea>
-              </div>
+              {claimStep === 3 && (
+                /* STEP 3: PREVIEW & SUBMIT */
+                <form onSubmit={handleClaimSubmit} className="space-y-4 text-xs">
+                  <div className="bg-slate-50 dark:bg-navy-900/40 border border-slate-200/50 dark:border-white/5 rounded-2xl p-4 space-y-3 text-left">
+                    <h4 className="text-[10px] font-bold text-gold-500 uppercase tracking-wider">Claims Review Summary</h4>
+                    
+                    <div className="grid grid-cols-2 gap-y-3 gap-x-2">
+                      <div>
+                        <span className="text-[10px] text-slate-400 block">Policy Number</span>
+                        <span className="font-semibold text-navy-950 dark:text-white">{claimPolicy}</span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-slate-400 block">Loss Event Date</span>
+                        <span className="font-semibold text-navy-950 dark:text-white">{claimLossDate}</span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-slate-400 block">Amount Requested</span>
+                        <span className="font-bold text-gold-500 text-sm">₹{Number(claimAmount).toLocaleString()}</span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-slate-400 block">Document Evidence</span>
+                        <span className="font-semibold text-navy-950 dark:text-white truncate block max-w-[150px]">
+                          {claimFile ? claimFile.name : 'No file attached'}
+                        </span>
+                      </div>
+                    </div>
 
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Upload Receipt Invoice Proof (PDF/Image)</label>
-                <div className="p-4 border border-dashed border-slate-300 dark:border-white/10 rounded-lg text-center cursor-pointer hover:bg-slate-50 dark:hover:bg-navy-900 transition-colors">
-                  <span className="text-[10px] text-slate-400">Click to upload files</span>
-                </div>
-              </div>
+                    <div className="pt-2 border-t border-slate-200/40 dark:border-white/5">
+                      <span className="text-[10px] text-slate-400 block">Incident Description</span>
+                      <p className="text-slate-600 dark:text-slate-300 leading-normal italic mt-0.5">{claimDesc}</p>
+                    </div>
+                  </div>
 
-              <div className="pt-2 flex justify-end space-x-2">
-                <Button variant="secondary" onClick={() => setShowClaimModal(false)}>Cancel</Button>
-                <Button type="submit" variant="gold">Submit Claim</Button>
-              </div>
-            </form>
+                  <div className="pt-4 flex justify-between space-x-2 border-t border-slate-200/50 dark:border-white/5">
+                    <Button variant="secondary" onClick={() => setClaimStep(2)}>Back</Button>
+                    <Button type="submit" variant="gold" className="px-6 font-bold">Submit Claim</Button>
+                  </div>
+                </form>
+              )}
+            </div>
           )}
         </Modal>
       </div>

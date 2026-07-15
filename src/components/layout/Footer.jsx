@@ -53,8 +53,8 @@ export const Footer = () => {
               <li className="flex items-start space-x-2">
                 <FaMapMarkerAlt className="text-gold-400 mt-0.5 shrink-0" />
                 <div>
-                  <p className="font-semibold text-white text-[11px]">{t('footer_hq')}</p>
-                  <span className="text-slate-400 mt-0.5 block">1st Floor, M D Plaza, No : 104, W Raja St, Kanchipuram, Tamil Nadu 631502</span>
+                  <p className="font-semibold text-white text-[11px]">Corporate Office</p>
+                  <span className="text-slate-400 mt-0.5 block"># 104, MD Plaza, 1st Floor, West Raja Street, Kanchipuram - 631502.</span>
                 </div>
               </li>
               <li className="flex items-start space-x-2">
@@ -65,10 +65,17 @@ export const Footer = () => {
                 </div>
               </li>
               <li className="flex items-start space-x-2">
-                <FaInstagram className="text-gold-400 shrink-0 mt-0.5" />
+                <span className="text-gold-400 shrink-0 mt-0.5">📞</span>
                 <div>
-                  <p className="font-semibold text-white text-[11px]">{t('footer_hours')}</p>
-                  <span className="text-slate-400 mt-0.5 block">Open · Closes 6:30 pm</span>
+                  <p className="font-semibold text-white text-[11px]">Phone Hotline</p>
+                  <span className="text-slate-400 mt-0.5 block">+91 98407 23956</span>
+                </div>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="text-gold-400 shrink-0 mt-0.5">💼</span>
+                <div>
+                  <p className="font-semibold text-white text-[11px]">Managing Director</p>
+                  <span className="text-slate-400 mt-0.5 block">Prakash Gajendiran</span>
                 </div>
               </li>
             </ul>

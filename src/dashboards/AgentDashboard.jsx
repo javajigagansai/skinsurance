@@ -162,13 +162,13 @@ export const AgentDashboard = ({ tab }) => {
         {/* Add client modal dialog */}
         <Modal isOpen={showAddClientModal} onClose={() => setShowAddClientModal(false)} title="Register Client" size="md">
           <form onSubmit={handleAddClient} className="space-y-4 pt-2 text-xs">
-            <div>
+             <div>
               <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Full Legal Name</label>
-              <input required type="text" placeholder="Bill Gates" value={newClientName} onChange={e => setNewClientName(e.target.value)} className="w-full px-3 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white" />
+              <input required type="text" placeholder="Your Name" value={newClientName} onChange={e => setNewClientName(e.target.value)} className="w-full px-3 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white" />
             </div>
             <div>
               <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Email Address</label>
-              <input required type="email" placeholder="bill@microsoft.com" value={newClientEmail} onChange={e => setNewClientEmail(e.target.value)} className="w-full px-3 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white" />
+              <input required type="email" placeholder="Enter Email" value={newClientEmail} onChange={e => setNewClientEmail(e.target.value)} className="w-full px-3 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white" />
             </div>
             <div className="flex justify-end space-x-2">
               <Button variant="secondary" onClick={() => setShowAddClientModal(false)}>Cancel</Button>

@@ -176,6 +176,41 @@ export const About = () => {
         </motion.div>
       </div>
 
+      {/* Executive Leadership Section */}
+      <div className="space-y-8 text-center pt-8 border-t border-slate-200/50 dark:border-white/5">
+        <div className="space-y-2">
+          <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gold-500 bg-gold-500/10 rounded-full">
+            Our Leadership
+          </span>
+          <h2 className="text-2xl font-bold text-navy-950 dark:text-white">
+            Executive Leadership
+          </h2>
+          <p className="text-xs text-slate-400 max-w-md mx-auto">
+            Meet the leaders guiding our strategic investments and underwriting advisory.
+          </p>
+        </div>
+
+        <div className="max-w-md mx-auto">
+          <div className="glass-panel dark:glass-panel-gold rounded-3xl p-6 border border-slate-200/40 dark:border-white/5 flex flex-col items-center text-center space-y-4">
+            <div className="w-20 h-20 rounded-full bg-navy-900 border-2 border-gold-500 flex items-center justify-center text-gold-500 text-3xl font-extrabold font-serif shadow-lg">
+              PG
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-navy-950 dark:text-white">Prakash Gajendiran</h3>
+              <p className="text-xs text-gold-500 font-bold uppercase tracking-widest mt-0.5">Managing Director</p>
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm">
+              Steering SK Smart Investments toward digital-first underwriting excellence with comprehensive insurance distribution networks.
+            </p>
+            <div className="text-xs space-y-1.5 text-slate-500 dark:text-slate-300 font-semibold pt-2 border-t border-slate-200/30 w-full">
+              <p>📞 Phone: +91 98407 23956</p>
+              <p>✉️ Email: Skinvestments2025@gmail.com</p>
+              <p>📍 Office: # 104, MD Plaza, 1st Floor, West Raja Street, Kanchipuram - 631502.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* What is Insurance Section */}
       <div className="glass-panel dark:glass-panel-gold rounded-3xl p-8 sm:p-10 border border-slate-200/50 dark:border-white/5 space-y-6 text-left relative overflow-hidden">
         <div className="absolute top-0 right-0 w-48 h-48 bg-gold-400/5 rounded-full blur-3xl pointer-events-none" />

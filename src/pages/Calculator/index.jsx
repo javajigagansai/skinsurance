@@ -44,23 +44,81 @@ export const Calculator = () => {
   const [sipYears, setSipYears] = useState(10);
   const [sipResults, setSipResults] = useState({ invested: 0, gain: 0, total: 0 });
 
+  // AI Profiler states
+  const [aiAge, setAiAge] = useState('18-35');
+  const [aiDependents, setAiDependents] = useState(0);
+  const [aiRisk, setAiRisk] = useState('balanced');
+  const [aiMonthlyBudget, setAiMonthlyBudget] = useState(5000);
+
+  const getAiRecommendation = () => {
+    let healthPercent = 30;
+    let lifePercent = 30;
+    let motorPercent = 20;
+    let investmentPercent = 20;
+
+    // Adjust based on age
+    if (aiAge === '18-35') {
+      healthPercent = 25;
+      lifePercent = 25;
+      motorPercent = 20;
+      investmentPercent = 30;
+    } else if (aiAge === '50+') {
+      healthPercent = 50;
+      lifePercent = 20;
+      motorPercent = 15;
+      investmentPercent = 15;
+    }
+
+    // Adjust based on dependents
+    if (aiDependents > 0) {
+      lifePercent += Math.min(aiDependents * 10, 30);
+      investmentPercent = Math.max(10, investmentPercent - Math.min(aiDependents * 5, 15));
+      healthPercent = Math.max(15, healthPercent - Math.min(aiDependents * 5, 15));
+    }
+
+    // Adjust based on risk tolerance
+    if (aiRisk === 'conservative') {
+      investmentPercent = Math.max(10, investmentPercent - 10);
+      healthPercent += 5;
+      lifePercent += 5;
+    } else if (aiRisk === 'aggressive') {
+      investmentPercent = Math.min(50, investmentPercent + 15);
+      healthPercent = Math.max(15, healthPercent - 10);
+      lifePercent = Math.max(15, lifePercent - 5);
+    }
+
+    // Normalize to 100%
+    const total = healthPercent + lifePercent + motorPercent + investmentPercent;
+    const health = Math.round((healthPercent / total) * 100);
+    const life = Math.round((lifePercent / total) * 100);
+    const motor = Math.round((motorPercent / total) * 100);
+    const investment = 100 - (health + life + motor);
+
+    const healthVal = Math.round((health / 100) * aiMonthlyBudget);
+    const lifeVal = Math.round((life / 100) * aiMonthlyBudget);
+    const motorVal = Math.round((motor / 100) * aiMonthlyBudget);
+    const investmentVal = Math.round((investment / 100) * aiMonthlyBudget);
+
+    return { health, life, motor, investment, healthVal, lifeVal, motorVal, investmentVal };
+  };
+
   // Perform premium calculations on change
   useEffect(() => {
     let base = 0;
-    
+
     if (category === 'health') {
       base = (coverage * 0.0001); // 0.01%
       // Age modifier
       if (age < 25) base *= 0.8;
       else if (age > 50) base *= 1.8;
       else if (age > 40) base *= 1.4;
-      
+
       if (smoker) base += 45;
       if (preExisting) base += 75;
-      
+
       // Deductible discount
       base -= (deductible * 0.03);
-    } 
+    }
     else if (category === 'life') {
       base = (coverage * 0.00005); // 0.005%
       // Term and age
@@ -73,7 +131,7 @@ export const Calculator = () => {
       base = (vehicleValue * 0.015); // 1.5% annual
       if (vehicleAge > 5) base *= 0.7; // older car lower premium value
       else if (vehicleAge > 2) base *= 0.9;
-      
+
       if (roadsideAssistance) base += 35;
       base -= (deductible * 0.05);
       base = base / 12; // monthly
@@ -97,15 +155,15 @@ export const Calculator = () => {
       const P = sipMonthly;
       const r = sipReturnRate;
       const y = sipYears;
-      
+
       const monthlyRate = r / (12 * 100);
       const totalMonths = y * 12;
-      
+
       const fv = P * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
       const invested = P * totalMonths;
       const total = Math.round(fv);
       const gain = Math.max(0, total - invested);
-      
+
       setSipResults({ invested, gain, total });
     }
   }, [category, sipMonthly, sipReturnRate, sipYears]);
@@ -125,7 +183,8 @@ export const Calculator = () => {
     { id: 'motor', label: 'Motor', icon: FaCar, color: 'text-blue-500' },
     { id: 'home', label: 'Home', icon: FaHome, color: 'text-emerald-500' },
     { id: 'travel', label: 'Travel', icon: FaPlane, color: 'text-amber-500' },
-    { id: 'sip', label: 'SIP Calculator', icon: FaCalculator, color: 'text-gold-500' }
+    { id: 'sip', label: 'SIP Calculator', icon: FaCalculator, color: 'text-gold-500' },
+    { id: 'ai', label: 'AI Risk Profiler', icon: FaUserCheck, color: 'text-purple-500' }
   ];
 
   return (
@@ -155,11 +214,10 @@ export const Calculator = () => {
                 <button
                   key={cat.id}
                   onClick={() => setCategory(cat.id)}
-                  className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-xl text-xs font-semibold transition-all duration-300 cursor-pointer ${
-                    category === cat.id
+                  className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-xl text-xs font-semibold transition-all duration-300 cursor-pointer ${category === cat.id
                       ? 'bg-navy-950 text-white dark:bg-gold-400 dark:text-navy-950 shadow-md font-bold'
                       : 'hover:bg-slate-300/40 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400'
-                  }`}
+                    }`}
                 >
                   <Icon className="text-base" />
                   <span>{cat.label}</span>
@@ -527,6 +585,72 @@ export const Calculator = () => {
                 </div>
               </div>
             )}
+
+            {category === 'ai' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div>
+                  <div className="flex justify-between text-sm font-semibold mb-2">
+                    <label className="text-navy-950 dark:text-white">Target Monthly Budget</label>
+                    <span className="text-gold-500">₹{aiMonthlyBudget.toLocaleString()}/mo</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="2000"
+                    max="50000"
+                    step="500"
+                    value={aiMonthlyBudget}
+                    onChange={(e) => setAiMonthlyBudget(Number(e.target.value))}
+                    className="w-full h-2 bg-slate-200 dark:bg-navy-900 rounded-lg appearance-none cursor-pointer accent-gold-500"
+                  />
+                  <div className="flex justify-between text-[11px] text-slate-400 mt-1">
+                    <span>₹2,000</span>
+                    <span>₹50,000</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Age Bracket</label>
+                    <select
+                      value={aiAge}
+                      onChange={(e) => setAiAge(e.target.value)}
+                      className="w-full px-3 py-2.5 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-xl text-navy-950 dark:text-white"
+                    >
+                      <option value="18-35">Young Adult (18-35)</option>
+                      <option value="36-50">Mid-Career (36-50)</option>
+                      <option value="50+">Senior Care (50+)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Dependents</label>
+                    <select
+                      value={aiDependents}
+                      onChange={(e) => setAiDependents(Number(e.target.value))}
+                      className="w-full px-3 py-2.5 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-xl text-navy-950 dark:text-white"
+                    >
+                      <option value="0">No Dependents</option>
+                      <option value="1">1 Dependent</option>
+                      <option value="2">2 Dependents</option>
+                      <option value="3">3+ Dependents</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Risk Strategy</label>
+                    <select
+                      value={aiRisk}
+                      onChange={(e) => setAiRisk(e.target.value)}
+                      className="w-full px-3 py-2.5 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-xl text-navy-950 dark:text-white"
+                    >
+                      <option value="conservative">Conservative</option>
+                      <option value="balanced">Balanced Focus</option>
+                      <option value="aggressive">Aggressive/Dynamic</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -646,7 +770,7 @@ export const Calculator = () => {
               {category === 'sip' ? 'SIP Setup Authorized!' : 'Application Approved!'}
             </h3>
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              {category === 'sip' 
+              {category === 'sip'
                 ? 'Your SIP auto-debit registration has been registered. View portfolio statuses inside dashboard.'
                 : 'Your mock policy has been issued. Check the Customer Dashboard to view documents or submit claims.'
               }
@@ -660,15 +784,15 @@ export const Calculator = () => {
                 : `Please finalize details below to secure your ${category.toUpperCase()} insurance package.`
               }
             </p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
                 <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Full Legal Name</label>
-                <input required type="text" placeholder="John Doe" className="w-full px-3 py-2 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white" />
+                <input required type="text" placeholder="Your Name" className="w-full px-3 py-2 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white" />
               </div>
               <div>
                 <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Email Address</label>
-                <input required type="email" placeholder="john@example.com" className="w-full px-3 py-2 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white" />
+                <input required type="email" placeholder="Enter Email" className="w-full px-3 py-2 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white" />
               </div>
             </div>
 

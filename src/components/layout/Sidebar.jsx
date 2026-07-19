@@ -66,7 +66,7 @@ export const Sidebar = ({ collapsed, setCollapsed }) => {
 
   return (
     <aside
-      className={`h-screen sticky top-0 shrink-0 bg-navy-950/75 backdrop-blur-md text-slate-300 transition-all duration-300 shadow-xl border-r border-white/5 flex flex-col justify-between z-30 ${
+      className={`h-screen sticky top-0 shrink-0 bg-navy-950 text-slate-300 transition-all duration-300 shadow-xl border-r border-white/5 flex flex-col justify-between z-30 ${
         collapsed ? 'w-16' : 'w-64'
       }`}
     >

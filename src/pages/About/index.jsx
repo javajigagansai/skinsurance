@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from '../../context/LanguageContext';
-import { FaAward, FaCalendarAlt, FaShieldAlt, FaUsers, FaChartLine, FaRegClock, FaTimes, FaSearchPlus, FaHeartbeat, FaHome } from 'react-icons/fa';
+import { FaAward, FaCalendarAlt, FaShieldAlt, FaUsers, FaChartLine, FaRegClock, FaTimes, FaSearchPlus, FaHeartbeat, FaHome, FaLinkedin, FaInstagram } from 'react-icons/fa';
 
 export const About = () => {
   const [selectedAward, setSelectedAward] = useState(null);
@@ -109,6 +109,75 @@ export const About = () => {
           })}
         </div>
       </div>
+      {/* Core Values Section */}
+      <div className="space-y-8 text-center pt-8 border-t border-slate-200/50 dark:border-white/5">
+        <div className="space-y-2">
+          <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gold-500 bg-gold-500/10 rounded-full">
+            Our Foundation
+          </span>
+          <h2 className="text-2xl font-bold text-navy-950 dark:text-white">
+            Our Core Principles
+          </h2>
+          <p className="text-xs text-slate-400 max-w-md mx-auto">
+            Built on trust, actuarial discipline, and long-term client-first relationship planning.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+          {[
+            { title: 'Absolute Transparency', desc: 'Zero hidden clauses, clear deductible guides, and upfront premium definitions for total peace of mind.', icon: FaShieldAlt },
+            { title: 'Actuarial Precision', desc: 'Goal-based wealth planners and SIP calculators designed using real-time market data indexes.', icon: FaChartLine },
+            { title: 'Community Advocacy', desc: 'Providing Kanchipuram and wider Tamil Nadu with local, accessible, and personalized financial coaching.', icon: FaUsers },
+            { title: 'Dedicated Claims Desk', desc: 'Pre-sales advice and full post-sales filing support to ensure maximum claim clearance rates.', icon: FaAward }
+          ].map((val, idx) => {
+            const Icon = val.icon;
+            return (
+              <div key={idx} className="glass-panel dark:glass-panel-gold rounded-2xl p-5 border border-slate-200/40 dark:border-white/5 space-y-3 hover:scale-[1.02] transition-transform duration-300">
+                <div className="w-10 h-10 rounded-xl bg-gold-500/10 text-gold-500 flex items-center justify-center text-lg">
+                  <Icon />
+                </div>
+                <h3 className="text-xs font-extrabold text-navy-950 dark:text-white uppercase tracking-wider">{val.title}</h3>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed font-medium">{val.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Corporate Timeline Section */}
+      <div className="space-y-8 text-center pt-8 border-t border-slate-200/50 dark:border-white/5">
+        <div className="space-y-2">
+          <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gold-500 bg-gold-500/10 rounded-full">
+            Our Journey
+          </span>
+          <h2 className="text-2xl font-bold text-navy-950 dark:text-white">
+            Historical Milestones
+          </h2>
+          <p className="text-xs text-slate-400 max-w-md mx-auto">
+            Two decades of protecting wealth and supporting families across generations.
+          </p>
+        </div>
+        <div className="relative max-w-5xl mx-auto px-4 py-4">
+          {/* Central connection line */}
+          <div className="absolute top-1/2 left-4 right-4 h-0.5 bg-slate-200 dark:bg-slate-800 -translate-y-1/2 hidden lg:block" />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 relative z-10">
+            {[
+              { year: '2004', title: 'Independent Advisory', desc: 'Managing Director Prakash Gajendiran starts independent financial planning services in Kanchipuram.' },
+              { year: '2012', title: 'Portfolio Expansion', desc: 'Secures primary partnership certifications with India’s leading life insurers (LIC, Tata AIA).' },
+              { year: '2018', title: 'AUM Milestones', desc: 'Protects over 2,500 local families and manages significant long-term portfolios.' },
+              { year: '2025', title: 'MD Plaza Headquarters', desc: 'Establishes state-of-the-art office at #104, West Raja Street, launching digital portals.' }
+            ].map((mile, idx) => (
+              <div key={idx} className="glass-panel dark:glass-panel-gold rounded-2xl p-5 border border-slate-200/40 dark:border-white/5 text-left space-y-2 hover:scale-[1.02] transition-transform duration-300">
+                <div className="inline-block px-2.5 py-0.5 bg-gold-500 text-navy-950 text-[10px] font-extrabold rounded-full">
+                  {mile.year}
+                </div>
+                <h3 className="text-xs font-bold text-navy-950 dark:text-white">{mile.title}</h3>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed font-medium">{mile.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Awards & Recognition Gallery */}
       <div className="space-y-8 text-center pt-8 border-t border-slate-200/50 dark:border-white/5">
@@ -192,8 +261,16 @@ export const About = () => {
 
         <div className="max-w-md mx-auto">
           <div className="glass-panel dark:glass-panel-gold rounded-3xl p-6 border border-slate-200/40 dark:border-white/5 flex flex-col items-center text-center space-y-4">
-            <div className="w-20 h-20 rounded-full bg-navy-900 border-2 border-gold-500 flex items-center justify-center text-gold-500 text-3xl font-extrabold font-serif shadow-lg">
-              PG
+            <div className="w-24 h-24 rounded-full border-2 border-gold-500 overflow-hidden shadow-lg shrink-0 bg-navy-900">
+              <img 
+                src="/prakash_gajendiran.png" 
+                alt="Prakash Gajendiran" 
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentNode.innerHTML = '<span class="text-gold-500 text-3xl font-extrabold font-serif">PG</span>';
+                }}
+              />
             </div>
             <div>
               <h3 className="text-base font-bold text-navy-950 dark:text-white">Prakash Gajendiran</h3>
@@ -206,7 +283,97 @@ export const About = () => {
               <p>📞 Phone: +91 98407 23956</p>
               <p>✉️ Email: Skinvestments2025@gmail.com</p>
               <p>📍 Office: # 104, MD Plaza, 1st Floor, West Raja Street, Kanchipuram - 631502.</p>
+              <p className="flex items-center justify-center space-x-1.5 pt-1">
+                <FaLinkedin className="text-blue-600 dark:text-blue-400 shrink-0 text-sm" />
+                <a 
+                  href="https://www.linkedin.com/in/gajendiran-prakash-0bab5931/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-blue-500 dark:text-blue-400 hover:underline"
+                >
+                  LinkedIn Profile
+                </a>
+              </p>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Social Media Channels Section */}
+      <div className="space-y-8 text-center pt-8 border-t border-slate-200/50 dark:border-white/5">
+        <div className="space-y-2">
+          <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gold-500 bg-gold-500/10 rounded-full">
+            Connect With Us
+          </span>
+          <h2 className="text-2xl font-bold text-navy-950 dark:text-white">
+            Follow Our Social Channels
+          </h2>
+          <p className="text-xs text-slate-400 max-w-md mx-auto">
+            Stay updated with corporate announcements, financial literacy tips, and investment guidelines.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto text-left">
+          {/* Instagram Card */}
+          <div className="glass-panel dark:glass-panel-gold rounded-3xl p-6 border border-slate-200/40 dark:border-white/5 flex flex-col justify-between space-y-4 hover:scale-[1.02] transition-transform duration-300">
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 rounded-2xl bg-pink-500/10 text-pink-500 flex items-center justify-center text-2xl shrink-0">
+                <FaInstagram />
+              </div>
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-navy-950 dark:text-white">Instagram Feed</h3>
+                <a 
+                  href="https://www.instagram.com/sk_smartinvestments/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-xs font-bold text-pink-500 hover:underline"
+                >
+                  @sk_smartinvestments
+                </a>
+              </div>
+            </div>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+              Join our Instagram community for real-time market updates, client testimonials, daily investment insights, and claims service announcements.
+            </p>
+            <a 
+              href="https://www.instagram.com/sk_smartinvestments/"
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="inline-flex items-center justify-center py-2 px-4 rounded-xl border border-pink-500/30 text-pink-500 text-[10px] font-extrabold uppercase tracking-wider hover:bg-pink-500/5 transition-all text-center w-full shadow-sm"
+            >
+              Follow on Instagram
+            </a>
+          </div>
+
+          {/* LinkedIn Card */}
+          <div className="glass-panel dark:glass-panel-gold rounded-3xl p-6 border border-slate-200/40 dark:border-white/5 flex flex-col justify-between space-y-4 hover:scale-[1.02] transition-transform duration-300">
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-2xl shrink-0">
+                <FaLinkedin />
+              </div>
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-navy-950 dark:text-white">LinkedIn Company</h3>
+                <a 
+                  href="https://www.linkedin.com/company/sksmartinvestments/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-xs font-bold text-blue-500 dark:text-blue-400 hover:underline"
+                >
+                  SK Smart Investments
+                </a>
+              </div>
+            </div>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+              Connect with our corporate page for corporate partnerships, agent recruitment pathways, industry analyses, and company news.
+            </p>
+            <a 
+              href="https://www.linkedin.com/company/sksmartinvestments/"
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="inline-flex items-center justify-center py-2 px-4 rounded-xl border border-blue-500/30 text-blue-500 dark:text-blue-400 text-[10px] font-extrabold uppercase tracking-wider hover:bg-blue-500/5 transition-all text-center w-full shadow-sm"
+            >
+              Connect on LinkedIn
+            </a>
           </div>
         </div>
       </div>

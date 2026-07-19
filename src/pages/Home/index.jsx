@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from '../../context/LanguageContext';
 import { Button } from '../../components/ui/Button';
 import { FaShieldAlt, FaHeartbeat, FaCar, FaUserShield, FaHandshake, FaAward, FaStar } from 'react-icons/fa';
@@ -12,26 +12,36 @@ export const Home = () => {
   const [monthlyInvest, setMonthlyInvest] = useState(5000);
   const [expectedReturn, setExpectedReturn] = useState(12);
   const [years, setYears] = useState(10);
+  const [partnerFilter, setPartnerFilter] = useState('ALL');
 
   // Highlight only top 3 popular plans
   const featuredPlans = PLANS.slice(0, 3);
 
   const partnerBrands = [
-    { name: 'Tata AIA', type: 'Life', logo: '/logos/tata_aia.png' },
-    { name: 'ICICI Prudential', type: 'Life', logo: '/logos/icici_prudential.png' },
-    { name: 'HDFC Life', type: 'Life', logo: '/logos/hdfc_life.png' },
-    { name: 'SBI Life', type: 'Life', logo: '/logos/sbi_life.png' },
-    { name: 'Bajaj Allianz', type: 'General', logo: '/logos/bajaj_allianz.png' },
-    { name: 'Axis Max', type: 'Life', logo: '/logos/axis_max.png' },
-    { name: 'Policybazaar', type: 'Aggregator', logo: '/logos/policybazaar.png' },
-    { name: 'AE Alliance', type: 'General', logo: '/logos/ae_alliance.png' },
-    { name: 'Niva Bupa', type: 'Health', logo: '/logos/niva_bupa.png' },
-    { name: 'LIC India', type: 'Life', logo: '/logos/lic.png' },
-    { name: 'ManipalCigna', type: 'Health', logo: '/logos/manipal_cigna.png' },
-    { name: 'Care Health', type: 'Health', logo: '/logos/care_health.png' },
-    { name: 'Star Health', type: 'Health', logo: '/logos/star_health.png' },
-    { name: 'Oriental Insurance', type: 'General', logo: '/logos/oriental_insurance.png' }
+    { name: 'Tata AIA', type: 'Life', logo: '/logos/tata_aia.png', onlineLogo: '' },
+    { name: 'ICICI Prudential', type: 'Life', logo: '/logos/icici_prudential.png', onlineLogo: '' },
+    { name: 'HDFC Life', type: 'Life', logo: '/logos/hdfc_life.png', onlineLogo: '' },
+    { name: 'SBI Life', type: 'Life', logo: '/logos/sbi_life.png', onlineLogo: 'https://logo.clearbit.com/sbilife.co.in' },
+    { name: 'Bajaj Allianz', type: 'General', logo: '/logos/bajaj_allianz.png', onlineLogo: 'https://logo.clearbit.com/bajajallianz.com' },
+    { name: 'Axis Max', type: 'Life', logo: '/logos/axis_max.png', onlineLogo: 'https://logo.clearbit.com/maxlifeinsurance.com' },
+    { name: 'Policybazaar', type: 'Aggregator', logo: '/logos/policybazaar.png', onlineLogo: 'https://logo.clearbit.com/policybazaar.com' },
+    { name: 'AE Alliance', type: 'General', logo: '/logos/ae_alliance.png', onlineLogo: '' },
+    { name: 'Niva Bupa', type: 'Health', logo: '/logos/niva_bupa.png', onlineLogo: 'https://logo.clearbit.com/nivabupa.com' },
+    { name: 'LIC India', type: 'Life', logo: '/logos/lic.png', onlineLogo: 'https://logo.clearbit.com/licindia.in' },
+    { name: 'ManipalCigna', type: 'Health', logo: '/logos/manipal_cigna.png', onlineLogo: 'https://logo.clearbit.com/manipalcigna.com' },
+    { name: 'Care Health', type: 'Health', logo: '/logos/care_health.png', onlineLogo: 'https://logo.clearbit.com/careinsurance.com' },
+    { name: 'Star Health', type: 'Health', logo: '/logos/star_health.png', onlineLogo: 'https://logo.clearbit.com/starhealth.in' },
+    { name: 'Oriental Insurance', type: 'General', logo: '/logos/oriental_insurance.png', onlineLogo: 'https://logo.clearbit.com/orientalinsurance.org.in' }
   ];
+
+  const handleImageError = (e, b) => {
+    if (e.target.src.includes('clearbit')) {
+      e.target.src = b.logo;
+    } else {
+      e.target.style.display = 'none';
+      e.target.nextSibling.style.display = 'block';
+    }
+  };
 
   const stats = [
     { number: '98.7%', label: t('claims_rate') },
@@ -77,7 +87,7 @@ export const Home = () => {
   ];
 
   return (
-    <div className="relative pb-20">
+    <div className="relative">
       {/* Full-width Fixed Background Video Banner at the Top */}
       <section className="relative w-full h-screen overflow-hidden">
         <video 
@@ -90,22 +100,11 @@ export const Home = () => {
           <source src="/hero_background.mp4" type="video/mp4" />
         </video>
 
-        {/* Scroll indicator overlay */}
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center space-y-2 cursor-pointer z-20 group"
-          onClick={() => {
-            window.scrollTo({
-              top: window.innerHeight - 56,
-              behavior: 'smooth'
-            });
-          }}
-        >
-          <span className="text-[10px] text-white/60 uppercase tracking-widest font-extrabold group-hover:text-gold-400 transition-colors">Explore Skinsurance</span>
-          <span className="text-xl text-white/70 animate-bounce group-hover:text-gold-400 transition-colors">↓</span>
-        </div>
+
       </section>
 
       {/* Parallax Content Overlay Wrap - Scrolls up over the fixed video */}
-      <div className="relative bg-white dark:bg-navy-950 z-10 py-16 space-y-24 border-t border-slate-200/50 dark:border-white/5 shadow-[0_-20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_-20px_50px_rgba(0,0,0,0.4)]">
+      <div className="relative bg-white dark:bg-navy-950 z-10 pt-16 pb-0 space-y-24 border-t border-slate-200/50 dark:border-white/5 shadow-[0_-20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_-20px_50px_rgba(0,0,0,0.4)]">
         {/* Hero Text & Table Content Section */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-left relative">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-20">
@@ -284,8 +283,23 @@ export const Home = () => {
       </section>
 
       {/* Trusted Insurance Partners Section */}
-      <section className="max-w-7xl mx-auto px-4 py-8 border-t border-slate-200/50 dark:border-white/5 space-y-6">
-        <div className="text-center">
+      <section className="py-12 border-t border-slate-200/50 dark:border-white/5 overflow-hidden">
+        <style>{`
+          @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 35s linear infinite;
+          }
+          .animate-marquee:hover {
+            animation-play-state: paused;
+          }
+        `}</style>
+
+        <div className="max-w-7xl mx-auto px-4 text-center mb-6">
           <span className="text-[10px] font-bold text-gold-500 uppercase tracking-widest bg-gold-500/10 px-3 py-1 rounded-full">
             Authorized Distribution Partners
           </span>
@@ -294,29 +308,46 @@ export const Home = () => {
           </h2>
         </div>
 
-        {/* Sliding grid style container */}
-        <div className="py-6 bg-slate-50 dark:bg-navy-950/20 rounded-3xl border border-slate-200/40 dark:border-white/5 px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+        {/* Scrolling Container */}
+        <div className="relative w-full overflow-hidden py-6 bg-slate-50/50 dark:bg-navy-950/30 border-y border-slate-200/40 dark:border-white/5">
+          {/* Left/Right fading gradients to look premium */}
+          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-slate-50 dark:from-navy-955 to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-slate-50 dark:from-navy-955 to-transparent z-10 pointer-events-none" />
+
+          {/* Marquee Inner Flex */}
+          <div className="animate-marquee gap-8 items-center flex">
+            {/* First Set of Logos */}
             {partnerBrands.map((b, idx) => (
               <div 
-                key={idx} 
-                className="flex flex-col items-center justify-center p-3 bg-white dark:bg-navy-900 rounded-xl shadow-sm border border-slate-200/50 dark:border-white/5 hover:scale-105 transition-transform h-20 relative overflow-hidden group"
+                key={`p1-${idx}`} 
+                className="flex flex-col items-center justify-center p-3 bg-white dark:bg-navy-900 rounded-2xl shadow-sm border border-slate-200/60 dark:border-white/5 h-20 w-44 shrink-0 transition-all duration-300 hover:scale-105 hover:border-gold-500/50 dark:hover:border-gold-400/30 group"
               >
-                {b.logo ? (
+                <div className="flex-1 flex items-center justify-center w-full overflow-hidden p-1 bg-white rounded-lg">
                   <img 
-                    src={b.logo} 
+                    src={b.onlineLogo || b.logo} 
                     alt={b.name} 
-                    className="h-10 w-full object-contain filter dark:brightness-110" 
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'block';
-                    }}
+                    className="max-h-11 max-w-full object-contain grayscale opacity-60 dark:opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300" 
+                    onError={(e) => handleImageError(e, b)}
                   />
-                ) : null}
-                <span className={`${b.logo ? 'hidden' : 'block'} text-[10px] font-extrabold text-navy-950 dark:text-white tracking-wide text-center leading-tight`}>
-                  {b.name}
-                </span>
-                <span className="text-[7px] font-extrabold text-gold-500 uppercase tracking-widest mt-1 opacity-85">{b.type}</span>
+                </div>
+                <span className="text-[6px] font-extrabold text-gold-500 uppercase tracking-widest mt-1 opacity-75 group-hover:text-navy-950 dark:group-hover:text-gold-400 transition-colors shrink-0">{b.type}</span>
+              </div>
+            ))}
+            {/* Second Set of Logos (duplicate for seamless loop) */}
+            {partnerBrands.map((b, idx) => (
+              <div 
+                key={`p2-${idx}`} 
+                className="flex flex-col items-center justify-center p-3 bg-white dark:bg-navy-900 rounded-2xl shadow-sm border border-slate-200/60 dark:border-white/5 h-20 w-44 shrink-0 transition-all duration-300 hover:scale-105 hover:border-gold-500/50 dark:hover:border-gold-400/30 group"
+              >
+                <div className="flex-1 flex items-center justify-center w-full overflow-hidden p-1 bg-white rounded-lg">
+                  <img 
+                    src={b.onlineLogo || b.logo} 
+                    alt={b.name} 
+                    className="max-h-11 max-w-full object-contain grayscale opacity-60 dark:opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300" 
+                    onError={(e) => handleImageError(e, b)}
+                  />
+                </div>
+                <span className="text-[6px] font-extrabold text-gold-500 uppercase tracking-widest mt-1 opacity-75 group-hover:text-navy-950 dark:group-hover:text-gold-400 transition-colors shrink-0">{b.type}</span>
               </div>
             ))}
           </div>
@@ -359,7 +390,7 @@ export const Home = () => {
                 <div className="pt-2">
                   <p className="text-slate-400 text-[10px] uppercase font-bold leading-none">Starting from</p>
                   <p className="text-navy-950 dark:text-white font-extrabold text-2xl mt-1">
-                    ${plan.premiumMonthly}<span className="text-xs font-normal text-slate-500"> / month</span>
+                    ₹{plan.premiumMonthly}<span className="text-xs font-normal text-slate-500"> / month</span>
                   </p>
                 </div>
               </div>

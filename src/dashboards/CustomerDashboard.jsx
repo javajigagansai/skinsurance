@@ -165,7 +165,7 @@ export const CustomerDashboard = ({ tab }) => {
             </div>
             <div>
               <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Next Premium Amount</p>
-              <h3 className="text-2xl font-bold text-navy-950 dark:text-white mt-0.5">$165.00</h3>
+              <h3 className="text-2xl font-bold text-navy-950 dark:text-white mt-0.5">₹12,500.00</h3>
             </div>
           </div>
 
@@ -517,7 +517,7 @@ export const CustomerDashboard = ({ tab }) => {
           {/* Claim submit wizard form */}
           <form onSubmit={handleClaimSubmit} className="space-y-4 pt-2">
             <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Claim Amount Requested ($)</label>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Claim Amount Requested (₹)</label>
               <input required type="number" placeholder="500" value={claimAmount} onChange={e => setClaimAmount(e.target.value)} className="w-full px-3 py-2 text-xs bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-lg text-navy-950 dark:text-white" />
             </div>
             <div>
@@ -551,7 +551,7 @@ export const CustomerDashboard = ({ tab }) => {
               <div className="p-3 bg-slate-50 dark:bg-navy-900 rounded-xl space-y-2">
                 <div className="flex justify-between">
                   <span>Annual Premium Cost:</span>
-                  <span className="font-bold text-gold-500">$420.00</span>
+                  <span className="font-bold text-gold-500">₹4,200.00</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Coverage Term:</span>

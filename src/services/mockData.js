@@ -225,7 +225,7 @@ export const BLOG_POSTS = [
     id: 'blog-1',
     title: 'Top 5 Tips to Reduce Your Car Insurance Premium',
     excerpt: 'Find out how defensive driving courses, higher deductibles, and anti-theft equipment can lower your premium payments significantly.',
-    content: 'Insurance companies calculate auto insurance premiums based on risk. Fortunately, as a vehicle owner, you have significant control over many risk factors. First, consider taking a certified defensive driving course; many providers offer automatic premium reductions of up to 10% for drivers holding these certificates. Second, adjust your deductibles. Raising your collision and comprehensive deductible from $250 to $1,000 can reduce your premium by 15% to 30%. Third, ensure your car is equipped with anti-theft devices like alarm systems or GPS trackers, which deter thieves and please insurers.',
+    content: 'Insurance companies calculate auto insurance premiums based on risk. Fortunately, as a vehicle owner, you have significant control over many risk factors. First, consider taking a certified defensive driving course; many providers offer automatic premium reductions of up to 10% for drivers holding these certificates. Second, adjust your deductibles. Raising your collision and comprehensive deductible from ₹20,000 to ₹80,000 can reduce your premium by 15% to 30%. Third, ensure your car is equipped with anti-theft devices like alarm systems or GPS trackers, which deter thieves and please insurers.',
     category: 'Auto',
     date: 'July 10, 2026',
     author: 'Mark Sterling (Auto Risk Lead)',

@@ -1,26 +1,24 @@
 import React, { useState } from 'react';
 import { useTranslation } from '../../context/LanguageContext';
 import { Button } from '../../components/ui/Button';
-import { FAQS } from '../../services/mockData';
-import { FaClock, FaEnvelope, FaMapMarkerAlt, FaChevronDown, FaCheckCircle } from 'react-icons/fa';
+import { FaClock, FaEnvelope, FaMapMarkerAlt, FaCheckCircle, FaWhatsapp, FaInstagram } from 'react-icons/fa';
+import { saveTicket } from '../../services/api';
 
 export const Support = () => {
   const { t } = useTranslation();
-  const [openFaqIdx, setOpenFaqIdx] = useState(null);
   const [contactSuccess, setContactSuccess] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
 
-  const toggleFaq = (idx) => {
-    setOpenFaqIdx(openFaqIdx === idx ? null : idx);
-  };
-
-  const handleContactSubmit = (e) => {
+  const handleContactSubmit = async (e) => {
     e.preventDefault();
-    setContactSuccess(true);
-    setForm({ name: '', email: '', subject: '', message: '' });
-    setTimeout(() => {
-      setContactSuccess(false);
-    }, 4000);
+    const success = await saveTicket(form);
+    if (success) {
+      setContactSuccess(true);
+      setForm({ name: '', email: '', subject: '', message: '' });
+      setTimeout(() => {
+        setContactSuccess(false);
+      }, 4000);
+    }
   };
 
   return (
@@ -88,9 +86,43 @@ export const Support = () => {
                 <span className="p-2.5 bg-slate-100 dark:bg-navy-900 rounded-xl text-gold-500 mt-0.5 shrink-0">📞</span>
                 <div>
                   <p className="font-semibold text-navy-950 dark:text-white">Phone Hotline</p>
-                  <p className="text-slate-500 dark:text-slate-400 leading-relaxed mt-0.5">
+                  <p className="text-slate-500 dark:text-slate-400 leading-relaxed mt-0.5 font-sans">
                     +91 98407 23956
                   </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-3 text-xs">
+                <div className="p-2.5 bg-pink-500/10 text-pink-500 rounded-xl mt-0.5 shrink-0">
+                  <FaInstagram className="text-base" />
+                </div>
+                <div>
+                  <p className="font-semibold text-navy-950 dark:text-white">Instagram Portal</p>
+                  <a 
+                    href="https://www.instagram.com/sk_smartinvestments/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-pink-500 hover:underline font-bold mt-0.5 block"
+                  >
+                    @sk_smartinvestments
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-3 text-xs">
+                <div className="p-2.5 bg-emerald-500/10 text-emerald-500 rounded-xl mt-0.5 shrink-0">
+                  <FaWhatsapp className="text-base" />
+                </div>
+                <div>
+                  <p className="font-semibold text-navy-950 dark:text-white">WhatsApp Support</p>
+                  <a 
+                    href="https://wa.me/919840723956?text=Hi%20SK%20Smart%20Investments%2C%20I%20have%20a%20query%20about%20your%20services." 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-emerald-500 hover:underline font-bold mt-0.5 block"
+                  >
+                    Chat Now on WhatsApp
+                  </a>
                 </div>
               </div>
 
@@ -181,36 +213,7 @@ export const Support = () => {
         </div>
       </div>
 
-      {/* FAQ Accordion Section */}
-      <div className="space-y-6 text-left">
-        <h2 className="text-2xl font-bold text-navy-950 dark:text-white text-center">
-          {t('faq_title')}
-        </h2>
-        <div className="max-w-4xl mx-auto space-y-3">
-          {FAQS.map((faq, idx) => {
-            const isOpen = openFaqIdx === idx;
-            return (
-              <div
-                key={idx}
-                className="glass-panel dark:glass-panel-gold rounded-2xl overflow-hidden border border-slate-200/50 dark:border-white/5 transition-all"
-              >
-                <button
-                  onClick={() => toggleFaq(idx)}
-                  className="w-full flex items-center justify-between p-5 text-left font-semibold text-sm text-navy-950 dark:text-white hover:bg-slate-50 dark:hover:bg-navy-900/40 transition-colors cursor-pointer"
-                >
-                  <span>{faq.question}</span>
-                  <FaChevronDown className={`text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180 text-gold-500' : ''}`} />
-                </button>
-                {isOpen && (
-                  <div className="px-5 pb-5 pt-1 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200/20 dark:border-white/5 leading-relaxed">
-                    {faq.answer}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
+
     </div>
   );
 };

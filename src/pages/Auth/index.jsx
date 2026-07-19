@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from '../../context/LanguageContext';
 import { Button } from '../../components/ui/Button';
-import { FaKey, FaEnvelope, FaEye, FaEyeSlash, FaApple, FaGoogle, FaMicrosoft, FaPlus, FaExclamationTriangle, FaInfoCircle } from 'react-icons/fa';
+import { 
+  FaKey, 
+  FaEnvelope, 
+  FaEye, 
+  FaEyeSlash, 
+  FaApple, 
+  FaGoogle, 
+  FaMicrosoft, 
+  FaPlus, 
+  FaExclamationTriangle, 
+  FaInfoCircle, 
+  FaArrowLeft 
+} from 'react-icons/fa';
 
 export const Auth = () => {
-  const { login } = useAuth();
+  const { login, register, sendPasswordReset } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -16,35 +28,69 @@ export const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [showHints, setShowHints] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
 
+  // Registration states
   const [isRegister, setIsRegister] = useState(false);
   const [registerSuccess, setRegisterSuccess] = useState(false);
   const [regName, setRegName] = useState('');
   const [regEmail, setRegEmail] = useState('');
   const [regPassword, setRegPassword] = useState('');
 
-  const handleRegisterSubmit = (e) => {
+  // Password reset states
+  const [isForgot, setIsForgot] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotSuccess, setForgotSuccess] = useState(false);
+
+  const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     if (!regName.trim() || !regEmail.trim() || !regPassword.trim()) return;
-    setRegisterSuccess(true);
-    setTimeout(() => {
-      setRegisterSuccess(false);
-      setIsRegister(false);
-      setEmail(regEmail);
-      setRegName('');
-      setRegEmail('');
-      setRegPassword('');
-    }, 2000);
+    try {
+      setErrorMsg('');
+      const success = await register(regEmail, regPassword, regName);
+      if (success) {
+        setRegisterSuccess(true);
+        setTimeout(() => {
+          setRegisterSuccess(false);
+          setIsRegister(false);
+          setEmail(regEmail);
+          setRegName('');
+          setRegEmail('');
+          setRegPassword('');
+        }, 2000);
+      }
+    } catch (err) {
+      setErrorMsg(err.message || 'Registration failed');
+    }
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    const success = login(email, password);
+    const success = await login(email, password, rememberMe);
     if (success) {
       setErrorMsg('');
       navigate('/dashboard');
     } else {
       setErrorMsg(t('invalid_credentials'));
+    }
+  };
+
+  const handleForgotSubmit = async (e) => {
+    e.preventDefault();
+    if (!forgotEmail.trim()) return;
+    try {
+      setErrorMsg('');
+      const success = await sendPasswordReset(forgotEmail);
+      if (success) {
+        setForgotSuccess(true);
+        setForgotEmail('');
+        setTimeout(() => {
+          setForgotSuccess(false);
+          setIsForgot(false);
+        }, 4000);
+      }
+    } catch (err) {
+      setErrorMsg(err.message || 'Failed to send recovery email');
     }
   };
 
@@ -55,53 +101,120 @@ export const Auth = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center px-4 py-8 sm:py-12 relative overflow-hidden">
-      {/* Background ambient light */}
-      <div className="absolute top-10 right-10 w-96 h-96 bg-gold-400/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 left-10 w-96 h-96 bg-navy-500/10 rounded-full blur-3xl pointer-events-none" />
-
-      {/* Main Split Grid Card */}
-      <div className="w-full max-w-4xl flex flex-col md:flex-row glass-panel dark:glass-panel-gold rounded-3xl overflow-hidden shadow-2xl relative z-10 border border-slate-200/50 dark:border-gold-400/20">
+    <div className="min-h-screen flex flex-col md:flex-row bg-slate-50 dark:bg-navy-955 text-slate-800 dark:text-slate-100 relative overflow-hidden">
+      
+      {/* Floating Back to Home Button in bottom right */}
+      <Link 
+        to="/" 
+        className="absolute bottom-6 right-24 z-30 flex items-center space-x-2 px-4 py-2.5 bg-white/90 dark:bg-navy-900/90 backdrop-blur-md border border-slate-200/50 dark:border-white/5 rounded-2xl text-xs font-bold text-navy-950 dark:text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all transform active:scale-95 group cursor-pointer animate-fadeIn"
+      >
+        <FaArrowLeft className="text-[10px] group-hover:-translate-x-0.5 transition-transform text-gold-500" />
+        <span>Back to Home</span>
+      </Link>
+      
+      {/* Left Pane - Immersive Full-Screen Video Panel */}
+      <div className="w-full md:w-[50%] lg:w-[55%] relative hidden md:flex flex-col justify-between p-12 text-white h-screen overflow-hidden shrink-0 border-r border-slate-200/50 dark:border-white/5">
         
-        {/* Left pane: Video Background with branding overlay */}
-        <div className="w-full md:w-[45%] p-6 sm:p-8 flex flex-col items-center justify-center text-white min-h-[280px] md:min-h-[500px] relative overflow-hidden">
-          
-          {/* Background Loop Video */}
-          <video 
-            className="absolute inset-0 w-full h-full object-cover z-0" 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-          >
-            <source src="/login.mp4" type="video/mp4" />
-            {/* High-quality abstract stock fallback */}
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-glowing-particles-background-loop-42867-large.mp4" type="video/mp4" />
-          </video>
+        {/* Background Loop Video */}
+        <video 
+          className="absolute inset-0 w-full h-full object-cover z-0" 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+        >
+          <source src="/this_looks_soo_basic.mp4" type="video/mp4" />
+        </video>
 
-          {/* Dark Glassy Overlay to preserve logo contrast */}
-          <div className="absolute inset-0 bg-navy-950/50 dark:bg-navy-950/65 z-10 backdrop-blur-[1.5px]" />
-          
-          {/* Floating Logo overlay */}
-          <div className="text-center space-y-1 relative z-20">
-            <h1 className="text-5xl font-black tracking-tight leading-none text-white drop-shadow-md">
-              S<span className="text-gold-500">K</span>
-            </h1>
-            <p className="text-xs uppercase tracking-widest font-extrabold text-slate-200 drop-shadow">
-              Investments
-            </p>
+        {/* Dark Glassy Overlay to preserve logo contrast */}
+        <div className="absolute inset-0 bg-navy-950/45 dark:bg-navy-950/60 z-10 backdrop-blur-[1px]" />
+        
+        {/* Top Branding Section */}
+        <div className="relative z-20 flex items-center space-x-3">
+          <div className="w-10 h-10 rounded-full bg-white p-1 border border-white/20">
+            <img 
+              src="/logo.jpg" 
+              alt="SK Smart Investments Logo" 
+              className="w-full h-full object-contain rounded-full"
+            />
+          </div>
+          <div>
+            <h2 className="text-xs font-black tracking-wider uppercase">SK Smart</h2>
+            <p className="text-[8px] uppercase tracking-widest font-extrabold text-gold-400">Investments</p>
           </div>
         </div>
 
-        {/* Right pane: Form fields */}
-        <div className="w-full md:w-[55%] p-6 sm:p-8 flex flex-col justify-between bg-white dark:bg-navy-950 relative z-10 text-left">
+        {/* Mid Quote Section */}
+        <div className="relative z-20 max-w-md space-y-4">
+          <h1 className="text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight text-white">
+            Secure wealth.<br />
+            Protect generations.
+          </h1>
+          <p className="text-xs text-slate-300 leading-relaxed font-medium">
+            Managed directly by MD Prakash Gajendiran in Kanchipuram, delivering top-tier underwriting and actuarial comparison solutions across India.
+          </p>
+        </div>
+
+        {/* Bottom stats row */}
+        <div className="relative z-20 grid grid-cols-3 gap-4 pt-6 border-t border-white/10">
           <div>
-            {/* Sign In / Register Tab Selector */}
-            <div className="flex p-1 bg-slate-100 dark:bg-navy-900/60 rounded-2xl mb-6 text-xs sm:text-sm border border-slate-200/40 dark:border-white/5">
+            <p className="text-lg font-black text-gold-400">98.7%</p>
+            <p className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Claims Settled</p>
+          </div>
+          <div>
+            <p className="text-lg font-black text-gold-400">5k+</p>
+            <p className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Families Covered</p>
+          </div>
+          <div>
+            <p className="text-lg font-black text-gold-400">₹150Cr+</p>
+            <p className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">AUM Managed</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Pane - Polished Form Container */}
+      <div className="w-full md:w-[50%] lg:w-[45%] flex flex-col justify-center items-center p-6 sm:p-12 md:p-16 h-screen overflow-y-auto bg-white dark:bg-navy-950 relative">
+        
+        {/* Background decorative glow on mobile */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/5 rounded-full blur-3xl pointer-events-none md:hidden" />
+        
+        {/* Mobile Header */}
+        <div className="flex items-center space-x-3 mb-6 md:hidden">
+          <div className="w-10 h-10 rounded-full bg-white p-1 border border-slate-200 dark:border-white/10 shadow">
+            <img 
+              src="/logo.jpg" 
+              alt="SK Smart Investments Logo" 
+              className="w-full h-full object-contain rounded-full"
+            />
+          </div>
+          <div className="text-left">
+            <h2 className="text-xs font-black tracking-wider uppercase text-navy-955 dark:text-white">SK Smart</h2>
+            <p className="text-[8px] uppercase tracking-widest font-extrabold text-gold-500">Investments</p>
+          </div>
+        </div>
+
+        {/* Form panel card */}
+        <div className="w-full max-w-md space-y-6">
+          {!isForgot && (
+            <div className="text-center md:text-left space-y-1">
+              <h2 className="text-xl sm:text-2xl font-black text-navy-950 dark:text-white">
+                {!isRegister ? 'Welcome Back' : 'Create Account'}
+              </h2>
+              <p className="text-xs text-slate-400 font-medium">
+                {!isRegister 
+                  ? 'Enter credentials to manage your policies and investment portfolios.' 
+                  : 'Sign up to secure tailored coverage plans.'}
+              </p>
+            </div>
+          )}
+
+          {/* Sign In / Register Tab Selector */}
+          {!isForgot && (
+            <div className="flex p-1 bg-slate-100 dark:bg-navy-900/60 rounded-2xl text-xs sm:text-sm border border-slate-200/40 dark:border-white/5">
               <button
                 type="button"
                 onClick={() => { setIsRegister(false); setErrorMsg(''); }}
-                className={`flex-1 py-2 px-4 rounded-xl font-bold text-center transition-all duration-300 transform cursor-pointer hover:scale-[1.02] active:scale-95 ${
+                className={`flex-1 py-2.5 rounded-xl font-bold text-center transition-all duration-300 transform cursor-pointer active:scale-95 ${
                   !isRegister
                     ? 'bg-white dark:bg-navy-950 text-navy-950 dark:text-white shadow-md'
                     : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
@@ -112,7 +225,7 @@ export const Auth = () => {
               <button
                 type="button"
                 onClick={() => { setIsRegister(true); setErrorMsg(''); }}
-                className={`flex-1 py-2 px-4 rounded-xl font-bold text-center transition-all duration-300 transform cursor-pointer hover:scale-[1.02] active:scale-95 ${
+                className={`flex-1 py-2.5 rounded-xl font-bold text-center transition-all duration-300 transform cursor-pointer active:scale-95 ${
                   isRegister
                     ? 'bg-white dark:bg-navy-950 text-navy-950 dark:text-white shadow-md'
                     : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
@@ -121,217 +234,292 @@ export const Auth = () => {
                 Register
               </button>
             </div>
+          )}
 
-            {/* Error Message Panel */}
-            {errorMsg && !isRegister && (
-              <div className="mb-4 p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/30 rounded-xl flex items-center space-x-2 text-red-600 dark:text-red-400 text-xs animate-shake">
-                <FaExclamationTriangle className="shrink-0 text-base" />
-                <p className="font-medium">{errorMsg}</p>
-              </div>
-            )}
+          {/* Error Message Panel */}
+          {errorMsg && (
+            <div className="p-3 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-900/30 rounded-xl flex items-center space-x-2 text-red-600 dark:text-red-400 text-xs animate-shake">
+              <FaExclamationTriangle className="shrink-0 text-base" />
+              <p className="font-medium text-left">{errorMsg}</p>
+            </div>
+          )}
 
-            {/* Registration Success Overlay */}
-            {registerSuccess && (
-              <div className="mb-4 p-3 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200/50 dark:border-emerald-500/30 rounded-xl flex items-center space-x-2 text-emerald-600 dark:text-emerald-400 text-xs animate-fadeIn">
-                <FaInfoCircle className="shrink-0 text-base" />
-                <p className="font-medium">Registration successful! Redirecting to sign in...</p>
-              </div>
-            )}
+          {/* Registration Success Overlay */}
+          {registerSuccess && (
+            <div className="p-3 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200/50 dark:border-emerald-900/30 rounded-xl flex items-center space-x-2 text-emerald-600 dark:text-emerald-400 text-xs animate-fadeIn">
+              <FaInfoCircle className="shrink-0 text-base" />
+              <p className="font-medium text-left">Registration successful! A verification link has been sent to your email.</p>
+            </div>
+          )}
 
-            {/* CONDITIONAL FORMS WITH ANIMATIONS */}
-            <AnimatePresence mode="wait">
-              {!isRegister ? (
-                <motion.div
-                  key="login"
-                  initial={{ opacity: 0, x: -15 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 15 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <form onSubmit={handleLoginSubmit} className="space-y-4 text-xs">
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
-                        Client ID or Email
-                      </label>
-                      <div className="relative">
-                        <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                          <FaEnvelope />
-                        </span>
-                        <input
-                          required
-                          type="text"
-                          placeholder="Enter your Client ID"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="w-full pl-9 pr-3 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs"
-                        />
-                      </div>
+          {/* Forms */}
+          <AnimatePresence mode="wait">
+            {isForgot ? (
+              <motion.div
+                key="forgot"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                <form onSubmit={handleForgotSubmit} className="space-y-4 text-xs">
+                  <div className="text-left space-y-1">
+                    <h2 className="text-xl font-black text-navy-950 dark:text-white">Reset Password</h2>
+                    <p className="text-xs text-slate-400 font-medium">Enter your email and we'll send a password recovery link.</p>
+                  </div>
+
+                  {forgotSuccess && (
+                    <div className="p-3 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-900/30 rounded-xl flex items-center space-x-2 text-emerald-600 dark:text-emerald-400 text-xs animate-fadeIn">
+                      <FaInfoCircle className="shrink-0 text-base" />
+                      <p className="font-medium text-left">Password reset link has been dispatched to your inbox!</p>
                     </div>
+                  )}
 
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
-                        Secure Password
-                      </label>
-                      <div className="relative">
-                        <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                          <FaKey />
-                        </span>
-                        <input
-                          required
-                          type={showPassword ? 'text' : 'password'}
-                          placeholder="••••••••"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          className="w-full pl-9 pr-10 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-                        >
-                          {showPassword ? <FaEyeSlash /> : <FaEye />}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="pt-2">
-                      <Button type="submit" variant="gold" className="w-full py-2.5 font-bold tracking-wider">
-                        {t('sign_in')}
-                      </Button>
-                    </div>
-                  </form>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="register"
-                  initial={{ opacity: 0, x: 15 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -15 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <form onSubmit={handleRegisterSubmit} className="space-y-4 text-xs">
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
-                        Full Legal Name
-                      </label>
-                      <input
-                        required
-                        type="text"
-                        placeholder="Your Name"
-                        value={regName}
-                        onChange={(e) => setRegName(e.target.value)}
-                        className="w-full px-3 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
-                        Email Address
-                      </label>
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
+                      Email Address
+                    </label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                        <FaEnvelope />
+                      </span>
                       <input
                         required
                         type="email"
                         placeholder="Enter Email"
-                        value={regEmail}
-                        onChange={(e) => setRegEmail(e.target.value)}
-                        className="w-full px-3 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs"
+                        value={forgotEmail}
+                        onChange={(e) => setForgotEmail(e.target.value)}
+                        className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-white/5 rounded-2xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs font-semibold"
                       />
                     </div>
+                  </div>
 
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
-                        Secure Password
-                      </label>
+                  <div className="pt-2 flex flex-col space-y-2">
+                    <Button type="submit" variant="gold" className="w-full py-3 rounded-2xl font-bold tracking-wider hover:shadow-lg hover:shadow-gold-500/10 transition-shadow">
+                      Send Reset Link
+                    </Button>
+                    <button
+                      type="button"
+                      onClick={() => { setIsForgot(false); setErrorMsg(''); }}
+                      className="py-2.5 rounded-2xl font-bold text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-navy-900 transition-colors cursor-pointer text-xs"
+                    >
+                      Back to Sign In
+                    </button>
+                  </div>
+                </form>
+              </motion.div>
+            ) : !isRegister ? (
+              <motion.div
+                key="login"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                <form onSubmit={handleLoginSubmit} className="space-y-4 text-xs">
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
+                      Client ID or Email
+                    </label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                        <FaEnvelope />
+                      </span>
                       <input
                         required
-                        type="password"
-                        placeholder="••••••••"
-                        value={regPassword}
-                        onChange={(e) => setRegPassword(e.target.value)}
-                        className="w-full px-3 py-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs"
+                        type="text"
+                        placeholder="Enter your Client ID"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-white/5 rounded-2xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs font-semibold"
                       />
                     </div>
+                  </div>
 
-                    <div className="pt-2">
-                      <Button type="submit" variant="gold" className="w-full py-2.5 font-bold tracking-wider">
-                        Register Account
-                      </Button>
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
+                      Secure Password
+                    </label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                        <FaKey />
+                      </span>
+                      <input
+                        required
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="w-full pl-10 pr-10 py-3 bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-white/5 rounded-2xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs font-semibold"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                      >
+                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                      </button>
                     </div>
-                  </form>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                  </div>
 
-          <div>
-            {/* Quick Demo Assist Link */}
-            <div className="mt-4 text-center">
-              <button 
-                type="button"
-                onClick={() => setShowHints(!showHints)}
-                className="inline-flex items-center text-[10px] font-bold text-gold-500 hover:underline cursor-pointer"
+                  <div className="flex items-center justify-between text-[11px] font-semibold text-slate-500 dark:text-slate-400 px-1">
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={rememberMe} 
+                        onChange={(e) => setRememberMe(e.target.checked)}
+                        className="accent-gold-500 rounded border-slate-300 dark:border-white/10"
+                      />
+                      <span>Remember Me</span>
+                    </label>
+                    <button 
+                      type="button" 
+                      onClick={() => { setIsForgot(true); setErrorMsg(''); }}
+                      className="text-gold-500 hover:underline cursor-pointer font-bold"
+                    >
+                      Forgot Password?
+                    </button>
+                  </div>
+
+                  <div className="pt-2">
+                    <Button type="submit" variant="gold" className="w-full py-3 rounded-2xl font-bold tracking-wider hover:shadow-lg hover:shadow-gold-500/10 transition-shadow">
+                      {t('sign_in')}
+                    </Button>
+                  </div>
+                </form>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="register"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
               >
-                <FaInfoCircle className="mr-1 text-xs" />
-                {showHints ? 'Hide Credentials Assist' : 'Show Credentials Assist'}
-              </button>
-              
-              {showHints && (
-                <div className="mt-2 p-2.5 bg-slate-50 dark:bg-navy-900 rounded-xl border border-slate-200/50 dark:border-white/5 grid grid-cols-3 gap-2 text-center text-[9px] animate-fadeIn">
-                  <button 
-                    type="button"
-                    onClick={() => autofill('customer@mail.com', 'customer@123')}
-                    className="p-1 bg-white dark:bg-navy-950 rounded border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 font-bold hover:border-gold-500 cursor-pointer"
-                  >
-                    Customer
-                  </button>
-                  <button 
-                    type="button"
-                    onClick={() => autofill('manager1@mail.com', 'manager1@123')}
-                    className="p-1 bg-white dark:bg-navy-950 rounded border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 font-bold hover:border-gold-500 cursor-pointer"
-                  >
-                    Manager
-                  </button>
-                  <button 
-                    type="button"
-                    onClick={() => autofill('admin@mail.com', 'admin@123')}
-                    className="p-1 bg-white dark:bg-navy-950 rounded border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 font-bold hover:border-gold-500 cursor-pointer"
-                  >
-                    Admin
-                  </button>
-                </div>
-              )}
-            </div>
+                <form onSubmit={handleRegisterSubmit} className="space-y-4 text-xs">
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
+                      Full Legal Name
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      placeholder="Enter Name"
+                      value={regName}
+                      onChange={(e) => setRegName(e.target.value)}
+                      className="w-full px-4 py-3 bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-white/5 rounded-2xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs font-semibold"
+                    />
+                  </div>
 
-            {/* Social Logins */}
-            <div className="relative my-4 text-center">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-200 dark:border-white/10" />
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
+                      Email Address
+                    </label>
+                    <input
+                      required
+                      type="email"
+                      placeholder="Enter Email"
+                      value={regEmail}
+                      onChange={(e) => setRegEmail(e.target.value)}
+                      className="w-full px-4 py-3 bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-white/5 rounded-2xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs font-semibold"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">
+                      Secure Password
+                    </label>
+                    <input
+                      required
+                      type="password"
+                      placeholder="••••••••"
+                      value={regPassword}
+                      onChange={(e) => setRegPassword(e.target.value)}
+                      className="w-full px-4 py-3 bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-white/5 rounded-2xl text-navy-950 dark:text-white focus:outline-none focus:border-gold-500 text-xs font-semibold"
+                    />
+                  </div>
+
+                  <div className="pt-2">
+                    <Button type="submit" variant="gold" className="w-full py-3 rounded-2xl font-bold tracking-wider hover:shadow-lg hover:shadow-gold-500/10 transition-shadow">
+                      Register Account
+                    </Button>
+                  </div>
+                </form>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Credentials Assist Desk */}
+          {!isForgot && (
+            <div className="pt-2">
+              <div className="text-center">
+                <button 
+                  type="button"
+                  onClick={() => setShowHints(!showHints)}
+                  className="inline-flex items-center text-[10px] font-bold text-gold-500 hover:underline cursor-pointer"
+                >
+                  <FaInfoCircle className="mr-1 text-xs" />
+                  {showHints ? 'Hide Credentials Assist' : 'Show Credentials Assist'}
+                </button>
+                
+                {showHints && (
+                  <div className="mt-3 p-3 bg-slate-50 dark:bg-navy-900 rounded-2xl border border-slate-200/50 dark:border-white/5 grid grid-cols-3 gap-2 text-center text-[9px] animate-fadeIn">
+                    <button 
+                      type="button"
+                      onClick={() => autofill('customer@mail.com', 'customer@123')}
+                      className="py-1.5 bg-white dark:bg-navy-955 rounded-xl border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 font-bold hover:border-gold-500 cursor-pointer shadow-sm"
+                    >
+                      Customer
+                    </button>
+                    <button 
+                      type="button"
+                      onClick={() => autofill('manager1@mail.com', 'manager1@123')}
+                      className="py-1.5 bg-white dark:bg-navy-955 rounded-xl border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 font-bold hover:border-gold-500 cursor-pointer shadow-sm"
+                    >
+                      Manager
+                    </button>
+                    <button 
+                      type="button"
+                      onClick={() => autofill('admin@mail.com', 'admin@123')}
+                      className="py-1.5 bg-white dark:bg-navy-955 rounded-xl border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 font-bold hover:border-gold-500 cursor-pointer shadow-sm"
+                    >
+                      Admin
+                    </button>
+                  </div>
+                )}
               </div>
-              <span className="relative px-3 text-[9px] uppercase text-slate-400 bg-white dark:bg-navy-950 font-bold">
-                Social Logins
-              </span>
-            </div>
 
-            <div className="flex justify-center space-x-3">
-              <button type="button" className="p-2 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-navy-900 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer">
-                <FaApple className="text-sm" />
-              </button>
-              <button type="button" className="p-2 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-navy-900 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer">
-                <FaGoogle className="text-sm" />
-              </button>
-              <button type="button" className="p-2 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-navy-900 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer">
-                <FaMicrosoft className="text-sm" />
-              </button>
-              <button type="button" className="p-2 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-navy-900 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer">
-                <FaPlus className="text-sm" />
-              </button>
-            </div>
+              {/* Social Logins */}
+              <div className="relative my-6 text-center">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-slate-100 dark:border-white/5" />
+                </div>
+                <span className="relative px-3 text-[9px] uppercase text-slate-400 bg-white dark:bg-navy-950 font-bold">
+                  Social Sign In
+                </span>
+              </div>
 
-            {/* Tagline */}
-            <p className="text-[10px] text-slate-400 font-semibold tracking-wider text-center mt-5 uppercase">
-              Personalised. Secure. Invest in you.
-            </p>
-          </div>
+              <div className="flex justify-center space-x-3">
+                <button type="button" className="p-2.5 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-navy-900 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer shadow-sm">
+                  <FaApple className="text-sm" />
+                </button>
+                <button type="button" className="p-2.5 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-navy-900 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer shadow-sm">
+                  <FaGoogle className="text-sm" />
+                </button>
+                <button type="button" className="p-2.5 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-navy-900 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer shadow-sm">
+                  <FaMicrosoft className="text-sm" />
+                </button>
+                <button type="button" className="p-2.5 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-navy-900 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer shadow-sm">
+                  <FaPlus className="text-sm" />
+                </button>
+              </div>
+
+              {/* Bottom Tagline */}
+              <p className="text-[10px] text-slate-400 font-semibold tracking-wider text-center mt-6 uppercase">
+                Personalised. Secure. Invest in you.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper check to verify if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper check to verify if requesting user matches document owner
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // Helper check to get user's role from their database profile doc
+    function getUserRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    // Match users documents
+    match /users/{userId} {
+      allow read, write: if isAuthenticated() && (isOwner(userId) || getUserRole() == 'admin' || getUserRole() == 'manager');
+    }
+
+    // Match plans collection
+    match /plans/{planId} {
+      allow read: if true; // Publicly viewable
+      allow write: if isAuthenticated() && getUserRole() == 'admin'; // Restrict edits to admins
+    }
+
+    // Match inquiry tickets
+    match /tickets/{ticketId} {
+      allow create: if true; // Everyone can submit a support ticket
+      allow read, update, delete: if isAuthenticated() && (getUserRole() == 'admin' || getUserRole() == 'manager' || getUserRole() == 'employee');
+    }
+  }
+}

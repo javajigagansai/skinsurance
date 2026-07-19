@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaComments, FaTimes, FaPaperPlane, FaRobot, FaUser } from 'react-icons/fa';
+import { FaComments, FaTimes, FaPaperPlane, FaRobot, FaUser, FaWhatsapp } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import { Button } from './Button';
 
 export const ChatWidget = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     { id: 1, sender: 'bot', text: 'Hello! I am your SK Smart Assistant. How can I help you today?', time: 'Just now' }
@@ -13,10 +15,10 @@ export const ChatWidget = () => {
   const messagesEndRef = useRef(null);
 
   const quickQueries = [
+    { text: 'About SK Smart / MD', reply: 'SK Smart Investments is a premier insurance and financial planning firm managed by MD Prakash Gajendiran at Kanchipuram. We distribute Tata AIA, LIC, HDFC Life, and more. Redirecting you to our About Us page...' },
     { text: 'Check Claim Status', reply: 'To check your claims, please sign in and visit your Customer Dashboard. Active validation statuses are visible on the Claims tab.' },
     { text: 'Calculate Policy Premium', reply: 'You can estimate policy premiums by visiting our Premium Calculator page, which also features our new Mutual Fund SIP calculator!' },
-    { text: 'Contact Corporate Office', reply: 'Our headquarters is at 1st Floor, M D Plaza, No : 104, W Raja St, Kanchipuram, Tamil Nadu 631502. Email: skinvestments2025@gmail.com.' },
-    { text: 'View Available Plans', reply: 'We offer SK Platinum Care (Health), SK Term Elite (Life), and SK Auto Max Cover (Motor). Compare them directly on our Plans page.' }
+    { text: 'Contact Corporate Office', reply: 'Our headquarters is at # 104, MD Plaza, 1st Floor, West Raja Street, Kanchipuram - 631502. Email: skinvestments2025@gmail.com.' }
   ];
 
   const scrollToBottom = () => {
@@ -47,9 +49,26 @@ export const ChatWidget = () => {
 
     // Determine reply
     let replyText = "Thank you for reaching out! An underwriting representative has been notified and will contact you via email shortly.";
-    const matchingQuery = quickQueries.find(q => q.text.toLowerCase() === text.toLowerCase());
+    let shouldRedirectAbout = false;
+
+    const queryText = text.toLowerCase();
+    const matchingQuery = quickQueries.find(q => q.text.toLowerCase() === queryText);
+
     if (matchingQuery) {
       replyText = matchingQuery.reply;
+      if (matchingQuery.text === 'About SK Smart / MD') {
+        shouldRedirectAbout = true;
+      }
+    } else if (
+      queryText.includes('sk') || 
+      queryText.includes('company') || 
+      queryText.includes('about') || 
+      queryText.includes('details') || 
+      queryText.includes('director') || 
+      queryText.includes('prakash')
+    ) {
+      replyText = "SK Smart Investments is a premier insurance and financial planning firm managed by MD Prakash Gajendiran at Kanchipuram. We distribute Tata AIA, LIC, HDFC Life, and more. Redirecting you to our About Us page...";
+      shouldRedirectAbout = true;
     }
 
     setTimeout(() => {
@@ -61,6 +80,13 @@ export const ChatWidget = () => {
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
       setMessages(prev => [...prev, botMsg]);
+
+      if (shouldRedirectAbout) {
+        setTimeout(() => {
+          navigate('/about');
+          setIsOpen(false);
+        }, 2200);
+      }
     }, 1200);
   };
 
@@ -96,6 +122,19 @@ export const ChatWidget = () => {
                 <FaTimes />
               </button>
             </div>
+            {/* WhatsApp Direct Banner */}
+            <a 
+              href="https://wa.me/919840723956?text=Hi%20SK%20Smart%20Investments%2C%20I%20have%20a%20query%20about%20your%20services."
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-emerald-500/10 hover:bg-emerald-500/20 border-b border-emerald-500/25 px-4 py-2.5 flex items-center justify-between text-[10px] text-emerald-600 dark:text-emerald-400 font-bold transition-all group shrink-0"
+            >
+              <div className="flex items-center space-x-2">
+                <FaWhatsapp className="text-sm text-emerald-500 animate-pulse" />
+                <span>Prefer human support? Chat on WhatsApp</span>
+              </div>
+              <span className="group-hover:translate-x-0.5 transition-transform">➔</span>
+            </a>
 
             {/* Messages Body */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50/50 dark:bg-navy-900/10 text-xs">

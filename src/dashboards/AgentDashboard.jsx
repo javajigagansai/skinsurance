@@ -23,7 +23,7 @@ export const AgentDashboard = ({ tab }) => {
       phone: '+1 555-901-2234',
       activePolicies: 1,
       lastContact: new Date().toISOString().split('T')[0],
-      totalPremium: '$1,200/yr',
+      totalPremium: '₹12,000/yr',
       riskLevel: 'Low'
     };
     setClients([...clients, newClient]);
@@ -202,16 +202,16 @@ export const AgentDashboard = ({ tab }) => {
               <tbody className="divide-y divide-slate-100 dark:divide-white/5">
                 <tr className="hover:bg-slate-50/50 dark:hover:bg-navy-900/10">
                   <td className="py-3 font-semibold">July 2026</td>
-                  <td>$54,200</td>
+                  <td>₹54,200</td>
                   <td>12.5%</td>
-                  <td className="font-bold text-gold-500">$6,775</td>
+                  <td className="font-bold text-gold-500">₹6,775</td>
                   <td><span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 text-[10px] font-bold">Paid</span></td>
                 </tr>
                 <tr className="hover:bg-slate-50/50 dark:hover:bg-navy-900/10">
                   <td className="py-3 font-semibold">June 2026</td>
-                  <td>$45,400</td>
+                  <td>₹45,400</td>
                   <td>12.5%</td>
-                  <td className="font-bold text-gold-500">$5,675</td>
+                  <td className="font-bold text-gold-500">₹5,675</td>
                   <td><span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 text-[10px] font-bold">Paid</span></td>
                 </tr>
               </tbody>

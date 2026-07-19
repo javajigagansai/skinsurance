@@ -1,19 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from '../../context/LanguageContext';
 import { Button } from '../../components/ui/Button';
 import { Filters } from '../../components/common/Filters';
 import { Modal } from '../../components/ui/Modal';
 import { Loader } from '../../components/ui/Loader';
-import { PLANS } from '../../services/mockData';
+import { getPlans } from '../../services/api';
 import { FaCheckCircle, FaShieldAlt, FaBriefcase, FaFileSignature } from 'react-icons/fa';
 
 export const Plans = () => {
   const { t } = useTranslation();
+  const location = useLocation();
   const [activeFilter, setActiveFilter] = useState('ALL');
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [showApplyModal, setShowApplyModal] = useState(false);
   const [wizardStep, setWizardStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [plans, setPlans] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const category = params.get('category');
+    if (category) {
+      setActiveFilter(category);
+    } else {
+      setActiveFilter('ALL');
+    }
+  }, [location.search]);
+
+  useEffect(() => {
+    const loadPlansData = async () => {
+      try {
+        const data = await getPlans();
+        setPlans(data);
+      } catch (error) {
+        console.error("Error loading plans:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadPlansData();
+  }, []);
 
   const filterOptions = [
     { label: 'All Plans', value: 'ALL' },
@@ -25,8 +53,8 @@ export const Plans = () => {
   ];
 
   const filteredPlans = activeFilter === 'ALL'
-    ? PLANS
-    : PLANS.filter(plan => plan.category === activeFilter);
+    ? plans
+    : plans.filter(plan => plan.category === activeFilter);
 
   const handleApply = (plan) => {
     setSelectedPlan(plan);
@@ -42,6 +70,14 @@ export const Plans = () => {
       setWizardStep(2); // success view
     }, 2000);
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -176,11 +212,11 @@ export const Plans = () => {
               <p className="font-bold text-navy-950 dark:text-white">Premium Quote Outline</p>
               <div className="flex justify-between">
                 <span className="text-slate-400">Monthly Premium:</span>
-                <span className="font-bold text-gold-500">${selectedPlan?.premiumMonthly}/mo</span>
+                <span className="font-bold text-gold-500">₹{selectedPlan?.premiumMonthly}/mo</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400">Standard Sum Assured:</span>
-                <span className="text-navy-950 dark:text-white">${selectedPlan?.coverageAmount}</span>
+                <span className="font-bold text-navy-950 dark:text-white">₹{selectedPlan?.coverageAmount}</span>
               </div>
             </div>
 

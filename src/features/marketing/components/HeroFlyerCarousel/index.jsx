@@ -12,7 +12,6 @@ export const HeroFlyerCarousel = () => {
   const [flyers, setFlyers] = useState(DEFAULT_FLYERS);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [progress, setProgress] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,38 +26,23 @@ export const HeroFlyerCarousel = () => {
     return () => unsubscribe();
   }, []);
 
-  // Smooth progress bar and auto-advance
+  // Auto-advance flyers every 5 seconds
   useEffect(() => {
     if (flyers.length <= 1 || isPaused) return;
 
-    const DURATION = 5000;
-    const STEP = 50;
     const interval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          setCurrentIndex(c => (c + 1) % flyers.length);
-          return 0;
-        }
-        return prev + (STEP / DURATION) * 100;
-      });
-    }, STEP);
+      setCurrentIndex(c => (c + 1) % flyers.length);
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, [flyers.length, isPaused, currentIndex]);
-
-  const handleSelectFlyer = (idx) => {
-    setCurrentIndex(idx);
-    setProgress(0);
-  };
+  }, [flyers.length, isPaused]);
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev - 1 + flyers.length) % flyers.length);
-    setProgress(0);
   };
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % flyers.length);
-    setProgress(0);
   };
 
   if (!flyers || flyers.length === 0) return null;
@@ -71,24 +55,23 @@ export const HeroFlyerCarousel = () => {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      
-      {/* ── Main 3D Poster Showcase Card ── */}
-      <div className="relative w-full h-[400px] sm:h-[470px] lg:h-[500px] rounded-[2.5rem] bg-gradient-to-b from-neutral-900 via-neutral-950 to-black p-2.5 sm:p-3.5 border border-white/15 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.5)] dark:shadow-[0_25px_70px_-15px_rgba(255,179,0,0.15)] overflow-hidden group">
+      {/* ── Modern Sleek Poster Card Frame ── */}
+      <div className="relative w-full h-[400px] sm:h-[470px] lg:h-[500px] rounded-3xl bg-neutral-900 border border-neutral-700/60 dark:border-white/15 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)] overflow-hidden group">
         
-        {/* Ambient Halo Glow */}
-        <div className="absolute -top-24 -right-24 w-72 h-72 bg-brand-accent/20 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-purple-500/15 rounded-full blur-[100px] pointer-events-none" />
+        {/* Subtle Ambient Halo Glow */}
+        <div className="absolute -top-20 -right-20 w-64 h-64 bg-brand-accent/15 rounded-full blur-[80px] pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] pointer-events-none" />
 
         {/* Poster Canvas */}
-        <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-neutral-950 flex items-center justify-center border border-white/10 shadow-inner">
+        <div className="relative w-full h-full flex items-center justify-center overflow-hidden bg-neutral-950">
           
           <AnimatePresence mode="wait">
             <motion.div
               key={currentFlyer.id || currentIndex}
-              initial={{ opacity: 0, scale: 1.04 }}
+              initial={{ opacity: 0, scale: 1.03 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.55, ease: "easeInOut" }}
+              exit={{ opacity: 0, scale: 0.97 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
               className="absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden"
             >
               {/* Blurred Background Atmospheric Tone */}
@@ -96,21 +79,21 @@ export const HeroFlyerCarousel = () => {
                 src={currentFlyer.image}
                 alt=""
                 aria-hidden="true"
-                className="absolute inset-0 w-full h-full object-cover blur-2xl scale-125 opacity-40 select-none pointer-events-none"
+                className="absolute inset-0 w-full h-full object-cover blur-2xl scale-125 opacity-35 select-none pointer-events-none"
               />
 
               {/* Foreground Poster Image */}
               <img
                 src={currentFlyer.image}
-                alt={currentFlyer.title}
-                className="relative z-10 w-full h-full object-contain object-top drop-shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]"
+                alt={currentFlyer.title || 'Insurance Flyer'}
+                className="relative z-10 w-full h-full object-contain object-top drop-shadow-2xl transition-transform duration-500 group-hover:scale-[1.01]"
                 onError={(e) => {
                   e.currentTarget.src = '/casual/healthinsurance.jpg';
                 }}
               />
 
               {/* Bottom Subtle Shadow Vignette */}
-              <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
             </motion.div>
           </AnimatePresence>
 
@@ -120,7 +103,7 @@ export const HeroFlyerCarousel = () => {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               key={`tag-${currentIndex}`}
-              className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-brand-accent/40 text-[10px] sm:text-[11px] font-black text-brand-accent tracking-widest uppercase shadow-xl flex items-center gap-1.5"
+              className="px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-brand-accent/40 text-[10px] sm:text-[11px] font-black text-brand-accent tracking-widest uppercase shadow-xl flex items-center gap-1.5"
             >
               <FaStar className="text-[9px] text-brand-accent animate-pulse" />
               <span>{currentFlyer.tag || 'SPECIAL FEATURE'}</span>
@@ -151,14 +134,6 @@ export const HeroFlyerCarousel = () => {
               </button>
             </>
           )}
-
-          {/* ── Sleek Slim Progress Line at bottom edge ── */}
-          <div className="absolute bottom-0 left-0 right-0 z-20 h-1 bg-black/40 overflow-hidden">
-            <motion.div 
-              className="h-full bg-brand-accent"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
 
         </div>
 

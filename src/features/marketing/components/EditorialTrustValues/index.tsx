@@ -82,7 +82,7 @@ export const EditorialTrustValues = ({ values }: { values?: ValueCard[] }) => {
         </motion.p>
       </div>
 
-      {/* ── 3 Feature Cards Row (Color combination: #152150, #f7f8fe, #ffffff, #000000, #ffda0a) ── */}
+      {/* ── 3 Feature Cards Row in Yellow Background Pattern with Black Text ── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
         {displayValues.map((item, idx) => {
           const Icon = item.icon || FaShieldAlt;
@@ -94,24 +94,30 @@ export const EditorialTrustValues = ({ values }: { values?: ValueCard[] }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.1 * idx }}
-              className={`relative rounded-[2rem] p-7 sm:p-9 flex flex-col justify-start transition-all duration-300 hover:-translate-y-1.5 ${
+              className={`relative rounded-[2rem] p-7 sm:p-9 flex flex-col justify-start transition-all duration-300 hover:-translate-y-2 bg-gradient-to-br from-[#ffdf1b] via-[#ffd500] to-[#f4b800] border-2 ${
                 isFeatured
-                  ? 'bg-white dark:bg-[#152150]/90 border-2 border-[#ffda0a] shadow-[0_16px_45px_rgba(255,218,10,0.25)]'
-                  : 'bg-white dark:bg-[#152150]/50 border border-[#152150]/15 dark:border-white/10 shadow-[0_10px_30px_rgba(21,33,80,0.06)] dark:shadow-md hover:border-[#ffda0a]/60'
-              }`}
+                  ? 'border-neutral-950 shadow-[0_18px_45px_rgba(245,184,0,0.45)] ring-4 ring-black/10'
+                  : 'border-black/20 shadow-[0_12px_35px_rgba(245,184,0,0.3)] hover:border-black/50'
+              } overflow-hidden group`}
             >
-              {/* Shield Icon Badge in #ffda0a Yellow */}
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#ffda0a] via-[#f7cf00] to-[#e6c400] text-[#152150] flex items-center justify-center text-xl shadow-[0_6px_20px_rgba(255,218,10,0.35)] mb-6 transition-transform duration-300 group-hover:scale-110">
+              {/* Subtle Decorative Pattern Background */}
+              <div 
+                className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#000000_1.5px,transparent_1.5px)] [background-size:16px_16px]" 
+              />
+              <div className="absolute -top-12 -right-12 w-32 h-32 bg-white/30 rounded-full blur-2xl pointer-events-none" />
+
+              {/* Icon Badge in Deep Black with Yellow Icon */}
+              <div className="relative z-10 w-12 h-12 rounded-2xl bg-neutral-950 text-[#ffda0a] flex items-center justify-center text-xl shadow-lg mb-6 transition-transform duration-300 group-hover:scale-110">
                 <Icon className="text-lg" />
               </div>
 
-              {/* Title in Deep Navy */}
-              <h3 className="text-xl font-black text-[#152150] dark:text-white tracking-tight mb-3">
+              {/* Title in Solid Black */}
+              <h3 className="relative z-10 text-xl font-black text-black tracking-tight mb-3">
                 {item.title}
               </h3>
 
-              {/* Description */}
-              <p className="text-sm text-[#152150]/75 dark:text-neutral-300 leading-relaxed font-normal">
+              {/* Description in Dark High-Contrast Text */}
+              <p className="relative z-10 text-sm text-neutral-900 leading-relaxed font-semibold">
                 {item.description}
               </p>
             </motion.div>

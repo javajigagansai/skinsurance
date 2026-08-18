@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, animate } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from '../../context/LanguageContext';
+import { saveCalculation } from '../../services/api';
+import { 
+  FaCalculator, FaShieldAlt, FaCalendarAlt, FaUserCheck, 
+  FaCar, FaHome, FaHeartbeat, FaPlane, FaBolt, FaArrowRight 
+} from 'react-icons/fa';
 
 // Animated Counter Component
 const AnimatedCounter = ({ value, prefix = "", suffix = "" }) => {
   const ref = useRef(null);
   useEffect(() => {
     const controls = animate(0, value, {
-      duration: 1,
+      duration: 0.8,
       ease: "easeOut",
       onUpdate(v) {
         if (ref.current) {
@@ -20,16 +26,14 @@ const AnimatedCounter = ({ value, prefix = "", suffix = "" }) => {
   return <span ref={ref}>{prefix}{value.toLocaleString('en-IN')}{suffix}</span>;
 };
 
-import { useTranslation } from '../../context/LanguageContext';
-import { saveCalculation } from '../../services/api';
-import { FaCalculator, FaShieldAlt, FaCalendarAlt, FaUserCheck, FaCar, FaHome, FaHeartbeat, FaPlane, FaDollarSign } from 'react-icons/fa';
-
-/* ─── Styled Range Slider ─── */
+/* ─── Compact Styled Range Slider ─── */
 const PremiumSlider = ({ min, max, step, value, onChange, leftLabel, rightLabel, displayValue }) => (
-  <div className="space-y-3">
-    <div className="flex justify-between items-end">
-      <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">{leftLabel || ''}</span>
-      <span className="text-xl font-bold text-black dark:text-white">
+  <div className="space-y-1.5">
+    <div className="flex justify-between items-baseline">
+      <span className="text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
+        {leftLabel || ''}
+      </span>
+      <span className="text-sm font-black text-slate-900 dark:text-brand-accent">
         {displayValue}
       </span>
     </div>
@@ -37,82 +41,80 @@ const PremiumSlider = ({ min, max, step, value, onChange, leftLabel, rightLabel,
       <input
         type="range" min={min} max={max} step={step} value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full h-1.5 rounded-full appearance-none cursor-pointer bg-neutral-200 dark:bg-neutral-800
+        className="w-full h-1.5 rounded-full appearance-none cursor-pointer bg-slate-200 dark:bg-neutral-800
         [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 
-        [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#FFB300] dark:[&::-webkit-slider-thumb]:bg-[#FFB300]
-        [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-black
+        [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-brand-accent
+        [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-neutral-950
         [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 
-        [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-[#FFB300] dark:[&::-moz-range-thumb]:bg-[#FFB300]
-        [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-black
-        [background:linear-gradient(to_right,#FFB300_0%,#FFB300_var(--fill),#E5E5E5_var(--fill),#E5E5E5_100%)]
+        [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-brand-accent
+        [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-neutral-950
+        [background:linear-gradient(to_right,#FFB300_0%,#FFB300_var(--fill),#E2E8F0_var(--fill),#E2E8F0_100%)]
         dark:[background:linear-gradient(to_right,#FFB300_0%,#FFB300_var(--fill),#262626_var(--fill),#262626_100%)]"
         style={{ "--fill": `${((value - min) / (max - min)) * 100}%` }}
       />
     </div>
     {(leftLabel !== undefined || rightLabel !== undefined) && (
-      <div className="flex justify-between text-[10px] text-neutral-400 dark:text-neutral-500 font-medium tracking-wider">
-        <span>{min.toLocaleString('en-IN')}</span>
-        <span>{max.toLocaleString('en-IN')}</span>
+      <div className="flex justify-between text-[10px] text-slate-400 dark:text-neutral-500 font-medium">
+        <span>₹{min.toLocaleString('en-IN')}</span>
+        <span>₹{max.toLocaleString('en-IN')}</span>
       </div>
     )}
   </div>
 );
 
-/* ─── Glass Input Field ─── */
+/* ─── Compact Input Field ─── */
 const GlassInput = ({ label, children }) => (
   <div>
-    <label className="block text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-2">{label}</label>
+    <label className="block text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">
+      {label}
+    </label>
     {children}
   </div>
 );
 
-const inputClasses = "w-full px-4 py-3 bg-white dark:bg-[#0A0A0A] border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:border-[#FFB300] dark:focus:border-[#FFB300]/50 focus:ring-1 focus:ring-[#FFB300]/30 dark:focus:ring-[#FFB300]/20 text-sm font-semibold text-black dark:text-white transition-all duration-200 placeholder:text-neutral-400 dark:placeholder:text-neutral-600 hover:border-black/20 dark:hover:border-white/20";
+const inputClasses = "w-full px-3 py-2 bg-slate-50 dark:bg-neutral-950 border border-slate-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-brand-accent text-xs font-bold text-slate-900 dark:text-white transition-all";
 const selectClasses = inputClasses;
 
-/* ─── Glass Toggle ─── */
+/* ─── Compact Toggle ─── */
 const GlassToggle = ({ label, sublabel, checked, onChange }) => (
-  <label className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all duration-200 ${
+  <label className={`flex items-center gap-3 p-2.5 rounded-xl border cursor-pointer transition-all ${
     checked 
-      ? 'bg-[#FFB300]/10 dark:bg-[#FFB300]/5 border-[#FFB300]/40 dark:border-[#FFB300]/30' 
-      : 'bg-white dark:bg-[#0A0A0A] border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 hover:bg-black/[0.02] dark:hover:bg-[#111111]'
+      ? 'bg-brand-accent/10 border-brand-accent/40' 
+      : 'bg-slate-50 dark:bg-neutral-950 border-slate-200 dark:border-white/10'
   }`}>
     <input type="checkbox" className="hidden" checked={checked} onChange={(e) => onChange(e.target.checked)} />
-    <div className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-200 ${checked ? 'bg-[#FFB300] dark:bg-[#FFB300]' : 'bg-neutral-300 dark:bg-neutral-600'}`}>
-      <span className={`inline-block h-3 w-3 transform rounded-full bg-white dark:bg-black transition duration-200 ${checked ? 'translate-x-5' : 'translate-x-1'}`} />
+    <div className={`relative inline-flex h-4 w-8 items-center rounded-full transition-colors ${checked ? 'bg-brand-accent' : 'bg-slate-300 dark:bg-neutral-700'}`}>
+      <span className={`inline-block h-2.5 w-2.5 transform rounded-full bg-white dark:bg-black transition ${checked ? 'translate-x-4' : 'translate-x-1'}`} />
     </div>
-    <div>
-      <p className={`text-sm font-bold transition-colors ${checked ? 'text-black dark:text-white' : 'text-neutral-600 dark:text-neutral-300'}`}>{label}</p>
-      {sublabel && <p className="text-xs text-neutral-500 mt-0.5 tracking-wide">{sublabel}</p>}
+    <div className="min-w-0 flex-1">
+      <p className={`text-xs font-bold ${checked ? 'text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}>{label}</p>
+      {sublabel && <p className="text-[10px] text-slate-400 truncate">{sublabel}</p>}
     </div>
   </label>
 );
 
-/* ─── Condition Chip ─── */
+/* ─── Compact Condition Chip ─── */
 const ConditionChip = ({ label, checked, onChange }) => (
   <button
     type="button"
     onClick={() => onChange(!checked)}
-    className={`px-4 py-2 rounded-lg text-xs font-bold border transition-all duration-200 ${
+    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition-all cursor-pointer ${
       checked
-        ? 'bg-[#FFB300]/15 dark:bg-[#FFB300]/10 border-[#FFB300]/50 dark:border-[#FFB300]/40 text-[#FFB300] dark:text-[#FFB300]'
-        : 'bg-white dark:bg-[#0A0A0A] border-black/10 dark:border-white/10 text-neutral-500 dark:text-neutral-400 hover:border-black/20 dark:hover:border-white/20 hover:text-neutral-800 dark:hover:text-neutral-200'
+        ? 'bg-brand-accent/15 border-brand-accent text-amber-700 dark:text-brand-accent'
+        : 'bg-slate-50 dark:bg-neutral-950 border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:border-brand-accent/40'
     }`}
   >
-    {checked && <span className="mr-1.5">✓</span>}
+    {checked && <span className="mr-1">✓</span>}
     {label}
   </button>
 );
 
 
-export const Calculator = () => {
+export const Calculator = ({ isEmbedded = false }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [category, setCategory] = useState('health');
   const [premium, setPremium] = useState(0);
-  const [showBuyModal, setShowBuyModal] = useState(false);
-  const [successBuy, setSuccessBuy] = useState(false);
-  const [buyName, setBuyName] = useState('');
-  const [buyEmail, setBuyEmail] = useState('');
 
   // Common inputs
   const [coverage, setCoverage] = useState(500000);
@@ -163,7 +165,7 @@ export const Calculator = () => {
   const [sipYears, setSipYears] = useState(10);
   const [sipResults, setSipResults] = useState({ invested: 0, gain: 0, total: 0 });
 
-  // Perform premium calculations on change
+  // Calculation Engine
   useEffect(() => {
     let base = 0;
 
@@ -178,653 +180,533 @@ export const Calculator = () => {
         return 25000;
       };
 
-      const basePrem = getBasePremium(coverage);
+      const baseCov = getBasePremium(coverage);
+      let ageFactor = 1.0;
+      if (age < 25) ageFactor = 0.85;
+      else if (age <= 35) ageFactor = 1.0;
+      else if (age <= 45) ageFactor = 1.35;
+      else if (age <= 55) ageFactor = 1.85;
+      else if (age <= 65) ageFactor = 2.6;
+      else ageFactor = 3.8;
 
-      let ageMult = 1;
-      if (age <= 25) ageMult = 0.85;
-      else if (age <= 35) ageMult = 1.00;
-      else if (age <= 45) ageMult = 1.25;
-      else if (age <= 55) ageMult = 1.60;
-      else if (age <= 65) ageMult = 2.20;
-      else ageMult = 3.00;
+      const ageAdj = baseCov * (ageFactor - 1.0);
+      const tobaccoLoad = smoker ? (baseCov + ageAdj) * 0.35 : 0;
 
-      const tobMult = smoker ? 1.35 : 1.0;
+      let medFactor = 0;
+      if (medicalConditions.diabetes) medFactor += 0.15;
+      if (medicalConditions.highBp) medFactor += 0.12;
+      if (medicalConditions.asthma) medFactor += 0.08;
+      if (medicalConditions.heartDisease) medFactor += 0.30;
+      if (medicalConditions.kidneyDisease) medFactor += 0.25;
+      const medicalLoad = (baseCov + ageAdj) * medFactor;
 
-      let dedMult = 1.0;
-      if (deductible === 500) dedMult = 1.15;
-      else if (deductible === 2500) dedMult = 1.05;
-      else if (deductible === 5000) dedMult = 1.00;
-      else if (deductible === 10000) dedMult = 0.90;
-      else if (deductible === 25000) dedMult = 0.80;
+      let dedFactor = 0;
+      if (deductible === 500) dedFactor = 0.05;
+      else if (deductible === 2500) dedFactor = 0.12;
+      else if (deductible === 5000) dedFactor = 0.20;
+      else if (deductible === 10000) dedFactor = 0.30;
+      else if (deductible === 25000) dedFactor = 0.45;
+      const deductibleDiscount = (baseCov + ageAdj) * -dedFactor;
 
-      let condMult = 0;
-      if (medicalConditions.diabetes) condMult += 0.15;
-      if (medicalConditions.highBp) condMult += 0.10;
-      if (medicalConditions.asthma) condMult += 0.10;
-      if (medicalConditions.heartDisease) condMult += 0.30;
-      if (medicalConditions.kidneyDisease) condMult += 0.25;
-      
-      condMult = Math.min(condMult, 0.65);
-      const finalCondMult = 1 + condMult;
+      const annual = Math.max(1200, Math.round(baseCov + ageAdj + tobaccoLoad + medicalLoad + deductibleDiscount));
+      const monthly = Math.round(annual / 12);
 
-      const activeConds = Object.values(medicalConditions).filter(Boolean).length;
+      let riskScore = (ageFactor - 1.0) * 40 + (smoker ? 35 : 0) + medFactor * 100;
       let riskLevel = 'Low';
-      if (age > 65 && activeConds > 1) riskLevel = 'Very High';
-      else if (smoker || activeConds > 1) riskLevel = 'High';
-      else if (age > 35 || activeConds === 1) riskLevel = 'Moderate';
-
-      const ageAdj = (basePrem * ageMult) - basePrem;
-      const tobLoad = (basePrem * ageMult * tobMult) - (basePrem * ageMult);
-      const dedDiscount = (basePrem * ageMult * tobMult * dedMult) - (basePrem * ageMult * tobMult);
-      const medLoad = (basePrem * ageMult * tobMult * dedMult * finalCondMult) - (basePrem * ageMult * tobMult * dedMult);
-
-      const rBase = Math.round(basePrem);
-      const rAgeAdj = Math.round(ageAdj);
-      const rTobLoad = Math.round(tobLoad);
-      const rDedDiscount = Math.round(dedDiscount);
-      const rMedLoad = Math.round(medLoad);
-
-      const annualPrem = rBase + rAgeAdj + rTobLoad + rDedDiscount + rMedLoad;
-      const roundedAnnual = Math.round(annualPrem / 100) * 100;
-      const monthlyPrem = Math.round(roundedAnnual / 12);
+      if (riskScore > 80) riskLevel = 'Very High';
+      else if (riskScore > 50) riskLevel = 'High';
+      else if (riskScore > 25) riskLevel = 'Moderate';
 
       setHealthBreakdown({
-        base: rBase,
-        ageAdj: rAgeAdj,
-        tobaccoLoad: rTobLoad,
-        deductibleDiscount: rDedDiscount,
-        medicalLoad: rMedLoad,
-        annualPremium: roundedAnnual,
-        monthlyPremium: monthlyPrem,
+        base: Math.round(baseCov),
+        ageAdj: Math.round(ageAdj),
+        tobaccoLoad: Math.round(tobaccoLoad),
+        medicalLoad: Math.round(medicalLoad),
+        deductibleDiscount: Math.round(deductibleDiscount),
+        annualPremium: annual,
+        monthlyPremium: monthly,
         riskLevel
       });
-      
-      setPremium(monthlyPrem);
-    }
+      setPremium(monthly);
+    } 
     else if (category === 'life') {
-      base = (coverage * 0.00005);
-      base += (age * 0.5);
-      base += (termYears * 0.3);
-      if (smoker) base *= 1.5;
-      if (annualIncome > 1000000) base *= 0.9;
-      setPremium(Math.max(100, Math.round(base)));
-    }
+      const getLifeBase = (cov, t) => {
+        let perLakh = 45;
+        if (age <= 25) perLakh = 35;
+        else if (age <= 35) perLakh = 48;
+        else if (age <= 45) perLakh = 85;
+        else if (age <= 55) perLakh = 160;
+        else perLakh = 320;
+        
+        let termMultiplier = 1.0;
+        if (t === 10) termMultiplier = 0.85;
+        else if (t === 20) termMultiplier = 1.0;
+        else if (t === 30) termMultiplier = 1.25;
+        else if (t === 40) termMultiplier = 1.5;
+
+        return (cov / 100000) * perLakh * termMultiplier;
+      };
+
+      let baseAnnual = getLifeBase(coverage, termYears);
+      if (smoker) baseAnnual *= 1.45;
+      const monthly = Math.max(350, Math.round(baseAnnual / 12));
+      setPremium(monthly);
+    } 
     else if (category === 'motor') {
-      base = (vehicleValue * 0.015);
-      if (vehicleAge > 5) base *= 0.7;
-      else if (vehicleAge > 2) base *= 0.9;
+      let rate = 0.031;
+      if (vehicleAge === 0) rate = 0.028;
+      else if (vehicleAge === 1) rate = 0.031;
+      else if (vehicleAge === 3) rate = 0.038;
+      else rate = 0.045;
 
-      if (roadsideAssistance) base += 350;
-      base -= (deductible * 0.05);
-      base = base / 12;
-      setPremium(Math.max(100, Math.round(base)));
-    }
+      let baseAnnual = vehicleValue * rate;
+      if (roadsideAssistance) baseAnnual += 1200;
+      if (deductible >= 5000) baseAnnual *= 0.85;
+      else if (deductible >= 2500) baseAnnual *= 0.92;
+
+      setPremium(Math.max(250, Math.round(baseAnnual / 12)));
+    } 
     else if (category === 'home') {
-      base = (homeValue * 0.0008);
-      if (homeAge > 20) base *= 1.3;
-      base = base / 12;
-      setPremium(Math.max(100, Math.round(base)));
-    }
+      let rate = 0.0006;
+      if (homeAge > 20) rate = 0.0011;
+      else if (homeAge > 10) rate = 0.00085;
+
+      const baseAnnual = homeValue * rate;
+      setPremium(Math.max(150, Math.round(baseAnnual / 12)));
+    } 
     else if (category === 'travel') {
-      base = duration * 25;
-      if (destination === 'worldwide') base += 200;
-      if (deductible > 1000) base -= 50;
-      setPremium(Math.max(100, Math.round(base)));
-    }
-
-  }, [category, coverage, deductible, age, smoker, medicalConditions, vehicleValue, vehicleAge, roadsideAssistance, termYears, annualIncome, homeValue, homeAge, duration, destination]);
-
-  useEffect(() => {
-    if (category === 'sip') {
+      let perDay = destination === 'domestic' ? 45 : 160;
+      const totalTrip = Math.round(duration * perDay);
+      setPremium(totalTrip);
+    } 
+    else if (category === 'sip') {
       const P = sipMonthly;
-      const r = sipReturnRate;
-      const y = sipYears;
-      const monthlyRate = r / (12 * 100);
-      const totalMonths = y * 12;
-      const fv = P * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
-      const invested = P * totalMonths;
-      const total = Math.round(fv);
-      const gain = Math.max(0, total - invested);
-      setSipResults({ invested, gain, total });
+      const r = (sipReturnRate / 100) / 12;
+      const n = sipYears * 12;
+      const M = P * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+      const totalInv = P * n;
+      const gain = M - totalInv;
+      setSipResults({
+        invested: Math.round(totalInv),
+        gain: Math.round(gain),
+        total: Math.round(M)
+      });
+      setPremium(Math.round(M));
     }
-  }, [category, sipMonthly, sipReturnRate, sipYears]);
-
-  const handlePurchaseMock = async (e) => {
-    e.preventDefault();
-    const record = {
-      fullName: buyName,
-      email: buyEmail,
-      category,
-      premiumMonthly: category === 'sip' ? sipMonthly : premium,
-      deductible: category === 'sip' ? 0 : deductible,
-      tenureYears: category === 'sip' ? sipYears : (category === 'life' ? termYears : 1),
-      coverageAmount: category === 'sip' ? 'Market Linked' : coverage.toString(),
-      timestamp: new Date().toISOString()
-    };
-    try {
-      await saveCalculation(record);
-    } catch (err) {
-      console.error("Failed to save calculation history to Firestore", err);
-    }
-    setSuccessBuy(true);
-    setTimeout(() => {
-      setSuccessBuy(false);
-      setShowBuyModal(false);
-      setBuyName('');
-      setBuyEmail('');
-    }, 2500);
-  };
+  }, [category, coverage, age, smoker, medicalConditions, deductible, vehicleValue, vehicleAge, roadsideAssistance, termYears, annualIncome, homeValue, homeAge, duration, destination, sipMonthly, sipReturnRate, sipYears]);
 
   const categories = [
     { id: 'health', label: 'Health', icon: FaHeartbeat },
-    { id: 'life', label: 'Life', icon: FaShieldAlt },
-    { id: 'sip', label: 'SIP Calc', icon: FaCalculator }
+    { id: 'life', label: 'Life & Term', icon: FaShieldAlt },
+    { id: 'sip', label: 'SIP Calc', icon: FaCalculator },
+    { id: 'motor', label: 'Motor', icon: FaCar },
+    { id: 'home', label: 'Home', icon: FaHome },
+    { id: 'travel', label: 'Travel', icon: FaPlane }
   ];
 
-  /* ─── Helper to get dynamic output info per category ─── */
   const getOutputMeta = () => {
     switch (category) {
       case 'health':
-        return { title: 'Annual Premium', value: healthBreakdown.annualPremium, sub: `₹${healthBreakdown.monthlyPremium.toLocaleString('en-IN')} / mo`, isSip: false };
+        return { title: 'Annual Health Premium', value: healthBreakdown.annualPremium, sub: `₹${healthBreakdown.monthlyPremium.toLocaleString('en-IN')} / mo`, isSip: false };
       case 'life':
-        return { title: 'Monthly Premium', value: premium, sub: `Coverage: ₹${coverage.toLocaleString('en-IN')}`, isSip: false };
+        return { title: 'Monthly Term Premium', value: premium, sub: `Coverage: ₹${coverage.toLocaleString('en-IN')}`, isSip: false };
       case 'motor':
-        return { title: 'Monthly Premium', value: premium, sub: `IDV: ₹${vehicleValue.toLocaleString('en-IN')}`, isSip: false };
+        return { title: 'Monthly Motor Premium', value: premium, sub: `IDV: ₹${vehicleValue.toLocaleString('en-IN')}`, isSip: false };
       case 'home':
-        return { title: 'Monthly Premium', value: premium, sub: `Property: ₹${homeValue.toLocaleString('en-IN')}`, isSip: false };
+        return { title: 'Monthly Home Premium', value: premium, sub: `Property: ₹${homeValue.toLocaleString('en-IN')}`, isSip: false };
       case 'travel':
-        return { title: 'Trip Premium', value: premium, sub: `${duration} days · ${destination === 'worldwide' ? 'Worldwide' : 'Domestic'}`, isSip: false };
+        return { title: 'Total Trip Premium', value: premium, sub: `${duration} days · ${destination === 'worldwide' ? 'Worldwide' : 'Domestic'}`, isSip: false };
       case 'sip':
-        return { title: 'Future Value', value: sipResults.total, sub: `After ${sipYears} Years`, isSip: true };
+        return { title: 'Estimated Wealth Created', value: sipResults.total, sub: `After ${sipYears} Years`, isSip: true };
       default:
-        return { title: 'Premium', value: premium, sub: '', isSip: false };
+        return { title: 'Estimated Premium', value: premium, sub: '', isSip: false };
     }
   };
 
   const riskColors = {
-    'Low': { bg: 'bg-emerald-500/10 dark:bg-emerald-500/15', text: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-500/25' },
-    'Moderate': { bg: 'bg-amber-500/10 dark:bg-amber-500/15', text: 'text-amber-600 dark:text-amber-400', border: 'border-amber-500/25' },
-    'High': { bg: 'bg-orange-500/10 dark:bg-orange-500/15', text: 'text-orange-600 dark:text-orange-400', border: 'border-orange-500/25' },
-    'Very High': { bg: 'bg-red-500/10 dark:bg-red-500/15', text: 'text-red-600 dark:text-red-400', border: 'border-red-500/25' },
+    'Low': { bg: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30' },
+    'Moderate': { bg: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30' },
+    'High': { bg: 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/30' },
+    'Very High': { bg: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30' },
   };
 
   const risk = riskColors[healthBreakdown.riskLevel] || riskColors['Low'];
 
-
   return (
-    <div className="min-h-screen bg-[#F7F7F5] dark:bg-[#000000] text-black dark:text-white pt-24 pb-32 xl:pb-24 font-sans transition-colors duration-300">
+    <div className={`w-full ${isEmbedded ? 'py-12 sm:py-16 lg:py-20' : 'min-h-screen pt-24 pb-20'} text-slate-900 dark:text-white transition-colors`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* ── Title ── */}
-        <div className="text-center mb-10">
-          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <h1 className="text-3xl md:text-4xl uppercase font-bold tracking-tight mb-4 text-black dark:text-white">
-              PREMIUM <span className="text-[#FFB300]">CALCULATOR</span>
-            </h1>
-            <p className="text-neutral-500 dark:text-neutral-400 max-w-lg mx-auto text-sm md:text-base leading-relaxed">
-              Estimate your insurance premiums and investment returns instantly.
-            </p>
-          </motion.div>
-        </div>
-
-        {/* ── Category Selection ── */}
-        <div className="mb-10">
-          {/* Mobile Dropdown */}
-          <div className="block sm:hidden w-full max-w-sm mx-auto">
-            <div className="relative">
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="appearance-none w-full bg-white dark:bg-[#0A0A0A] border border-black/10 dark:border-white/10 text-black dark:text-white text-sm font-bold rounded-xl px-4 py-3.5 pr-10 focus:outline-none focus:border-black/30 dark:focus:border-white/30 transition-colors shadow-sm"
-              >
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.label}
-                  </option>
-                ))}
-              </select>
-              <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
-                <svg className="w-4 h-4 text-black/40 dark:text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-              </div>
-            </div>
+        {/* ── Single-Row Unified Header ── */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div className="space-y-1">
+            <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-slate-900 dark:text-white">
+              PREMIUM & SIP <span className="text-brand-accent">CALCULATOR</span>
+            </h2>
           </div>
 
-          {/* Desktop Tabs */}
-          <div className="hidden sm:flex justify-center overflow-x-auto pb-4">
-            <div className="inline-flex gap-2 p-1.5 bg-white dark:bg-[#0A0A0A] rounded-xl border border-black/10 dark:border-white/10 shadow-sm dark:shadow-none">
-              {categories.map((cat) => {
-                const Icon = cat.icon;
-                const isActive = category === cat.id;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => setCategory(cat.id)}
-                    className={`relative flex items-center gap-2 px-6 py-3 text-xs font-bold uppercase tracking-wider transition-colors duration-200 rounded-lg whitespace-nowrap ${
-                      isActive ? 'text-black dark:text-black' : 'text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white'
-                    }`}
-                  >
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeTab"
-                        className="absolute inset-0 bg-[#FFB300] dark:bg-[#FFB300] rounded-lg"
-                        transition={{ type: "spring", stiffness: 400, damping: 35 }}
-                      />
-                    )}
-                    <Icon className={`text-sm relative z-10 ${isActive ? 'text-black dark:text-black' : ''}`} />
-                    <span className="relative z-10">{cat.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* ── Main Grid ── */}
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 items-start">
-          
-          {/* ── Left Panel: Inputs ── */}
-          <div className="xl:col-span-2">
-            <div className="bg-white dark:bg-[#0A0A0A] border border-black/10 dark:border-white/10 rounded-2xl p-6 sm:p-8 relative overflow-hidden shadow-sm dark:shadow-none">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={category}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.25 }}
-                  className="space-y-8"
+          {/* Category Tabs Pill Strip */}
+          <div className="flex items-center gap-1.5 p-1 bg-white dark:bg-neutral-900 rounded-2xl border border-slate-200/80 dark:border-white/10 shadow-xs overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            {categories.map((cat) => {
+              const Icon = cat.icon;
+              const isActive = category === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setCategory(cat.id)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl transition-all whitespace-nowrap cursor-pointer ${
+                    isActive 
+                      ? 'bg-brand-accent text-neutral-950 shadow-xs font-black' 
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-neutral-800'
+                  }`}
                 >
+                  <Icon className="text-xs" />
+                  <span>{cat.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
-                  
-                  {/* ═══ HEALTH ═══ */}
-                  {category === 'health' && (
-                    <>
-                      <PremiumSlider
-                        min={100000} max={5000000} step={100000}
-                        value={coverage} onChange={setCoverage}
-                        leftLabel="Coverage Limit"
-                        displayValue={`₹${coverage.toLocaleString('en-IN')}`}
-                      />
+        {/* ── Single Viewport 2-Column Dashboard ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+          
+          {/* ── Left Column: Controls & Inputs ── */}
+          <div className="lg:col-span-7 bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 sm:p-6 shadow-xs flex flex-col justify-between space-y-4">
+            
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={category}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+                className="space-y-4 flex-1"
+              >
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <GlassInput label="Age of Insured">
-                          <input type="number" min="18" max="100" value={age} onChange={(e) => setAge(Number(e.target.value))} className={inputClasses} />
-                        </GlassInput>
-                        <GlassInput label="Deductible">
-                          <select value={deductible} onChange={(e) => setDeductible(Number(e.target.value))} className={selectClasses}>
-                            <option value="500">₹500</option>
-                            <option value="2500">₹2,500</option>
-                            <option value="5000">₹5,000</option>
-                            <option value="10000">₹10,000</option>
-                            <option value="25000">₹25,000</option>
-                          </select>
-                        </GlassInput>
-                      </div>
-                      
+                {/* ═══ HEALTH ═══ */}
+                {category === 'health' && (
+                  <>
+                    <PremiumSlider
+                      min={100000} max={5000000} step={100000}
+                      value={coverage} onChange={setCoverage}
+                      leftLabel="Health Sum Insured Limit"
+                      displayValue={`₹${coverage.toLocaleString('en-IN')}`}
+                    />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <GlassInput label="Age of Primary Insured">
+                        <input type="number" min="18" max="100" value={age} onChange={(e) => setAge(Number(e.target.value))} className={inputClasses} />
+                      </GlassInput>
+                      <GlassInput label="Voluntary Deductible">
+                        <select value={deductible} onChange={(e) => setDeductible(Number(e.target.value))} className={selectClasses}>
+                          <option value="500">₹500 (Standard)</option>
+                          <option value="2500">₹2,500 (12% Discount)</option>
+                          <option value="5000">₹5,000 (20% Discount)</option>
+                          <option value="10000">₹10,000 (30% Discount)</option>
+                        </select>
+                      </GlassInput>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
                       <GlassToggle
-                        label="Tobacco User"
-                        sublabel="Increases premium by ~35%"
+                        label="Tobacco / Smoker"
+                        sublabel="Adds ~35% underwriting load"
                         checked={smoker}
                         onChange={(e) => setSmoker(e.target ? e.target.checked : e)}
                       />
 
-                      <div>
-                        <label className="block text-[11px] font-semibold text-neutral-400 uppercase tracking-widest mb-3">Pre-Existing Conditions</label>
-                        <div className="flex flex-wrap gap-2.5">
-                          {[
-                            { key: 'diabetes', label: 'Diabetes' },
-                            { key: 'highBp', label: 'High BP' },
-                            { key: 'asthma', label: 'Asthma' },
-                            { key: 'heartDisease', label: 'Heart Disease' },
-                            { key: 'kidneyDisease', label: 'Kidney Disease' },
-                          ].map((cond) => (
-                            <ConditionChip
-                              key={cond.key}
-                              label={cond.label}
-                              checked={medicalConditions[cond.key]}
-                              onChange={(val) => setMedicalConditions(prev => ({ ...prev, [cond.key]: val }))}
-                            />
-                          ))}
-                        </div>
+                      <div className="p-2 rounded-xl bg-slate-50 dark:bg-neutral-950 border border-slate-200 dark:border-white/10 text-[11px] text-slate-500 dark:text-slate-400">
+                        <span className="font-bold text-emerald-600 dark:text-emerald-400">✓ Tax Benefit:</span> Save up to ₹25,000 under Section 80D.
                       </div>
-                    </>
-                  )}
+                    </div>
 
-                  {/* ═══ LIFE ═══ */}
-                  {category === 'life' && (
-                    <>
-                      <PremiumSlider
-                        min={1000000} max={50000000} step={500000}
-                        value={coverage} onChange={setCoverage}
-                        leftLabel="Term Payout Target"
-                        displayValue={`₹${coverage.toLocaleString('en-IN')}`}
+                    <div>
+                      <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">
+                        Pre-Existing Medical Conditions
+                      </label>
+                      <div className="flex flex-wrap gap-1.5">
+                        {[
+                          { key: 'diabetes', label: 'Diabetes' },
+                          { key: 'highBp', label: 'High BP' },
+                          { key: 'asthma', label: 'Asthma' },
+                          { key: 'heartDisease', label: 'Heart' },
+                          { key: 'kidneyDisease', label: 'Kidney' },
+                        ].map((cond) => (
+                          <ConditionChip
+                            key={cond.key}
+                            label={cond.label}
+                            checked={medicalConditions[cond.key]}
+                            onChange={(val) => setMedicalConditions(prev => ({ ...prev, [cond.key]: val }))}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {/* ═══ LIFE ═══ */}
+                {category === 'life' && (
+                  <>
+                    <PremiumSlider
+                      min={1000000} max={50000000} step={500000}
+                      value={coverage} onChange={setCoverage}
+                      leftLabel="Term Life Cover (Sum Assured)"
+                      displayValue={`₹${coverage.toLocaleString('en-IN')}`}
+                    />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <GlassInput label="Age">
+                        <input type="number" min="18" max="75" value={age} onChange={(e) => setAge(Number(e.target.value))} className={inputClasses} />
+                      </GlassInput>
+                      <GlassInput label="Policy Term">
+                        <select value={termYears} onChange={(e) => setTermYears(Number(e.target.value))} className={selectClasses}>
+                          <option value="10">10 Years</option>
+                          <option value="20">20 Years</option>
+                          <option value="30">30 Years</option>
+                          <option value="40">40 Years</option>
+                        </select>
+                      </GlassInput>
+                      <GlassInput label="Annual Income (₹)">
+                        <input type="number" step="100000" value={annualIncome} onChange={(e) => setAnnualIncome(Number(e.target.value))} className={inputClasses} />
+                      </GlassInput>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+                      <GlassToggle
+                        label="Tobacco User"
+                        sublabel="Affects term premium rates"
+                        checked={smoker}
+                        onChange={(e) => setSmoker(e.target ? e.target.checked : e)}
                       />
-
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                        <GlassInput label="Age">
-                          <input type="number" min="18" max="75" value={age} onChange={(e) => setAge(Number(e.target.value))} className={inputClasses} />
-                        </GlassInput>
-                        <GlassInput label="Term (Years)">
-                          <select value={termYears} onChange={(e) => setTermYears(Number(e.target.value))} className={selectClasses}>
-                            <option value="10">10 Years</option>
-                            <option value="20">20 Years</option>
-                            <option value="30">30 Years</option>
-                            <option value="40">40 Years</option>
-                          </select>
-                        </GlassInput>
-                        <GlassInput label="Annual Income (₹)">
-                          <input type="number" step="100000" value={annualIncome} onChange={(e) => setAnnualIncome(Number(e.target.value))} className={inputClasses} />
-                        </GlassInput>
+                      <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-neutral-950 border border-slate-200 dark:border-white/10 text-[11px] text-slate-500">
+                        <span className="font-bold text-emerald-600 dark:text-emerald-400">✓ Section 80C:</span> 100% Tax exemption on premiums paid.
                       </div>
-                      
-                      <div className="w-full md:w-1/2">
-                        <GlassToggle
-                          label="Tobacco User"
-                          sublabel="Impacts Life Cover Premiums"
-                          checked={smoker}
-                          onChange={(e) => setSmoker(e.target ? e.target.checked : e)}
-                        />
-                      </div>
-                    </>
-                  )}
+                    </div>
+                  </>
+                )}
 
-                  {/* ═══ MOTOR ═══ */}
-                  {category === 'motor' && (
-                    <>
+                {/* ═══ SIP ═══ */}
+                {category === 'sip' && (
+                  <>
+                    <PremiumSlider
+                      min={500} max={100000} step={500}
+                      value={sipMonthly} onChange={setSipMonthly}
+                      leftLabel="Monthly SIP Investment"
+                      displayValue={`₹${sipMonthly.toLocaleString('en-IN')}`}
+                    />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <PremiumSlider
-                        min={50000} max={5000000} step={50000}
-                        value={vehicleValue} onChange={setVehicleValue}
-                        leftLabel="Vehicle IDV (Value)"
-                        displayValue={`₹${vehicleValue.toLocaleString('en-IN')}`}
+                        min={5} max={30} step={0.5}
+                        value={sipReturnRate} onChange={setSipReturnRate}
+                        leftLabel="Expected ROI Rate"
+                        displayValue={`${sipReturnRate}% p.a.`}
                       />
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <GlassInput label="Vehicle Age">
-                          <select value={vehicleAge} onChange={(e) => setVehicleAge(Number(e.target.value))} className={selectClasses}>
-                            <option value="0">Brand New (&lt; 1 Year)</option>
-                            <option value="1">1 - 2 Years</option>
-                            <option value="3">2 - 5 Years</option>
-                            <option value="6">5+ Years</option>
-                          </select>
-                        </GlassInput>
-                        <GlassInput label="Deductible">
-                          <select value={deductible} onChange={(e) => setDeductible(Number(e.target.value))} className={selectClasses}>
-                            <option value="1000">₹1,000</option>
-                            <option value="2500">₹2,500</option>
-                            <option value="5000">₹5,000</option>
-                          </select>
-                        </GlassInput>
-                      </div>
-
-                      <div className="w-full md:w-1/2">
-                        <GlassToggle
-                          label="Roadside Assistance"
-                          sublabel="Towing, battery jump, etc."
-                          checked={roadsideAssistance}
-                          onChange={(e) => setRoadsideAssistance(e.target ? e.target.checked : e)}
-                        />
-                      </div>
-                    </>
-                  )}
-
-                  {/* ═══ HOME ═══ */}
-                  {category === 'home' && (
-                    <>
                       <PremiumSlider
-                        min={500000} max={50000000} step={500000}
-                        value={homeValue} onChange={setHomeValue}
-                        leftLabel="Structure Insured Value"
-                        displayValue={`₹${homeValue.toLocaleString('en-IN')}`}
+                        min={1} max={30} step={1}
+                        value={sipYears} onChange={setSipYears}
+                        leftLabel="Investment Horizon"
+                        displayValue={`${sipYears} Years`}
                       />
+                    </div>
 
-                      <div className="w-full md:w-1/2">
-                        <GlassInput label="Property Age (Years)">
-                          <input type="number" min="0" max="100" value={homeAge} onChange={(e) => setHomeAge(Number(e.target.value))} className={inputClasses} />
-                        </GlassInput>
-                      </div>
-                    </>
-                  )}
+                    <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs text-slate-700 dark:text-slate-300 flex items-center justify-between">
+                      <span>Total Capital Invested:</span>
+                      <strong className="font-black text-slate-900 dark:text-white">₹{sipResults.invested.toLocaleString('en-IN')}</strong>
+                    </div>
+                  </>
+                )}
 
-                  {/* ═══ TRAVEL ═══ */}
-                  {category === 'travel' && (
-                    <>
-                      <PremiumSlider
-                        min={1} max={90} step={1}
-                        value={duration} onChange={setDuration}
-                        leftLabel="Trip Duration"
-                        displayValue={`${duration} Days`}
-                      />
+                {/* ═══ MOTOR ═══ */}
+                {category === 'motor' && (
+                  <>
+                    <PremiumSlider
+                      min={50000} max={5000000} step={50000}
+                      value={vehicleValue} onChange={setVehicleValue}
+                      leftLabel="Vehicle IDV (Insured Declared Value)"
+                      displayValue={`₹${vehicleValue.toLocaleString('en-IN')}`}
+                    />
 
-                      <div className="w-full md:w-1/2">
-                        <GlassInput label="Destination Tier">
-                          <select value={destination} onChange={(e) => setDestination(e.target.value)} className={selectClasses}>
-                            <option value="domestic">Domestic / Regional</option>
-                            <option value="worldwide">Worldwide / Global</option>
-                          </select>
-                        </GlassInput>
-                      </div>
-                    </>
-                  )}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <GlassInput label="Vehicle Age">
+                        <select value={vehicleAge} onChange={(e) => setVehicleAge(Number(e.target.value))} className={selectClasses}>
+                          <option value="0">Brand New (&lt; 1 Year)</option>
+                          <option value="1">1 - 2 Years</option>
+                          <option value="3">2 - 5 Years</option>
+                          <option value="6">5+ Years</option>
+                        </select>
+                      </GlassInput>
+                      <GlassInput label="Voluntary Deductible">
+                        <select value={deductible} onChange={(e) => setDeductible(Number(e.target.value))} className={selectClasses}>
+                          <option value="1000">₹1,000</option>
+                          <option value="2500">₹2,500</option>
+                          <option value="5000">₹5,000</option>
+                        </select>
+                      </GlassInput>
+                    </div>
 
-                  {/* ═══ SIP ═══ */}
-                  {category === 'sip' && (
-                    <>
-                      <PremiumSlider
-                        min={500} max={100000} step={500}
-                        value={sipMonthly} onChange={setSipMonthly}
-                        leftLabel="Monthly SIP"
-                        displayValue={`₹${sipMonthly.toLocaleString('en-IN')}`}
-                      />
+                    <GlassToggle
+                      label="24x7 Roadside Assistance Add-on"
+                      sublabel="Towing, battery jump, key assistance"
+                      checked={roadsideAssistance}
+                      onChange={(e) => setRoadsideAssistance(e.target ? e.target.checked : e)}
+                    />
+                  </>
+                )}
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <PremiumSlider
-                          min={5} max={30} step={0.5}
-                          value={sipReturnRate} onChange={setSipReturnRate}
-                          leftLabel="Expected ROI"
-                          displayValue={`${sipReturnRate}%`}
-                        />
-                        <PremiumSlider
-                          min={1} max={30} step={1}
-                          value={sipYears} onChange={setSipYears}
-                          leftLabel="Tenure"
-                          displayValue={`${sipYears} Yrs`}
-                        />
-                      </div>
-                    </>
-                  )}
+                {/* ═══ HOME ═══ */}
+                {category === 'home' && (
+                  <>
+                    <PremiumSlider
+                      min={500000} max={50000000} step={500000}
+                      value={homeValue} onChange={setHomeValue}
+                      leftLabel="Structure & Asset Value"
+                      displayValue={`₹${homeValue.toLocaleString('en-IN')}`}
+                    />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <GlassInput label="Property Age (Years)">
+                        <input type="number" min="0" max="100" value={homeAge} onChange={(e) => setHomeAge(Number(e.target.value))} className={inputClasses} />
+                      </GlassInput>
+                    </div>
+                  </>
+                )}
 
+                {/* ═══ TRAVEL ═══ */}
+                {category === 'travel' && (
+                  <>
+                    <PremiumSlider
+                      min={1} max={90} step={1}
+                      value={duration} onChange={setDuration}
+                      leftLabel="Trip Duration"
+                      displayValue={`${duration} Days`}
+                    />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <GlassInput label="Destination Zone">
+                        <select value={destination} onChange={(e) => setDestination(e.target.value)} className={selectClasses}>
+                          <option value="domestic">Domestic (India)</option>
+                          <option value="worldwide">Worldwide / Schengen</option>
+                        </select>
+                      </GlassInput>
+                    </div>
+                  </>
+                )}
 
-                  
+              </motion.div>
+            </AnimatePresence>
 
-                </motion.div>
-              </AnimatePresence>
-            </div>
           </div>
 
-          {/* ── Right Panel: Output ── */}
-          <div className="relative">
-            <div className="sticky top-28 bg-white dark:bg-[#0A0A0A] border border-black/10 dark:border-white/10 rounded-2xl p-7 shadow-md dark:shadow-lg">
+          {/* ── Right Column: Live Output & Fast Action Card ── */}
+          <div className="lg:col-span-5 bg-gradient-to-b from-neutral-900 via-neutral-950 to-black border-2 border-brand-accent/30 rounded-3xl p-5 sm:p-6 text-white shadow-xl flex flex-col justify-between relative overflow-hidden">
+            
+            {/* Ambient Corner Glow */}
+            <div className="absolute -top-16 -right-16 w-44 h-44 bg-brand-accent/15 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="space-y-4 relative z-10">
               
-              {category === 'sip' ? (
-                /* SIP Output */
-                <div className="text-center">
-                  <h3 className="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-6">Wealth Created</h3>
-                  
-                  <div className="mb-8 p-6 bg-black/[0.02] dark:bg-[#111111] border border-black/5 dark:border-white/5 rounded-xl">
-                    <p className="text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-widest font-bold mb-2">Future Value</p>
-                    <div className="flex items-baseline justify-center text-black dark:text-white mb-2">
-                      <span className="text-xl font-bold text-[#FFB300] dark:text-[#FFB300] mr-1">₹</span>
-                      <span className="text-4xl md:text-5xl font-extrabold tracking-tight">
-                        {sipResults.total > 10000000 ? (sipResults.total/10000000).toFixed(2) + 'Cr' : (sipResults.total/100000).toFixed(2) + 'L'}
-                      </span>
-                    </div>
-                    <p className="text-[10px] text-[#FFB300] dark:text-[#FFB300] uppercase tracking-widest font-bold px-3 py-1 rounded bg-[#FFB300]/15 dark:bg-[#FFB300]/10 border border-[#FFB300]/30 dark:border-[#FFB300]/20 inline-block">
-                      After {sipYears} Years
-                    </p>
-                  </div>
+              {/* Header inside Card */}
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <span className="text-[11px] font-black uppercase tracking-widest text-slate-400">
+                  {getOutputMeta().title}
+                </span>
+                {category === 'health' && (
+                  <span className={`px-2.5 py-0.5 text-[10px] font-black uppercase rounded-full border ${risk.bg}`}>
+                    {healthBreakdown.riskLevel} Risk
+                  </span>
+                )}
+              </div>
 
-                  <div className="space-y-3 text-left mb-8">
-                    <div className="flex justify-between items-center text-sm py-3 px-4 rounded-lg bg-black/[0.02] dark:bg-[#111111] border border-black/5 dark:border-white/5">
-                      <span className="text-neutral-500 dark:text-neutral-400">Invested Amount</span>
-                      <span className="font-bold text-black dark:text-white">₹{sipResults.invested.toLocaleString('en-IN')}</span>
-                    </div>
-                    <div className="flex justify-between items-center text-sm py-3 px-4 rounded-lg bg-black/[0.02] dark:bg-[#111111] border border-black/5 dark:border-white/5">
-                      <span className="text-neutral-500 dark:text-neutral-400">Est. Returns</span>
-                      <span className="font-bold text-[#FFB300] dark:text-[#FFB300]">₹{sipResults.gain.toLocaleString('en-IN')}</span>
-                    </div>
-                  </div>
-
-                  <button 
-                    onClick={() => navigate('/appointment')}
-                    className="w-full bg-[#FFB300] dark:bg-[#FFB300] text-black font-bold py-4 text-sm uppercase tracking-widest rounded-xl hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors flex items-center justify-center gap-2"
-                  >
-                    <FaShieldAlt /> Secure Now
-                  </button>
-                </div>
-              ) : category === 'health' ? (
-                /* Health Output */
-                <div className="text-center">
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Estimated Premium</h3>
-                    <span className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded ${risk.bg} ${risk.border} border ${risk.text}`}>
-                      {healthBreakdown.riskLevel} Risk
+              {/* Big Calculated Number */}
+              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-center space-y-1">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                  {category === 'sip' ? 'Projected Future Corpus' : category === 'health' ? 'Annual Estimated Premium' : 'Monthly Premium'}
+                </p>
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-accent tracking-tight flex items-center justify-center gap-1">
+                  <span>₹</span>
+                  {category === 'sip' ? (
+                    <span>
+                      {sipResults.total > 10000000 
+                        ? (sipResults.total/10000000).toFixed(2) + ' Cr' 
+                        : (sipResults.total/100000).toFixed(2) + ' L'}
                     </span>
-                  </div>
-                  
-                  <div className="mb-8 p-6 bg-black/[0.02] dark:bg-[#111111] border border-black/5 dark:border-white/5 rounded-xl">
-                    <p className="text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-widest font-bold mb-2">Annual Premium</p>
-                    <div className="flex items-baseline justify-center text-black dark:text-white mb-3">
-                      <span className="text-xl font-bold text-[#FFB300] dark:text-[#FFB300] mr-1">₹</span>
-                      <span className="text-5xl font-extrabold tracking-tight">
-                        <AnimatedCounter value={healthBreakdown.annualPremium} />
-                      </span>
-                    </div>
-                    <p className="text-xs text-neutral-500 dark:text-neutral-400 font-medium">
-                      <AnimatedCounter value={healthBreakdown.monthlyPremium} prefix="₹" suffix=" / mo" />
-                    </p>
-                  </div>
-
-                  <div className="space-y-2 text-left mb-8">
-                    <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest mb-3">Premium Breakdown</p>
-                    
-                    <div className="flex justify-between items-center text-xs py-2 px-3 rounded bg-black/[0.02] dark:bg-[#111111]">
-                      <span className="text-neutral-500 dark:text-neutral-400">Base Cover</span>
-                      <span className="font-bold text-black dark:text-white">₹{healthBreakdown.base.toLocaleString('en-IN')}</span>
-                    </div>
-                    {healthBreakdown.ageAdj !== 0 && (
-                      <div className="flex justify-between items-center text-xs py-2 px-3 rounded bg-black/[0.02] dark:bg-[#111111]">
-                        <span className="text-neutral-500 dark:text-neutral-400">Age Adjustment</span>
-                        <span className={`font-bold ${healthBreakdown.ageAdj > 0 ? 'text-black dark:text-white' : 'text-emerald-600 dark:text-emerald-400'}`}>
-                          {healthBreakdown.ageAdj > 0 ? '+' : ''}₹{healthBreakdown.ageAdj.toLocaleString('en-IN')}
-                        </span>
-                      </div>
-                    )}
-                    {healthBreakdown.tobaccoLoad !== 0 && (
-                      <div className="flex justify-between items-center text-xs py-2 px-3 rounded bg-black/[0.02] dark:bg-[#111111]">
-                        <span className="text-neutral-500 dark:text-neutral-400">Tobacco Loading</span>
-                        <span className="font-bold text-black dark:text-white">+₹{healthBreakdown.tobaccoLoad.toLocaleString('en-IN')}</span>
-                      </div>
-                    )}
-                    {healthBreakdown.medicalLoad !== 0 && (
-                      <div className="flex justify-between items-center text-xs py-2 px-3 rounded bg-black/[0.02] dark:bg-[#111111]">
-                        <span className="text-neutral-500 dark:text-neutral-400">Medical History</span>
-                        <span className="font-bold text-black dark:text-white">+₹{healthBreakdown.medicalLoad.toLocaleString('en-IN')}</span>
-                      </div>
-                    )}
-                    {healthBreakdown.deductibleDiscount !== 0 && (
-                      <div className="flex justify-between items-center text-xs py-2 px-3 rounded bg-black/[0.02] dark:bg-[#111111]">
-                        <span className="text-neutral-500 dark:text-neutral-400">Deductible Adj.</span>
-                        <span className={`font-bold ${healthBreakdown.deductibleDiscount > 0 ? 'text-black dark:text-white' : 'text-emerald-600 dark:text-emerald-400'}`}>
-                          {healthBreakdown.deductibleDiscount > 0 ? '+' : ''}₹{healthBreakdown.deductibleDiscount.toLocaleString('en-IN')}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  <button 
-                    onClick={() => navigate('/appointment')}
-                    className="w-full bg-[#FFB300] dark:bg-[#FFB300] text-black font-bold py-4 text-sm uppercase tracking-widest rounded-xl hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors flex items-center justify-center gap-2 mb-4"
-                  >
-                    <FaShieldAlt /> Secure Now
-                  </button>
-                  <p className="text-[10px] text-neutral-400 dark:text-neutral-600 font-medium px-2">
-                    Estimated premium based on general underwriting.
-                  </p>
+                  ) : category === 'health' ? (
+                    <AnimatedCounter value={healthBreakdown.annualPremium} />
+                  ) : (
+                    <AnimatedCounter value={premium} />
+                  )}
                 </div>
-              ) : (
-                /* Generic Output */
-                <div className="text-center">
-                  <h3 className="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-6">{getOutputMeta().title}</h3>
-                  
-                  <div className="mb-8 p-6 bg-black/[0.02] dark:bg-[#111111] border border-black/5 dark:border-white/5 rounded-xl">
-                    <p className="text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-widest font-bold mb-2">
-                      {category === 'travel' ? 'Total Trip Premium' : 'INR / Month'}
-                    </p>
-                    <div className="flex items-baseline justify-center text-black dark:text-white">
-                      <span className="text-xl font-bold text-[#FFB300] dark:text-[#FFB300] mr-1">₹</span>
-                      <span className="text-5xl font-extrabold tracking-tight">
-                        <AnimatedCounter value={premium} />
-                      </span>
-                    </div>
-                  </div>
+                <p className="text-xs text-neutral-300 font-medium">
+                  {getOutputMeta().sub}
+                </p>
+              </div>
 
-                  <div className="space-y-3 text-left mb-8">
-                    <div className="flex justify-between items-center text-sm py-3 px-4 rounded-lg bg-black/[0.02] dark:bg-[#111111] border border-black/5 dark:border-white/5">
-                      <span className="text-neutral-500 dark:text-neutral-400">
-                        {category === 'motor' ? 'Vehicle IDV' : category === 'home' ? 'Property Value' : category === 'travel' ? 'Duration' : 'Coverage'}
-                      </span>
-                      <span className="font-bold text-black dark:text-white">
+              {/* Breakdown Statistics Grid */}
+              <div className="space-y-2 text-xs">
+                {category === 'sip' ? (
+                  <>
+                    <div className="flex justify-between py-1.5 px-3 rounded-xl bg-white/5 border border-white/5">
+                      <span className="text-slate-400">Total Capital Invested</span>
+                      <strong className="text-white">₹{sipResults.invested.toLocaleString('en-IN')}</strong>
+                    </div>
+                    <div className="flex justify-between py-1.5 px-3 rounded-xl bg-white/5 border border-white/5">
+                      <span className="text-slate-400">Estimated Wealth Gain</span>
+                      <strong className="text-emerald-400">+₹{sipResults.gain.toLocaleString('en-IN')}</strong>
+                    </div>
+                  </>
+                ) : category === 'health' ? (
+                  <>
+                    <div className="flex justify-between py-1.5 px-3 rounded-xl bg-white/5 border border-white/5">
+                      <span className="text-slate-400">Base Underwriting</span>
+                      <strong className="text-white">₹{healthBreakdown.base.toLocaleString('en-IN')}</strong>
+                    </div>
+                    <div className="flex justify-between py-1.5 px-3 rounded-xl bg-white/5 border border-white/5">
+                      <span className="text-slate-400">Estimated Monthly</span>
+                      <strong className="text-brand-accent">₹{healthBreakdown.monthlyPremium.toLocaleString('en-IN')} / mo</strong>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex justify-between py-1.5 px-3 rounded-xl bg-white/5 border border-white/5">
+                      <span className="text-slate-400">Cover Limit</span>
+                      <strong className="text-white">
                         {category === 'motor' ? `₹${vehicleValue.toLocaleString('en-IN')}` :
                          category === 'home' ? `₹${homeValue.toLocaleString('en-IN')}` :
                          category === 'travel' ? `${duration} Days` :
                          `₹${coverage.toLocaleString('en-IN')}`}
-                      </span>
+                      </strong>
                     </div>
-                    <div className="flex justify-between items-center text-sm py-3 px-4 rounded-lg bg-black/[0.02] dark:bg-[#111111] border border-black/5 dark:border-white/5">
-                      <span className="text-neutral-500 dark:text-neutral-400">Risk Profile</span>
-                      <span className="font-bold text-black dark:text-white">Standard</span>
+                    <div className="flex justify-between py-1.5 px-3 rounded-xl bg-white/5 border border-white/5">
+                      <span className="text-slate-400">Claim Assistance</span>
+                      <strong className="text-emerald-400">100% Cashless Support</strong>
                     </div>
-                  </div>
+                  </>
+                )}
+              </div>
 
-                  <button 
-                    onClick={() => navigate('/appointment')}
-                    className="w-full bg-[#FFB300] dark:bg-[#FFB300] text-black font-bold py-4 text-sm uppercase tracking-widest rounded-xl hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors flex items-center justify-center gap-2"
-                  >
-                    <FaShieldAlt /> Secure Now
-                  </button>
-                </div>
-              )}
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* ── Mobile Sticky Output Bar ── */}
-      <div className="fixed bottom-0 left-0 w-full bg-white dark:bg-[#0A0A0A] border-t border-black/10 dark:border-white/10 p-4 pr-[88px] xl:hidden z-40 shadow-[0_-10px_40px_rgba(0,0,0,0.08)] dark:shadow-none">
-        <div className="flex justify-between items-center max-w-7xl mx-auto gap-3">
-          <div className="min-w-0 flex-1">
-            <p className="text-[10px] text-neutral-400 dark:text-neutral-500 font-bold uppercase tracking-widest mb-1 truncate">
-              {category === 'sip' ? 'Total Value' : category === 'health' ? 'Annual Prem' : category === 'travel' ? 'Trip Prem' : 'Monthly Prem'}
-            </p>
-            <p className="text-lg sm:text-xl font-extrabold text-black dark:text-white truncate">
-              ₹{category === 'sip' 
-                  ? sipResults.total.toLocaleString('en-IN') 
-                  : category === 'health' 
-                    ? healthBreakdown.annualPremium.toLocaleString('en-IN') 
-                    : premium.toLocaleString('en-IN')}
-            </p>
-          </div>
-          <button 
-            onClick={() => navigate('/appointment')} 
-            className="flex-shrink-0 bg-[#FFB300] dark:bg-[#FFB300] text-black px-4 py-2.5 sm:px-6 sm:py-3 text-[11px] sm:text-xs font-bold uppercase tracking-wider rounded-lg transition-colors hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
-          >
-            Secure Now
-          </button>
-        </div>
-      </div>
+            {/* Bottom CTA Actions */}
+            <div className="pt-4 space-y-2 relative z-10">
+              <button
+                onClick={() => navigate('/appointment')}
+                className="w-full py-3.5 rounded-xl bg-brand-accent text-neutral-950 font-black text-xs uppercase tracking-wider hover:bg-white hover:text-neutral-950 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+              >
+                <FaShieldAlt className="text-xs" />
+                <span>Lock In This Quote · Book Free Call</span>
+              </button>
 
- 
+              <p className="text-[10px] text-center text-slate-500 font-medium">
+                * Indicative calculations based on standard IRDAI guidelines.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
     </div>
   );
 };
+
 export default Calculator;

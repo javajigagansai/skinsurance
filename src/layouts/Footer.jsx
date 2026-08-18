@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Logo } from '../components/ui/Logo';
 import { useTranslation } from '../context/LanguageContext';
-import { FaEnvelope, FaMapMarkerAlt, FaLinkedin, FaInstagram, FaWhatsapp, FaPhoneAlt, FaArrowRight, FaFacebook } from 'react-icons/fa';
+import { FaEnvelope, FaMapMarkerAlt, FaLinkedin, FaInstagram, FaWhatsapp, FaPhoneAlt, FaArrowRight, FaFacebook, FaYoutube } from 'react-icons/fa';
 
 export const Footer = () => {
   const { t } = useTranslation();
@@ -23,11 +23,12 @@ export const Footer = () => {
             <p className="text-sm text-neutral-400 leading-relaxed font-medium">
               {t('footer_desc')} Elevating your financial security with premium, tailored insurance solutions.
             </p>
-            <div className="flex space-x-4 pt-2">
+            <div className="flex flex-wrap gap-3 pt-2">
               {
                 [
                   { icon: FaFacebook, url: "https://www.facebook.com/profile.php?id=61592452371528", color: "text-blue-600 border-blue-600/50 bg-blue-600/10" },
                   { icon: FaInstagram, url: "https://www.instagram.com/sk_smartinvestments/", color: "text-pink-500 border-pink-500/50 bg-pink-500/10" },
+                  { icon: FaYoutube, url: "https://www.youtube.com/@Sksmartinvestments", color: "text-red-500 border-red-500/50 bg-red-500/10" },
                   { icon: FaLinkedin, url: "https://www.linkedin.com/company/sksmartinvestments/", color: "text-blue-500 border-blue-500/50 bg-blue-500/10" },
                   { icon: FaWhatsapp, url: "https://wa.me/919994451300?text=Hi", color: "text-emerald-500 border-emerald-500/50 bg-emerald-500/10" }
                 ].map((item, idx) => (
@@ -79,6 +80,7 @@ export const Footer = () => {
             <ul className="space-y-4">
               {[
                 { name: t('about'), path: "/about" },
+                { name: "Careers", path: "/careers" },
                 { name: t('book_appointment'), path: "/appointment", highlight: true },
                 { name: t('contact'), path: "/support" },
               ].map((link, idx) => (
@@ -155,6 +157,7 @@ export const Footer = () => {
             {t('footer_rights')}
           </p>
           <div className="flex items-center gap-6 text-[10px] sm:text-[11px] text-neutral-500 font-bold uppercase tracking-widest md:pr-16 lg:pr-20">
+            <Link to="/careers" className="hover:text-brand-accent transition-colors">Careers</Link>
             <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
           </div>

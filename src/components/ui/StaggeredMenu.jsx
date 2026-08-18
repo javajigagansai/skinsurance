@@ -407,15 +407,15 @@ export const StaggeredMenu = ({
             >
               <span
                 ref={line1Ref}
-                className="sm-icon-line absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]"
+                className="sm-icon-line absolute left-0 top-1/2 w-full h-[2px] -mt-[1px] bg-current rounded-[2px] [will-change:transform]"
               />
               <span
                 ref={line2Ref}
-                className="sm-icon-line absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]"
+                className="sm-icon-line absolute left-0 top-1/2 w-full h-[2px] -mt-[1px] bg-current rounded-[2px] [will-change:transform]"
               />
               <span
                 ref={line3Ref}
-                className="sm-icon-line absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]"
+                className="sm-icon-line absolute left-0 top-1/2 w-full h-[2px] -mt-[1px] bg-current rounded-[2px] [will-change:transform]"
               />
             </span>
           </button>

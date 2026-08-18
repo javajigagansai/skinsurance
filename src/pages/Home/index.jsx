@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useMotionValue, useTransform, useScroll } from 'framer-motion';
 import { useTranslation } from '../../context/LanguageContext';
 import { Button } from '../../components/ui/Button';
-import { FaShieldAlt, FaHeartbeat, FaCar, FaUserShield, FaHandshake, FaAward, FaStar, FaTrophy, FaChevronDown, FaUsers } from 'react-icons/fa';
+import { FaShieldAlt, FaHeartbeat, FaCar, FaUserShield, FaHandshake, FaAward, FaStar, FaTrophy, FaChevronDown, FaUsers, FaPhoneAlt, FaArrowRight, FaCheckCircle } from 'react-icons/fa';
 import { subscribeToCollection } from '../../services/firebaseService';
 
 import { useRef } from 'react';
@@ -11,254 +11,13 @@ import { StickyStackedCards } from '../../features/marketing/components/StickySt
 import { PremiumEditorialStats } from '../../features/marketing/components/PremiumEditorialStats';
 import { EditorialTrustValues } from '../../features/marketing/components/EditorialTrustValues';
 import { StaggerTestimonials } from '../../components/ui/stagger-testimonials';
-const AnimatedCounter = ({ value, duration = 1.5 }) => {
-  const [displayValue, setDisplayValue] = React.useState('');
-  const elementRef = useRef(null);
-  const animatedRef = useRef(false);
-
-  useEffect(() => {
-    let prefix = '';
-    let suffix = '';
-    let numericString = '';
-    
-    const str = String(value);
-    
-    if (str.startsWith('₹')) {
-      prefix = '₹';
-      numericString = str.substring(1);
-    } else {
-      numericString = str;
-    }
-    
-    if (numericString.endsWith('L+')) {
-      suffix = 'L+';
-      numericString = numericString.substring(0, numericString.length - 2);
-    } else if (numericString.endsWith('%')) {
-      suffix = '%';
-      numericString = numericString.substring(0, numericString.length - 1);
-    } else if (numericString.endsWith('+')) {
-      suffix = '+';
-      numericString = numericString.substring(0, numericString.length - 1);
-    } else if (numericString.includes(' / ')) {
-      const parts = numericString.split(' / ');
-      numericString = parts[0];
-      suffix = ' / ' + parts[1];
-    }
-    
-    const cleanNumStr = numericString.replace(/,/g, '');
-    const targetNum = parseFloat(cleanNumStr);
-    
-    if (isNaN(targetNum)) {
-      setDisplayValue(value);
-      return;
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      const entry = entries[0];
-      if (entry.isIntersecting && !animatedRef.current) {
-        animatedRef.current = true;
-        let startTimestamp = null;
-        const step = (timestamp) => {
-          if (!startTimestamp) startTimestamp = timestamp;
-          const progress = Math.min((timestamp - startTimestamp) / (duration * 1000), 1);
-          const currentVal = progress * targetNum;
-          
-          let formattedVal = '';
-          if (cleanNumStr.includes('.')) {
-            const decimals = cleanNumStr.split('.')[1].length;
-            formattedVal = currentVal.toFixed(decimals);
-          } else {
-            formattedVal = Math.floor(currentVal).toString();
-          }
-          
-          if (value.includes(',')) {
-            formattedVal = Math.floor(currentVal).toLocaleString('en-US');
-          }
-          
-          setDisplayValue(`${prefix}${formattedVal}${suffix}`);
-          
-          if (progress < 1) {
-            window.requestAnimationFrame(step);
-          } else {
-            setDisplayValue(value);
-          }
-        };
-        window.requestAnimationFrame(step);
-      }
-    }, { threshold: 0.1 });
-
-    if (elementRef.current) {
-      observer.observe(elementRef.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [value, duration]);
-
-  return <span ref={elementRef}>{displayValue || value}</span>;
-};
-
-const TrustStatCard = ({ stat, idx }) => {
-  const Icon = stat.icon;
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const rotateX = useTransform(y, [-100, 100], [2, -2]);
-  const rotateY = useTransform(x, [-100, 100], [-2, 2]);
-
-  const handleMouseMove = (event) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const centerX = rect.x + rect.width / 2;
-    const centerY = rect.y + rect.height / 2;
-    x.set(event.clientX - centerX);
-    y.set(event.clientY - centerY);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return (
-    <motion.div
-      style={{ rotateX, rotateY, perspective: 1000 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay: idx * 0.15, ease: "easeOut" }}
-      className="relative h-[220px] rounded-[20px] p-8 flex flex-col justify-start overflow-hidden group transition-all duration-300 ease-out hover:-translate-y-[6px] bg-neutral-100 dark:bg-neutral-1000 backdrop-blur-[20px] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 shadow-premium-soft dark:shadow-premium-dark hover:shadow-[0_16px_48px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_16px_48px_rgba(0,0,0,0.8)]"
-    >
-      {/* 12-15s Glass Reflection Loop */}
-      <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden rounded-[20px]">
-        <motion.div 
-          animate={{ x: ["-150%", "200%", "200%"] }}
-          transition={{ duration: 12, times: [0, 0.1, 1], repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-0 bottom-0 w-[50%] bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-[-30deg]" 
-        />
-      </div>
-
-      {/* One-time Border Sweep */}
-      <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden rounded-[20px]">
-        <motion.div 
-          initial={{ left: "-100%" }}
-          whileInView={{ left: "200%" }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.5, delay: idx * 0.15 + 0.3, ease: "easeInOut" }}
-          className="absolute top-0 bottom-0 w-[40%] bg-gradient-to-r from-transparent via-brand-accent/20 to-transparent skew-x-[-30deg]"
-        />
-      </div>
-
-      {/* Subtle Radial Background Gradient inside card */}
-      <div 
-        className="absolute inset-0 pointer-events-none transition-opacity duration-300 opacity-40 group-hover:opacity-80" 
-        style={{ 
-          background: 'radial-gradient(circle at 0% 0%, rgba(255, 179, 0, 0.08) 0%, transparent 60%)' 
-        }} 
-      />
-
-      <div className="relative z-10 flex justify-between items-start gap-8 w-full">
-        <h3 className={`${stat.size} font-[800] text-black dark:text-brand-accent tracking-[-2px] leading-none whitespace-nowrap overflow-visible flex-1`}>
-          <AnimatedCounter value={stat.number} />
-        </h3>
-        
-        <div className="w-[48px] h-[48px] min-w-[48px] rounded-full bg-black/5 dark:bg-brand-accent/[0.08] flex items-center justify-center shrink-0 transition-transform duration-300 ease-out group-hover:scale-[1.1] group-hover:rotate-[10deg] shadow-sm dark:shadow-[inset_0_2px_4px_rgba(255, 179, 0,0.15)] border border-black/10 dark:border-brand-accent/10">
-          <Icon className="text-[20px] text-black dark:text-brand-accent" />
-        </div>
-      </div>
-
-      <p className="relative z-10 mt-5 text-[18px] font-[600] text-neutral-600 dark:text-neutral-400 uppercase tracking-[0.8px] leading-relaxed opacity-90 w-full break-words">
-        {stat.label}
-      </p>
-    </motion.div>
-  );
-};
-
+import { Calculator } from '../Calculator';
+import { HeroFlyerCarousel } from '../../features/marketing/components/HeroFlyerCarousel';
 
 export const Home = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [monthlyInvest, setMonthlyInvest] = useState(5000);
-  
-  const heroVideoRef = useRef(null);
-  const [videoPlaying, setVideoPlaying] = useState(false);
-
-  // Use compressed video for tablets/mobile (tiny 0.26MB file), full video for desktop
-  const isTouchDevice = typeof window !== 'undefined' && ('ontouchend' in document || navigator.maxTouchPoints > 0);
-  const videoSrc = isTouchDevice ? '/sktempvid.mp4' : '/sktempvid.mp4';
-
-  // Robust autoplay for iPad Safari
-  useEffect(() => {
-    const vid = heroVideoRef.current;
-    if (!vid) return;
-
-    const attemptPlay = () => {
-      if (!vid) return;
-      vid.muted = true;
-      vid.setAttribute('muted', '');
-      vid.setAttribute('playsinline', '');
-      const p = vid.play();
-      if (p && p.then) {
-        p.then(() => setVideoPlaying(true)).catch(() => {});
-      }
-    };
-
-    // Detect when video actually starts playing
-    const onPlaying = () => setVideoPlaying(true);
-    vid.addEventListener('playing', onPlaying);
-
-    // Try immediately
-    attemptPlay();
-
-    // Try again after delays (helps on iPad)
-    const t1 = setTimeout(attemptPlay, 300);
-    const t2 = setTimeout(attemptPlay, 1000);
-    const t3 = setTimeout(attemptPlay, 3000);
-
-    // Try on first user interaction (ultimate fallback for strict Safari / Low Power Mode)
-    const handleInteraction = () => {
-      attemptPlay();
-      document.removeEventListener('touchstart', handleInteraction);
-      document.removeEventListener('click', handleInteraction);
-      document.removeEventListener('scroll', handleInteraction);
-    };
-    document.addEventListener('touchstart', handleInteraction, { once: true, passive: true });
-    document.addEventListener('click', handleInteraction, { once: true });
-    document.addEventListener('scroll', handleInteraction, { once: true, passive: true });
-
-    // Try when video becomes visible (IntersectionObserver)
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) attemptPlay();
-    }, { threshold: 0.1 });
-    observer.observe(vid);
-
-    // Try on visibility change
-    const handleVisibility = () => { if (!document.hidden) attemptPlay(); };
-    document.addEventListener('visibilitychange', handleVisibility);
-
-    // Try when video data is ready
-    vid.addEventListener('loadeddata', attemptPlay);
-    vid.addEventListener('canplay', attemptPlay);
-
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      observer.disconnect();
-      document.removeEventListener('visibilitychange', handleVisibility);
-      document.removeEventListener('touchstart', handleInteraction);
-      document.removeEventListener('click', handleInteraction);
-      document.removeEventListener('scroll', handleInteraction);
-      if (vid) {
-        vid.removeEventListener('loadeddata', attemptPlay);
-        vid.removeEventListener('canplay', attemptPlay);
-        vid.removeEventListener('playing', onPlaying);
-      }
-    };
-  }, [videoSrc]);
-
   const [expectedReturn, setExpectedReturn] = useState(12);
   const [years, setYears] = useState(10);
   const [partnerFilter, setPartnerFilter] = useState('ALL');
@@ -275,6 +34,15 @@ export const Home = () => {
       setPlans(sorted);
     });
     return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (window.location.hash === '#calculator') {
+      setTimeout(() => {
+        const el = document.getElementById('calculator');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+    }
   }, []);
 
   const defaultPartners = [
@@ -496,72 +264,149 @@ export const Home = () => {
 
   const values = [
     {
-      title: 'DIGITAL-FIRST SIMPLICITY',
-      description: 'Scans, quotes, and payouts managed seamlessly via client portals with instant status tracker feeds.',
-      icon: FaUserShield
+      title: 'Flexible Advisory',
+      description: 'Choose between comprehensive life, health, motor, and SIP investment plans with zero commission bias. Learn and decide at your own pace.',
+      icon: FaShieldAlt
     },
     {
-      title: 'UNDERWRITING INTEGRITY',
-      description: 'Transparent calculators reflecting genuine actuarial risk tables with zero surprise charges.',
+      title: 'Verified Insurers',
+      description: 'All policies are backed by IRDAI-licensed top institutions including Tata AIA, HDFC Life, SBI Life, and Star Health. Protect your family with confidence.',
       icon: FaHandshake
     },
     {
-      title: 'AWARD-WINNING UNDERWRITING',
-      description: 'Highly commended boutique operations recognized globally for custom risk modeling options.',
-      icon: FaAward
+      title: 'Personalized Sessions',
+      description: 'One-on-one advisory attention tailored to your family goals and health history. Get dedicated cashless claim assistance whenever you need.',
+      icon: FaUserShield
     }
   ];
 
   return (
     <div className="relative">
-      {/* Full-width Background Video Banner at the Top */}
-      <section className="relative w-full h-screen overflow-hidden bg-black">
-        {/* Video element */}
-        <video 
-          ref={heroVideoRef}
-          className="absolute inset-0 w-full h-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-        >
-          <source src={videoSrc} type="video/mp4" />
-        </video>
+      {/* Modern 2-Column Hero Section */}
+      <section className="relative w-full flex items-center justify-center pt-24 pb-14 sm:pt-28 sm:pb-16 lg:pt-32 lg:pb-20 bg-slate-50 dark:bg-neutral-950 overflow-hidden border-b border-black/5 dark:border-white/5 transition-colors duration-300">
+        
+        {/* Ambient background glow */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-brand-accent/5 dark:bg-brand-accent/10 blur-[140px] rounded-full pointer-events-none" />
 
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+            
+            {/* Left Side: Certified Partner Companies with Highlighted Tata AIA */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="lg:col-span-6 space-y-5 text-left"
+            >
+              {/* Eyebrow Badge */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-accent/10 border border-brand-accent/30 text-brand-accent text-xs font-black uppercase tracking-widest shadow-xs">
+                <FaShieldAlt className="text-xs" />
+                <span>AUTHORIZED MULTI-BRAND INSURANCE ADVISORY</span>
+              </div>
 
+              {/* Featured Tata AIA Highlight Card */}
+              <div className="relative p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-amber-500/15 via-white dark:via-neutral-900 to-amber-500/10 border-2 border-brand-accent/60 shadow-xl dark:shadow-[0_14px_40px_rgba(255,179,0,0.22)] group overflow-hidden">
+                <div className="absolute top-0 right-0 bg-brand-accent text-neutral-950 text-[10px] sm:text-[11px] font-black uppercase px-4 py-1.5 rounded-bl-2xl shadow-sm tracking-wider z-10">
+                  ★ PREMIER FEATURED PARTNER
+                </div>
 
-        {/* Scroll Indicator */}
-        <motion.div 
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center z-20 cursor-pointer"
-          animate={{ y: [0, 12, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-        >
-          <div className="bg-white/80 backdrop-blur-md p-3 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.15)] flex flex-col items-center transition-transform hover:scale-110">
-            <FaChevronDown className="text-xl text-black" />
+                <div className="w-full h-28 sm:h-32 bg-white rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-center p-4">
+                  <img
+                    src="/logos/tata_aia.png"
+                    alt="Tata AIA Life Insurance"
+                    className="h-16 sm:h-20 w-auto max-w-[92%] object-contain transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+              </div>
+
+              {/* Other Insurance Partners Grid */}
+              <div className="space-y-2">
+                <p className="text-[11px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">
+                  COMPARE PLANS ACROSS TOP CERTIFIED INSURERS:
+                </p>
+                <div className="grid grid-cols-4 sm:grid-cols-4 gap-2.5">
+                  {[
+                    { name: 'HDFC Life', logo: '/logos/hdfc_life.png' },
+                    { name: 'ICICI Prudential', logo: '/logos/icici_prudential.png' },
+                    { name: 'SBI Life', logo: '/logos/sbi_life.png' },
+                    { name: 'Star Health', logo: '/logos/star_health.png' },
+                    { name: 'LIC of India', logo: '/logos/lic.png' },
+                    { name: 'Niva Bupa', logo: '/logos/niva_bupa.png' },
+                    { name: 'Bajaj Allianz', logo: '/logos/bajaj_allianz.png' },
+                    { name: 'Care Health', logo: '/logos/care_health.png' }
+                  ].map((partner) => (
+                    <div
+                      key={partner.name}
+                      className="h-12 p-2 rounded-xl bg-white dark:bg-neutral-900 border border-slate-200/70 dark:border-white/10 shadow-xs flex items-center justify-center hover:border-brand-accent/50 hover:scale-105 transition-all group"
+                      title={partner.name}
+                    >
+                      <img
+                        src={partner.logo}
+                        alt={partner.name}
+                        className="max-h-7 w-auto object-contain grayscale group-hover:grayscale-0 transition-all opacity-85 group-hover:opacity-100"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Actions Bar */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
+                <button
+                  onClick={() => navigate('/appointment')}
+                  className="px-8 py-4 rounded-2xl bg-brand-accent text-neutral-950 text-xs sm:text-sm font-black uppercase tracking-wider hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-neutral-950 transition-all transform hover:scale-105 shadow-xl flex items-center gap-2.5 cursor-pointer"
+                >
+                  <FaPhoneAlt className="text-xs" />
+                  <span>Book a Free Call</span>
+                </button>
+              </div>
+
+              {/* Hotline info */}
+              <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+                <span>Direct Advisor Hotline:</span>
+                <a href="tel:+919994451300" className="font-bold text-neutral-900 dark:text-brand-accent hover:underline">
+                  +91 99944 51300
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Right Side: Dynamic Insurance Flyers Carousel */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+              className="lg:col-span-6 w-full"
+            >
+              <HeroFlyerCarousel />
+            </motion.div>
+
           </div>
-        </motion.div>
+        </div>
       </section>
 
-      {/* Parallax Content Overlay Wrap - Scrolls up over the fixed video */}
-      <div className="relative bg-white dark:bg-neutral-1000 z-10 pt-16 pb-0 border-t border-black/5 dark:border-white/5 shadow-premium-soft dark:shadow-premium-dark transition-colors duration-300">
+      {/* Main Content Sections */}
+      <div className="relative bg-white dark:bg-neutral-1000 z-10 transition-colors duration-300">
+
+      {/* WHY SK SMART INVESTMENTS - Directly below the hero section */}
+      <EditorialTrustValues values={values} />
 
       {/* Counters Stats Strip */}
-      <section className="max-w-[1440px] mx-auto px-6 lg:px-8">
-        <PremiumEditorialStats stats={stats} />
-      </section>
+      <PremiumEditorialStats stats={stats} />
 
       {/* Educational Section: What is Insurance & Types */}
-      <section className="w-full">
-        <StickyStackedCards />
-      </section>
-
-      {/* Trust Values Section */}
-      <EditorialTrustValues values={values} />
+      <StickyStackedCards />
 
       {/* Testimonials Strip */}
       <StaggerTestimonials testimonials={testimonials} />
+
+      {/* Interactive Insurance Premium & SIP Calculator Section at the Bottom */}
+      <section id="calculator" className="w-full border-t border-black/5 dark:border-white/5 bg-neutral-50/50 dark:bg-neutral-950/40">
+        <Calculator isEmbedded={true} />
+      </section>
+
       </div>
     </div>
   );

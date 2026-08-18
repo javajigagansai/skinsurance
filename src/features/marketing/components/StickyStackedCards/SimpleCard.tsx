@@ -43,22 +43,24 @@ export const SimpleCard: React.FC<SimpleCardProps> = ({ card, idx }) => {
       <motion.div 
         layoutId={layoutId}
         onClick={() => setIsOpen(true)}
-        className="w-full relative aspect-square md:aspect-auto md:h-full rounded-[24px] p-6 sm:p-8 border border-black/[0.05] dark:border-white/[0.08] flex flex-col bg-stone-50/90 dark:bg-[#18181b]/80 backdrop-blur-[20px] cursor-pointer transition-all duration-500 group hover:border-black/20 dark:hover:border-white/20 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] overflow-hidden"
+        className="w-full relative min-h-[260px] sm:min-h-[280px] h-full rounded-3xl p-6 sm:p-7 border border-black/5 dark:border-white/10 flex flex-col justify-between bg-stone-50/90 dark:bg-neutral-900/80 backdrop-blur-md cursor-pointer transition-all duration-300 group hover:border-black/20 dark:hover:border-white/20 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:-translate-y-1.5 overflow-hidden"
       >
-        <div className={`absolute inset-0 pointer-events-none transition-colors duration-500 rounded-[24px] ${card.bgHoverClass || ''}`} />
-        <div className="flex flex-col items-start w-full h-full relative z-10">
-          <motion.div className="p-4 bg-neutral-100 dark:bg-neutral-900 text-black dark:text-white rounded-[16px] inline-block mb-6 shadow-sm transition-all duration-300">
-            <card.icon className={`text-3xl lg:text-4xl text-black dark:text-white transition-all duration-300 ${card.colorClass || ''}`} />
-          </motion.div>
-          <motion.h3 className="text-xl lg:text-2xl font-bold text-black dark:text-white tracking-tight mb-3">
-            {card.title}
-          </motion.h3>
-          <motion.p className="text-[14px] lg:text-[15px] text-neutral-600 dark:text-neutral-400 leading-relaxed flex-grow">
-            {card.desc}
-          </motion.p>
-          <div className="mt-6 flex items-center justify-end w-full text-brand-accent">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full border border-black/10 dark:border-white/10 group-hover:bg-brand-accent group-hover:text-black dark:group-hover:border-brand-accent transition-all duration-300">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        <div className={`absolute inset-0 pointer-events-none transition-colors duration-300 rounded-3xl ${card.bgHoverClass || ''}`} />
+        <div className="flex flex-col items-start w-full h-full relative z-10 justify-between">
+          <div className="w-full">
+            <motion.div className="p-3.5 bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white rounded-2xl inline-block mb-4 shadow-xs transition-all duration-300 group-hover:scale-110">
+              <card.icon className={`text-2xl lg:text-3xl text-black dark:text-white transition-all duration-300 ${card.colorClass || ''}`} />
+            </motion.div>
+            <motion.h3 className="text-lg lg:text-xl font-black text-neutral-900 dark:text-white tracking-tight mb-2">
+              {card.title}
+            </motion.h3>
+            <motion.p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed font-normal">
+              {card.desc}
+            </motion.p>
+          </div>
+          <div className="mt-5 flex items-center justify-end w-full text-brand-accent">
+            <div className="flex items-center justify-center w-9 h-9 rounded-full border border-black/10 dark:border-white/10 group-hover:bg-brand-accent group-hover:text-black dark:group-hover:border-brand-accent transition-all duration-300">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </div>
           </div>
         </div>

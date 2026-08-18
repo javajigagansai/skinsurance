@@ -52,13 +52,24 @@ export const Navbar = () => {
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
     { name: 'Insurance Plans', path: '/plans' },
-    { name: 'Premium Calculator', path: '/calculator' },
     { name: 'Claims', path: '/claims' },
     { name: 'Contact', path: '/support' }
   ];
 
   const handleDashboardRedirect = () => {
     navigate('/login');
+  };
+
+  const handleNavClick = (e, path) => {
+    if (path === '/#calculator') {
+      e.preventDefault();
+      if (location.pathname === '/') {
+        const el = document.getElementById('calculator');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        navigate('/#calculator');
+      }
+    }
   };
 
   const isActive = (path) => location.pathname === path;
@@ -95,6 +106,7 @@ export const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.path}
+                  onClick={(e) => handleNavClick(e, link.path)}
                   className={`relative px-2 py-2 text-[15px] font-medium whitespace-nowrap transition-all duration-300 inline-block transform hover:scale-110 ${
                     active 
                       ? (isTransparent ? 'text-black font-bold scale-105' : 'text-brand-accent font-bold scale-105 drop-shadow-[0_0_8px_rgba(255,179,0,0.6)]') 

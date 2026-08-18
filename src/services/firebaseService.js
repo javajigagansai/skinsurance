@@ -18,6 +18,10 @@ import { logger } from './logger';
  * Triggers the callback automatically when changes happen.
  */
 export const subscribeToCollection = (collectionName, callback) => {
+  if (!db) {
+    callback([]);
+    return () => {};
+  }
   try {
     const colRef = collection(db, collectionName);
     return onSnapshot(colRef, (snapshot) => {
@@ -41,6 +45,9 @@ export const subscribeToCollection = (collectionName, callback) => {
  * Adds a new document with audit metadata fields.
  */
 export const addDocWithAudit = async (collectionName, data, user = null) => {
+  if (!db) {
+    return data.id || `doc-${Date.now()}`;
+  }
   try {
     const colRef = collection(db, collectionName);
     const docId = data.id || `doc-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;

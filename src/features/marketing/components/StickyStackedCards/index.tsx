@@ -13,26 +13,33 @@ export const StickyStackedCards = () => {
   ];
 
   return (
-    <div className="relative w-full pt-8 sm:pt-12 pb-16 lg:pt-16 lg:pb-24">
-      <div className="max-w-[1440px] mx-auto px-4 lg:px-12">
+    <section className="relative w-full py-12 sm:py-16 lg:py-20 border-t border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-8 sm:mb-10 lg:mb-12 space-y-4 lg:space-y-6 flex flex-col items-center max-w-3xl mx-auto">
+        <div className="text-center mb-8 sm:mb-12 space-y-3 flex flex-col items-center max-w-3xl mx-auto">
+          <div className="flex items-center justify-center gap-3">
+            <span className="w-8 h-[1.5px] bg-brand-accent hidden sm:block"></span>
+            <span className="text-[11px] sm:text-[12px] font-black text-brand-accent tracking-[0.25em] uppercase">
+              INSURANCE ESSENTIALS
+            </span>
+            <span className="w-8 h-[1.5px] bg-brand-accent hidden sm:block"></span>
+          </div>
 
-          <h2 className="text-[20px] sm:text-[28px] md:text-[36px] lg:text-[48px] font-[900] tracking-[-1px] text-black dark:text-white leading-[1.1] sm:leading-[1.15] drop-shadow-sm whitespace-nowrap">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight">
             {t('what_is_ins_title')}
           </h2>
-          <p className="text-[13px] sm:text-[15px] lg:text-[17px] text-neutral-600 dark:text-neutral-400 leading-[1.6] sm:leading-[1.8] font-medium tracking-wide">
+          <p className="text-xs sm:text-sm md:text-base text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto font-medium leading-relaxed">
             {t('what_is_ins_desc')}
           </p>
         </div>
         
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6 items-stretch">
           {eduCards.map((card, idx) => (
             <SimpleCard key={idx} card={card} idx={idx} />
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };

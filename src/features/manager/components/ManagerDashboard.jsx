@@ -11,6 +11,9 @@ import { uploadMediaFile } from '../../../services/firebaseService';
 import { z } from 'zod';
 import imageCompression from 'browser-image-compression';
 import { CompanyLogo } from '../../../pages/Plans/index';
+import { CareersManager } from './CareersManager';
+import { ApplicationsManager } from './ApplicationsManager';
+import { FlyersManager } from './FlyersManager';
 
 const DEFAULT_COMPANIES = [
   'SBI Life Insurance', 'LIC', 'Tata AIA', 'HDFC Life', 
@@ -72,7 +75,17 @@ const planSchema = z.object({
   slug: z.string().optional(),
 });
 
-export const ManagerDashboard = () => {
+export const ManagerDashboard = ({ tab }) => {
+  if (tab === 'flyers') {
+    return <FlyersManager />;
+  }
+  if (tab === 'careers') {
+    return <CareersManager />;
+  }
+  if (tab === 'applications') {
+    return <ApplicationsManager />;
+  }
+
   const [view, setView] = useState('list');
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);

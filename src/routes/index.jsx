@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { Routes, Route, useLocation, Outlet } from 'react-router-dom';
+import { Routes, Route, useLocation, Outlet, Navigate } from 'react-router-dom';
 import { Navbar } from '../layouts/Navbar';
 import { Footer } from '../layouts/Footer';
 import { Loader } from '../components/ui/Loader';
@@ -61,7 +61,7 @@ export const AppRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/plans" element={<Plans />} />
-        <Route path="/calculator" element={<Calculator />} />
+        <Route path="/calculator" element={<Navigate to="/#calculator" replace />} />
         <Route path="/careers" element={<Careers />} />
         <Route path="/support" element={<Support />} />
         <Route path="/claims" element={<Claims />} />

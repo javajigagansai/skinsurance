@@ -8,9 +8,11 @@
   --font-sans: 'Poppins', system-ui, -apple-system, sans-serif;
   
   /* Lumina Brand Primitives */
-  --color-brand-accent: #FFB300;
-  --color-brand-hover: #E6A100;
-  --color-brand-active: #CC8F00;
+  --color-brand-accent: #ffda0a;
+  --color-brand-hover: #f0cb00;
+  --color-brand-active: #d6b500;
+  --color-brand-navy: #152150;
+  --color-brand-ice: #f7f8fe;
   
   /* Neutral Light Primitives */
   --color-neutral-0: #FFFFFF;
@@ -215,5 +217,27 @@ video::-webkit-media-controls-panel {
 .split-char {
   display: inline-block;
   white-space: pre;
+}
+
+/* Continuous Infinite Testimonial Marquee */
+@keyframes marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee 38s linear infinite;
+}
+
+.animate-marquee:hover,
+.group:hover .animate-marquee {
+  animation-play-state: paused !important;
 }
 

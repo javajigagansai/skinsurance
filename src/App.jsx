@@ -5,6 +5,7 @@ import { AuthProvider } from './features/auth/contexts/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { AppRoutes } from './routes';
 import { ChatWidget } from './components/ui/ChatWidget';
+import { LeadWelcomeModal } from './components/common/LeadWelcomeModal';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 
 const ScrollToTop = () => {
@@ -30,6 +31,7 @@ function App() {
                 <meta name="theme-color" content="#FFB300" />
               </Helmet>
               <ScrollToTop />
+              <LeadWelcomeModal />
               <AppRoutes />
               <ChatWidget />
             </BrowserRouter>

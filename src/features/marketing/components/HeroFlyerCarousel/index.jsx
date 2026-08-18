@@ -164,44 +164,6 @@ export const HeroFlyerCarousel = () => {
 
       </div>
 
-      {/* ── Interactive Multi-Flyer Thumbnail Strip ── */}
-      {flyers.length > 1 && (
-        <div className="flex items-center gap-2 px-1 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          {flyers.map((flyer, idx) => {
-            const isActive = idx === currentIndex;
-            return (
-              <button
-                key={flyer.id || idx}
-                onClick={() => handleSelectFlyer(idx)}
-                className={`flex-1 min-w-[90px] sm:min-w-[110px] p-2 rounded-2xl border transition-all flex items-center gap-2 cursor-pointer text-left ${
-                  isActive 
-                    ? 'bg-neutral-900 dark:bg-neutral-900 border-brand-accent shadow-[0_0_15px_rgba(255,179,0,0.25)]' 
-                    : 'bg-white/90 dark:bg-neutral-900/60 border-black/5 dark:border-white/10 opacity-70 hover:opacity-100 hover:border-brand-accent/50'
-                }`}
-              >
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl overflow-hidden bg-neutral-950 shrink-0 border border-white/10">
-                  <img
-                    src={flyer.image}
-                    alt=""
-                    className="w-full h-full object-cover object-top"
-                  />
-                </div>
-                <div className="overflow-hidden min-w-0 flex-1">
-                  <p className={`text-[10px] sm:text-[11px] font-black leading-tight truncate ${
-                    isActive ? 'text-brand-accent' : 'text-neutral-800 dark:text-neutral-200'
-                  }`}>
-                    {flyer.tag || `Poster ${idx + 1}`}
-                  </p>
-                  <p className="text-[9px] sm:text-[10px] text-neutral-400 dark:text-neutral-500 truncate">
-                    {flyer.category}
-                  </p>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      )}
-
     </div>
   );
 };

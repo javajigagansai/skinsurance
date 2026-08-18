@@ -298,18 +298,8 @@ export const Home = () => {
               transition={{ duration: 0.7, ease: "easeOut" }}
               className="lg:col-span-6 space-y-5 text-left"
             >
-              {/* Eyebrow Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-accent/10 border border-brand-accent/30 text-brand-accent text-xs font-black uppercase tracking-widest shadow-xs">
-                <FaShieldAlt className="text-xs" />
-                <span>AUTHORIZED MULTI-BRAND INSURANCE ADVISORY</span>
-              </div>
-
               {/* Featured Tata AIA Highlight Card */}
               <div className="relative p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-amber-500/15 via-white dark:via-neutral-900 to-amber-500/10 border-2 border-brand-accent/60 shadow-xl dark:shadow-[0_14px_40px_rgba(255,179,0,0.22)] group overflow-hidden">
-                <div className="absolute top-0 right-0 bg-brand-accent text-neutral-950 text-[10px] sm:text-[11px] font-black uppercase px-4 py-1.5 rounded-bl-2xl shadow-sm tracking-wider z-10">
-                  ★ PREMIER FEATURED PARTNER
-                </div>
-
                 <div className="w-full h-28 sm:h-32 bg-white rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-center p-4">
                   <img
                     src="/logos/tata_aia.png"

@@ -415,6 +415,18 @@ export const deleteJobApplication = async (id, user = null) => {
 // -------------------------------------------------------------
 export const DEFAULT_FLYERS = [
   {
+    id: 'flyer-instagram-reel-1',
+    title: 'SK Smart Investments Instagram Reel',
+    subtitle: 'Watch our featured Instagram reel on protection & investment planning.',
+    tag: 'INSTAGRAM REEL',
+    video: 'https://www.instagram.com/reel/DbpWSYizKKE/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==&igsi=MzRlODBiNWFlZA==',
+    image: 'https://www.instagram.com/reel/DbpWSYizKKE/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==&igsi=MzRlODBiNWFlZA==',
+    mediaType: 'video',
+    category: 'Featured Video',
+    link: 'https://www.instagram.com/reel/DbpWSYizKKE/',
+    status: 'Active'
+  },
+  {
     id: 'flyer-tata-cancer',
     title: 'Tata AIA Sampoorna Care - Cancer',
     subtitle: 'Cancer Ko Cancel Karne Ke Liye Ho Jao Taiyaar. First cancer plan with income replacement during treatment & recovery.',

@@ -17,13 +17,6 @@ export const StickyStackedCards = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-10 sm:mb-14 space-y-3 flex flex-col items-center max-w-3xl mx-auto">
-          <div className="flex items-center justify-center gap-3">
-            <span className="w-8 h-[1.5px] bg-brand-accent hidden sm:block"></span>
-            <span className="text-[11px] sm:text-xs font-black text-brand-accent tracking-[0.25em] uppercase">
-              INSURANCE ESSENTIALS
-            </span>
-            <span className="w-8 h-[1.5px] bg-brand-accent hidden sm:block"></span>
-          </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight">
             {t('what_is_ins_title') || 'MASTERING WEALTH & PROTECTION'}

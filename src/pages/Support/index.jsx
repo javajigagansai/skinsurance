@@ -103,14 +103,38 @@ export const Support = () => {
 
           {/* Office details card */}
           <div className="lg:col-span-5 bg-white dark:bg-[#0A0A0A] border border-black/10 dark:border-white/10 rounded-2xl p-8 sm:p-10 shadow-sm dark:shadow-none flex flex-col justify-between transition-colors">
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-black/5 dark:bg-white/5 flex items-center justify-center text-black dark:text-white mb-6">
-                <FaMapMarkerAlt className="text-lg" />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-[#FFB300]/15 flex items-center justify-center text-[#FFB300]">
+                  <FaMapMarkerAlt className="text-base" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-widest">Corporate Office</h3>
+                  <p className="text-sm font-bold text-black dark:text-white">MD Plaza, Kanchipuram</p>
+                </div>
               </div>
-              <h3 className="text-xs font-bold text-neutral-400 dark:text-neutral-500 uppercase tracking-widest mb-3">Corporate Office</h3>
-              <p className="text-xl font-bold text-black dark:text-white leading-relaxed mb-6">
-                # 104, MD Plaza, 1st Floor,<br/>West Raja Street,<br/>Kanchipuram – 631502.
-              </p>
+              
+              {/* Embedded Small Google Map */}
+              <div className="relative w-full h-44 rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 mb-6 shadow-md">
+                <iframe
+                  src="https://maps.google.com/maps?q=104%20MD%20Plaza%20West%20Raja%20Street%20Kanchipuram%20631502&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="SK Smart Investments Google Map"
+                  className="w-full h-full"
+                />
+                <a 
+                  href="https://maps.google.com/?q=104+MD+Plaza+West+Raja+Street+Kanchipuram+631502"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute bottom-2 right-2 px-3 py-1.5 bg-black/85 hover:bg-[#FFB300] hover:text-black text-white text-xs font-bold rounded-lg border border-white/20 backdrop-blur-md transition-all shadow-md"
+                >
+                  View in Google Maps ↗
+                </a>
+              </div>
             </div>
             <div className="flex items-center gap-3 pt-6 border-t border-black/5 dark:border-white/5">
               <div className="w-9 h-9 rounded-full bg-[#FFB300]/15 dark:bg-[#FFB300]/10 flex items-center justify-center text-[#FFB300] dark:text-[#FFB300] shrink-0">

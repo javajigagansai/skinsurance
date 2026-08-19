@@ -637,16 +637,31 @@ Hi SK Smart Investments, please confirm my appointment slot. Thank you!`;
         <div className="p-6 sm:p-8 rounded-[2rem] bg-neutral-950 dark:bg-neutral-900 text-white flex flex-col md:flex-row items-center justify-between gap-8 border border-white/10 shadow-2xl relative overflow-hidden z-10">
           <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-3xl pointer-events-none" />
           
-          <div className="flex items-start space-x-5 relative z-10">
-            <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-brand-accent text-2xl shrink-0 backdrop-blur-md">
-              <FaMapMarkerAlt />
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 relative z-10 w-full md:w-auto">
+            <div className="relative w-full sm:w-56 h-28 rounded-2xl overflow-hidden border border-white/20 shadow-md shrink-0">
+              <iframe
+                src="https://maps.google.com/maps?q=104%20MD%20Plaza%20West%20Raja%20Street%20Kanchipuram%20631502&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="SK Smart Corporate HQ Map"
+                className="w-full h-full"
+              />
+              <a 
+                href="https://maps.google.com/?q=104+MD+Plaza+West+Raja+Street+Kanchipuram+631502"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute bottom-1.5 right-1.5 px-2 py-0.5 bg-black/85 text-white text-[10px] font-bold rounded border border-white/20 backdrop-blur-md"
+              >
+                Directions ↗
+              </a>
             </div>
             <div className="space-y-1.5">
               <h4 className="text-base font-bold text-white tracking-wide">SK Smart Corporate HQ</h4>
-              <p className="text-sm text-slate-300 leading-relaxed max-w-sm">
-                # 104, MD Plaza, 1st Floor, West Raja Street, Kanchipuram - 631502.
-              </p>
-              <div className="inline-flex items-center space-x-2 mt-2 px-3 py-1 bg-white/5 rounded-lg border border-white/10">
+              <div className="inline-flex items-center space-x-2 mt-1 px-3 py-1 bg-white/5 rounded-lg border border-white/10">
                 <FaClock className="text-brand-accent text-xs" />
                 <p className="text-xs text-slate-300 font-semibold">Mon - Sat: 9:00 AM - 7:00 PM</p>
               </div>

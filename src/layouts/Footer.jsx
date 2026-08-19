@@ -114,17 +114,33 @@ export const Footer = () => {
             <ul className="space-y-6">
               
               <li>
-                <a href="https://maps.google.com/?q=MD+Plaza+West+Raja+Street+Kanchipuram" target="_blank" rel="noopener noreferrer" className="flex items-start gap-4 group cursor-pointer block">
-                  <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brand-accent/10 group-hover:border-brand-accent/30 transition-all duration-300 shadow-xl">
-                    <FaMapMarkerAlt className="text-neutral-400 group-hover:text-brand-accent transition-colors" />
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <FaMapMarkerAlt className="text-brand-accent text-xs" />
+                    <p className="font-[900] text-white text-[10px] uppercase tracking-widest">Corporate Office</p>
                   </div>
-                  <div>
-                    <p className="font-[900] text-white text-[10px] uppercase tracking-widest mb-1">Corporate Office</p>
-                    <span className="text-sm text-neutral-400 font-medium leading-relaxed group-hover:text-white transition-colors block">
-                      # 104, MD Plaza, 1st Floor, West Raja Street, Kanchipuram - 631502.
-                    </span>
+                  <div className="relative w-full h-32 rounded-2xl overflow-hidden border border-white/10 shadow-lg group hover:border-brand-accent/50 transition-all duration-300">
+                    <iframe
+                      src="https://maps.google.com/maps?q=104%20MD%20Plaza%20West%20Raja%20Street%20Kanchipuram%20631502&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen=""
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="SK Smart Investments Office Location"
+                      className="w-full h-full grayscale-[15%] contrast-125 opacity-90 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300"
+                    />
+                    <a 
+                      href="https://maps.google.com/?q=104+MD+Plaza+West+Raja+Street+Kanchipuram+631502"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="absolute bottom-2 right-2 px-2.5 py-1 bg-black/85 hover:bg-brand-accent hover:text-neutral-950 text-white text-[10px] font-bold rounded-lg border border-white/20 backdrop-blur-md transition-all shadow-md flex items-center gap-1"
+                    >
+                      <span>Get Directions ↗</span>
+                    </a>
                   </div>
-                </a>
+                </div>
               </li>
 
               <li>

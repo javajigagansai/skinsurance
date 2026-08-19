@@ -146,7 +146,7 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
               className="relative p-6 sm:p-8 min-h-[160px] sm:min-h-[175px] rounded-3xl bg-white dark:bg-neutral-900/90 border border-slate-200/80 dark:border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] flex flex-col items-center justify-center text-center group hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
             >
               {/* Stat Number with Count-Up Animation on Viewport Entry */}
-              <div className="text-4xl sm:text-4xl lg:text-5xl font-black text-neutral-900 dark:text-brand-accent tracking-tight mb-2.5 tabular-nums flex items-center justify-center">
+              <div className="text-2xl xs:text-3xl sm:text-4xl lg:text-4xl xl:text-5xl font-black text-neutral-900 dark:text-brand-accent tracking-tight mb-2.5 tabular-nums whitespace-nowrap flex items-center justify-center">
                 <AnimatedStatNumber
                   rawString={item.number}
                   isInView={isInView}

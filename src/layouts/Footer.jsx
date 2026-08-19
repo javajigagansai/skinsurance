@@ -20,9 +20,7 @@ export const Footer = () => {
               <div className="absolute inset-0 bg-brand-accent/20 blur-[30px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <Logo showTagline={false} />
             </Link>
-            <p className="text-sm text-neutral-400 leading-relaxed font-medium">
-              {t('footer_desc')} Elevating your financial security with premium, tailored insurance solutions.
-            </p>
+
             <div className="flex flex-wrap gap-3 pt-2">
               {
                 [

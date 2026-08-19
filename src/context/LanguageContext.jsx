@@ -60,7 +60,7 @@ const translations = {
 
     // Footer
     footer_desc: "Providing expert insurance and investment solutions built on trust and strategic planning.",
-    footer_rights: "© 2026 SK Smart Investments.",
+    footer_rights: "© all rights are reserved",
     footer_insurance: "Insurance",
     footer_company: "Company",
     footer_contact: "Contact Us",
@@ -178,7 +178,7 @@ const translations = {
 
     // Footer
     footer_desc: "நம்பிக்கை மற்றும் மூலோபாய திட்டமிடலின் அடிப்படையில் கட்டமைக்கப்பட்ட நிபுணத்துவ காப்பீடு மற்றும் முதலீட்டு தீர்வுகளை வழங்குதல்.",
-    footer_rights: "© 2026 எஸ்கே ஸ்மார்ட் இன்வெஸ்ட்மென்ட்ஸ். அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை. அனைத்து மாதிரி செயல்பாடுகளும் டெமோ நோக்கங்களுக்காக மட்டுமே.",
+    footer_rights: "© all rights are reserved",
     footer_insurance: "காப்பீடு",
     footer_company: "நிறுவனம்",
     footer_contact: "எங்களைத் தொடர்பு கொள்ளவும்",
@@ -296,7 +296,7 @@ const translations = {
 
     // Footer
     footer_desc: "నమ్మకం మరియు వ్యూహాత్మక ప్రణాళికపై నిర్మించబడిన నిపుణులైన బీమా మరియు పెట్టుబడి పరిష్కారాలను అందించడం.",
-    footer_rights: "© 2026 ఎస్కే స్మార్ట్ ఇన్వెస్ట్‌మెంట్స్.",
+    footer_rights: "© all rights are reserved",
     footer_insurance: "బీమా",
     footer_company: "కంపెనీ",
     footer_contact: "మమ్మల్ని సంప్రదించండి",
@@ -414,7 +414,7 @@ const translations = {
 
     // Footer
     footer_desc: "വിശ്വാസത്തിലും തന്ത്രപരമായ ആസൂത്രണത്തിലും അധിഷ്ഠിതമായ വിദഗ്ദ്ധ ഇൻഷുറൻസ്, നിക്ഷേപ പരിഹാരങ്ങൾ നൽകുന്നു.",
-    footer_rights: "© 2026 എസ്‌കെ സ്മാർട്ട് ഇൻവെസ്റ്റ്‌മെന്റ്സ്.",
+    footer_rights: "© all rights are reserved",
     footer_insurance: "ഇൻഷുറൻസ്",
     footer_company: "കമ്പനി",
     footer_contact: "ഞങ്ങളെ ബന്ധപ്പെടുക",
@@ -532,7 +532,7 @@ const translations = {
 
     // Footer
     footer_desc: "भरोसे और रणनीतिक योजना पर निर्मित विशेषज्ञ बीमा और निवेश समाधान प्रदान करना।",
-    footer_rights: "© 2026 एसके स्मार्ट इन्वेस्टमेंट्स।",
+    footer_rights: "© all rights are reserved",
     footer_insurance: "बीमा",
     footer_company: "कंपनी",
     footer_contact: "संपर्क करें",

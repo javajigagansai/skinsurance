@@ -286,7 +286,7 @@ export const Home = () => {
   return (
     <div className="relative">
       {/* Modern 2-Column Hero Section */}
-      <section className="relative w-full min-h-[calc(100vh-80px)] flex flex-col justify-center snap-start pt-24 pb-12 sm:pt-28 sm:pb-16 bg-slate-50 dark:bg-neutral-950 overflow-hidden border-b border-black/5 dark:border-white/5 transition-colors duration-300">
+      <section className="relative w-full min-h-screen flex flex-col justify-center snap-start pt-20 pb-8 sm:pt-24 sm:pb-12 bg-slate-50 dark:bg-neutral-950 overflow-hidden border-b border-black/5 dark:border-white/5 transition-colors duration-300">
         
         {/* Ambient background glow */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-brand-accent/5 dark:bg-brand-accent/10 blur-[140px] rounded-full pointer-events-none" />

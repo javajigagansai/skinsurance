@@ -191,10 +191,9 @@ export const HeroFlyerCarousel = () => {
             </>
           )}
 
+        </div>
+
       </div>
 
     </div>
-  );
-};
-
 export default HeroFlyerCarousel;

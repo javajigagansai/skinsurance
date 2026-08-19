@@ -416,11 +416,11 @@ export const deleteJobApplication = async (id, user = null) => {
 export const DEFAULT_FLYERS = [
   {
     id: 'flyer-video-spotlight',
-    title: 'SK Smart Protection Spotlight',
-    subtitle: 'Watch how SK Smart Investments delivers 100% paperless digital onboarding and instant claim support.',
+    title: 'SK Smart Digital Protection & Advisory',
+    subtitle: 'Watch how SK Smart Investments delivers 100% paperless digital onboarding and 45-minute claim support.',
     tag: 'VIDEO SPOTLIGHT',
-    video: '/sk_mobile_compressed.mp4',
     image: '/sk_mobile_compressed.mp4',
+    video: '/sk_mobile_compressed.mp4',
     mediaType: 'video',
     category: 'Video Spotlight',
     link: '/appointment',

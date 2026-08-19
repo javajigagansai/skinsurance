@@ -61,20 +61,6 @@ export const HeroFlyerCarousel = () => {
 
   const mediaSrc = currentFlyer.video || currentFlyer.videoUrl || currentFlyer.image;
 
-  // Detect if the media is an Instagram Reel or Post
-  const isInstagram = Boolean(
-    typeof mediaSrc === 'string' && (mediaSrc.includes('instagram.com/reel/') || mediaSrc.includes('instagram.com/p/'))
-  );
-
-  const getInstagramEmbedUrl = (url) => {
-    if (!url) return '';
-    const match = url.match(/instagram\.com\/(?:reel|p)\/([^/?#&]+)/i);
-    if (match && match[1]) {
-      return `https://www.instagram.com/reel/${match[1]}/embed/`;
-    }
-    return url;
-  };
-
   return (
     <div 
       className="relative w-full max-w-xl mx-auto flex flex-col space-y-4 select-none"
@@ -100,18 +86,7 @@ export const HeroFlyerCarousel = () => {
               transition={{ duration: 0.5, ease: "easeInOut" }}
               className="absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden"
             >
-              {isInstagram ? (
-                <div className="relative w-full h-full flex items-center justify-center bg-neutral-950 overflow-hidden">
-                  <iframe
-                    key={`insta-${currentFlyer.id || currentIndex}`}
-                    src={getInstagramEmbedUrl(mediaSrc)}
-                    title={currentFlyer.title || "Instagram Reel Video"}
-                    className="w-full h-full border-0 rounded-3xl overflow-hidden"
-                    allowFullScreen
-                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                  />
-                </div>
-              ) : isVideo ? (
+              {isVideo ? (
                 <>
                   {/* Blurred Background Video Atmospheric Tone */}
                   <video
@@ -216,9 +191,10 @@ export const HeroFlyerCarousel = () => {
             </>
           )}
 
-        </div>
-
       </div>
 
     </div>
+  );
+};
+
 export default HeroFlyerCarousel;

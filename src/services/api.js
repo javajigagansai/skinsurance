@@ -415,15 +415,15 @@ export const deleteJobApplication = async (id, user = null) => {
 // -------------------------------------------------------------
 export const DEFAULT_FLYERS = [
   {
-    id: 'flyer-instagram-reel-1',
-    title: 'SK Smart Investments Instagram Reel',
-    subtitle: 'Watch our featured Instagram reel on protection & investment planning.',
-    tag: 'INSTAGRAM REEL',
-    video: 'https://www.instagram.com/reel/DbpWSYizKKE/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==&igsi=MzRlODBiNWFlZA==',
-    image: 'https://www.instagram.com/reel/DbpWSYizKKE/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==&igsi=MzRlODBiNWFlZA==',
+    id: 'flyer-video-spotlight',
+    title: 'SK Smart Protection Spotlight',
+    subtitle: 'Watch how SK Smart Investments delivers 100% paperless digital onboarding and instant claim support.',
+    tag: 'VIDEO SPOTLIGHT',
+    video: '/sk_mobile_compressed.mp4',
+    image: '/sk_mobile_compressed.mp4',
     mediaType: 'video',
-    category: 'Featured Video',
-    link: 'https://www.instagram.com/reel/DbpWSYizKKE/',
+    category: 'Video Spotlight',
+    link: '/appointment',
     status: 'Active'
   },
   {

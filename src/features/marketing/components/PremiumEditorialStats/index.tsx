@@ -145,21 +145,11 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
         className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"
       >
         {displayStats.map((item, index) => {
-          const Icon = item.icon || STAT_ICONS[index % STAT_ICONS.length];
-
           return (
             <div
               key={index}
               className="relative p-7 sm:p-8 rounded-3xl bg-white dark:bg-neutral-900/90 border border-slate-200/80 dark:border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] flex flex-col items-center justify-center text-center group hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
             >
-              {/* Subtle Ambient Hover Glow */}
-              <div className="absolute inset-0 bg-gradient-to-b from-brand-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-
-              {/* Icon Pill */}
-              <div className="w-12 h-12 rounded-2xl bg-brand-accent/10 border border-brand-accent/20 flex items-center justify-center text-brand-accent text-xl mb-4 group-hover:scale-110 group-hover:bg-brand-accent group-hover:text-neutral-950 transition-all duration-300 shadow-xs">
-                <Icon />
-              </div>
-
               {/* Stat Number with Count-Up Animation on Viewport Entry */}
               <div className="text-4xl sm:text-4xl lg:text-5xl font-black text-neutral-900 dark:text-brand-accent tracking-tight mb-2 tabular-nums">
                 <AnimatedStatNumber

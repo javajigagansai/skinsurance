@@ -579,3 +579,97 @@ export const getStats = async () => {
     return [];
   }
 };
+
+// -------------------------------------------------------------
+// CONSULTATION LEADS (Plan Your Protection)
+// -------------------------------------------------------------
+
+export const submitConsultationLead = async (leadData) => {
+  try {
+    const record = {
+      ...leadData,
+      status: 'New',
+      source: leadData.source || 'Home Lead Capture',
+      createdAt: new Date().toISOString()
+    };
+    let docId = `lead-${Date.now()}`;
+    if (isFirebaseConfigured && db) {
+      const ref = await addDocWithAudit('consultation_leads', record);
+      if (ref && typeof ref === 'string') docId = ref;
+      else if (ref && ref.id) docId = ref.id;
+    }
+    const current = JSON.parse(localStorage.getItem('sk_consultation_leads_local') || '[]');
+    current.unshift({ id: docId, ...record });
+    localStorage.setItem('sk_consultation_leads_local', JSON.stringify(current));
+    logger.info("Successfully recorded consultation lead", { docId, name: leadData.name });
+    return { id: docId, ...record };
+  } catch (error) {
+    logger.error("Failed to submit consultation lead", { error: error.message });
+    const record = {
+      ...leadData,
+      id: `lead-${Date.now()}`,
+      status: 'New',
+      source: leadData.source || 'Home Lead Capture',
+      createdAt: new Date().toISOString()
+    };
+    const current = JSON.parse(localStorage.getItem('sk_consultation_leads_local') || '[]');
+    current.unshift(record);
+    localStorage.setItem('sk_consultation_leads_local', JSON.stringify(current));
+    return record;
+  }
+};
+
+export const getConsultationLeads = async () => {
+  try {
+    if (isFirebaseConfigured && db) {
+      const colRef = collection(db, 'consultation_leads');
+      const snapshot = await getDocs(colRef);
+      if (!snapshot.empty) {
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+          .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+      }
+    }
+    const local = localStorage.getItem('sk_consultation_leads_local');
+    return local ? JSON.parse(local) : [];
+  } catch (error) {
+    logger.error("Failed to fetch consultation leads", { error: error.message });
+    const local = localStorage.getItem('sk_consultation_leads_local');
+    return local ? JSON.parse(local) : [];
+  }
+};
+
+export const updateConsultationLeadStatus = async (id, status, user = null) => {
+  try {
+    if (isFirebaseConfigured && db) {
+      await updateDocWithAudit('consultation_leads', id, { status }, user);
+    }
+    const current = JSON.parse(localStorage.getItem('sk_consultation_leads_local') || '[]');
+    const updated = current.map(l => l.id === id ? { ...l, status, updatedAt: new Date().toISOString() } : l);
+    localStorage.setItem('sk_consultation_leads_local', JSON.stringify(updated));
+    return true;
+  } catch (error) {
+    logger.error("Failed to update consultation lead status", { error: error.message });
+    const current = JSON.parse(localStorage.getItem('sk_consultation_leads_local') || '[]');
+    const updated = current.map(l => l.id === id ? { ...l, status, updatedAt: new Date().toISOString() } : l);
+    localStorage.setItem('sk_consultation_leads_local', JSON.stringify(updated));
+    return true;
+  }
+};
+
+export const deleteConsultationLead = async (id, user = null) => {
+  try {
+    if (isFirebaseConfigured && db) {
+      await deleteDocWithAudit('consultation_leads', id, user);
+    }
+    const current = JSON.parse(localStorage.getItem('sk_consultation_leads_local') || '[]');
+    const filtered = current.filter(l => l.id !== id);
+    localStorage.setItem('sk_consultation_leads_local', JSON.stringify(filtered));
+    return true;
+  } catch (error) {
+    logger.error("Failed to delete consultation lead", { error: error.message });
+    const current = JSON.parse(localStorage.getItem('sk_consultation_leads_local') || '[]');
+    const filtered = current.filter(l => l.id !== id);
+    localStorage.setItem('sk_consultation_leads_local', JSON.stringify(filtered));
+    return true;
+  }
+};

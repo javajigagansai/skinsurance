@@ -337,201 +337,224 @@ export const StaggeredMenu = ({
     };
 
     document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
     };
   }, [closeOnClickAway, open, closeMenu]);
 
   return (
-    <div
-      className={`sm-scope z-[9999] ${isFixed ? `fixed top-0 right-0 w-full ${open ? 'h-screen pointer-events-auto' : 'h-[80px] pointer-events-none'}` : 'w-full h-full'}`}
-    >
-      <div
-        className={
-          (className ? className + ' ' : '') + 'staggered-menu-wrapper pointer-events-none relative w-full h-full z-50'
-        }
-        style={accentColor ? { '--sm-accent': accentColor } : undefined}
-        data-position={position}
-        data-open={open || undefined}
+    <div className="relative flex items-center justify-center">
+      {/* Mobile Hamburger / Close Toggle Button - In-flow with Header */}
+      <button
+        ref={toggleBtnRef}
+        className="sm-toggle relative z-[10002] flex items-center justify-center w-11 h-11 rounded-xl bg-transparent border-0 cursor-pointer text-current transition-colors duration-300 p-0 focus:outline-none -mr-1"
+        style={{ color: open ? openMenuButtonColor : menuButtonColor }}
+        aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
+        aria-expanded={open}
+        aria-controls="staggered-menu-panel"
+        onClick={toggleMenu}
+        type="button"
       >
-        <div
-          ref={preLayersRef}
-          className="sm-prelayers fixed top-0 right-0 bottom-0 pointer-events-none z-[5]"
+        <span
+          ref={textWrapRef}
+          style={{ display: 'none' }}
           aria-hidden="true"
         >
-          {(() => {
-            const raw = colors && colors.length ? colors.slice(0, 4) : ['#1e1e22', '#35353c'];
-            let arr = [...raw];
-            if (arr.length >= 3) {
-              const mid = Math.floor(arr.length / 2);
-              arr.splice(mid, 1);
-            }
-            return arr.map((c, i) => (
-              <div
-                key={i}
-                className="sm-prelayer absolute top-0 right-0 h-screen w-full translate-x-0"
-                style={{ background: c }}
-              />
-            ));
-          })()}
-        </div>
+          <span ref={textInnerRef}></span>
+        </span>
 
-        <header
-          className="staggered-menu-header fixed top-[20px] right-[24px] w-auto flex items-center justify-end bg-transparent pointer-events-none z-[60]"
-          aria-label="Main navigation header"
+        <span
+          ref={iconRef}
+          className="sm-icon relative w-6 h-6 shrink-0 inline-flex items-center justify-center [will-change:transform]"
+          aria-hidden="true"
         >
-          {/* Logo is handled by our Navbar component externally, so we only need the toggle button here */}
-          
-          <button
-            ref={toggleBtnRef}
-            className="sm-toggle relative inline-flex items-center gap-[0.3rem] bg-transparent border-0 cursor-pointer font-medium leading-none overflow-visible pointer-events-auto transition-colors duration-300"
-            style={{ color: open ? openMenuButtonColor : menuButtonColor }}
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            aria-expanded={open}
-            aria-controls="staggered-menu-panel"
-            onClick={toggleMenu}
-            type="button"
+          <span
+            ref={line1Ref}
+            className="sm-icon-line absolute left-0 top-1/2 w-full h-[2.5px] -mt-[1.25px] bg-current rounded-full [will-change:transform]"
+          />
+          <span
+            ref={line2Ref}
+            className="sm-icon-line absolute left-0 top-1/2 w-full h-[2.5px] -mt-[1.25px] bg-current rounded-full [will-change:transform]"
+          />
+          <span
+            ref={line3Ref}
+            className="sm-icon-line absolute left-0 top-1/2 w-full h-[2.5px] -mt-[1.25px] bg-current rounded-full [will-change:transform]"
+          />
+        </span>
+      </button>
+
+      {/* Slide-out Menu Panel & Overlay */}
+      <div
+        className={`sm-scope fixed inset-0 z-[10000] ${
+          open ? 'pointer-events-auto' : 'pointer-events-none'
+        }`}
+        aria-hidden={!open}
+      >
+        <div
+          className={
+            (className ? className + ' ' : '') + 'staggered-menu-wrapper relative w-full h-full'
+          }
+          style={accentColor ? { '--sm-accent': accentColor } : undefined}
+          data-position={position}
+          data-open={open || undefined}
+        >
+          {/* Backdrop Layers */}
+          <div
+            ref={preLayersRef}
+            className="sm-prelayers fixed top-0 right-0 bottom-0 pointer-events-none z-[5]"
+            aria-hidden="true"
           >
-            <span
-              ref={textWrapRef}
-              style={{ display: 'none' }}
-              aria-hidden="true"
-            >
-              <span ref={textInnerRef}></span>
-            </span>
-
-            <span
-              ref={iconRef}
-              className="sm-icon relative w-[24px] h-[24px] shrink-0 inline-flex items-center justify-center [will-change:transform]"
-              aria-hidden="true"
-            >
-              <span
-                ref={line1Ref}
-                className="sm-icon-line absolute left-0 top-1/2 w-full h-[2px] -mt-[1px] bg-current rounded-[2px] [will-change:transform]"
-              />
-              <span
-                ref={line2Ref}
-                className="sm-icon-line absolute left-0 top-1/2 w-full h-[2px] -mt-[1px] bg-current rounded-[2px] [will-change:transform]"
-              />
-              <span
-                ref={line3Ref}
-                className="sm-icon-line absolute left-0 top-1/2 w-full h-[2px] -mt-[1px] bg-current rounded-[2px] [will-change:transform]"
-              />
-            </span>
-          </button>
-        </header>
-
-        <aside
-          id="staggered-menu-panel"
-          ref={panelRef}
-          className="staggered-menu-panel fixed top-0 right-0 h-screen w-full sm:w-[420px] bg-white dark:bg-[#0A0A0A] flex flex-col p-[6em_2em_2em_2em] overflow-y-auto z-10 backdrop-blur-[12px] pointer-events-auto shadow-2xl"
-          style={{ WebkitBackdropFilter: 'blur(12px)' }}
-          aria-hidden={!open}
-        >
-          <div className="sm-panel-inner flex-1 flex flex-col gap-5">
-            <ul
-              className="sm-panel-list list-none m-0 p-0 flex flex-col gap-2"
-              role="list"
-              data-numbering={displayItemNumbering || undefined}
-            >
-              {items && items.length ? (
-                items.map((it, idx) => {
-                  const isActive = typeof window !== 'undefined' && window.location.pathname === it.link;
-                  return (
-                    <li className="sm-panel-itemWrap relative overflow-hidden leading-none" key={it.label + idx}>
-                      <Link
-                        className={`sm-panel-item relative font-[900] text-2xl sm:text-3xl cursor-pointer leading-none tracking-tight uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em] mb-4 ${isActive ? 'text-brand-accent' : 'text-black dark:text-white'}`}
-                        to={it.link}
-                        onClick={() => closeMenu()}
-                        aria-label={it.ariaLabel}
-                        data-index={idx + 1}
-                      >
-                      <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
-                        {it.label}
-                      </span>
-                      </Link>
-                  </li>
-                  );
-                })
-              ) : (
-                <li className="sm-panel-itemWrap relative overflow-hidden leading-none" aria-hidden="true">
-                  <span className="sm-panel-item relative text-black dark:text-white font-semibold text-xl sm:text-2xl cursor-pointer leading-none tracking-tight uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em]">
-                    <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
-                      No items
-                    </span>
-                  </span>
-                </li>
-              )}
-            </ul>
-
-            {bottomContent && (
-              <div className="mt-8 border-t border-black/10 dark:border-white/10 pt-8">
-                {typeof bottomContent === 'function' ? bottomContent(closeMenu) : bottomContent}
-              </div>
-            )}
-
-            {displaySocials && socialItems && socialItems.length > 0 && (
-              <div className="sm-socials mt-auto pt-8 flex flex-col gap-3 border-t border-black/10 dark:border-white/10" aria-label="Social links">
-                <h3 className="sm-socials-title m-0 text-xs font-black tracking-widest uppercase text-black dark:text-white">Connect With Us</h3>
-                <ul
-                  className="sm-socials-list list-none m-0 p-0 flex flex-row items-center gap-6 flex-wrap"
-                  role="list"
-                >
-                  {socialItems.map((s, i) => (
-                    <li key={s.label + i} className="sm-socials-item">
-                      <a
-                        href={s.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="sm-socials-link text-sm font-bold uppercase tracking-wider text-black dark:text-white no-underline relative inline-block py-[2px] transition-[color,opacity] duration-300 ease-linear hover:text-brand-accent dark:hover:text-brand-accent"
-                      >
-                        {s.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            {(() => {
+              const raw = colors && colors.length ? colors.slice(0, 4) : ['#1e1e22', '#35353c'];
+              let arr = [...raw];
+              if (arr.length >= 3) {
+                const mid = Math.floor(arr.length / 2);
+                arr.splice(mid, 1);
+              }
+              return arr.map((c, i) => (
+                <div
+                  key={i}
+                  className="sm-prelayer absolute top-0 right-0 h-screen w-full translate-x-0"
+                  style={{ background: c }}
+                />
+              ));
+            })()}
           </div>
-        </aside>
+
+          {/* Backdrop Darken Overlay on Tablet/Desktop if open */}
+          {open && (
+            <div
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[8] transition-opacity duration-300 hidden sm:block"
+              onClick={closeMenu}
+              aria-hidden="true"
+            />
+          )}
+
+          {/* Slide-out Menu Content */}
+          <aside
+            id="staggered-menu-panel"
+            ref={panelRef}
+            className="staggered-menu-panel fixed top-0 right-0 h-screen w-full sm:w-[400px] md:w-[420px] max-w-full bg-white dark:bg-[#0A0A0A] flex flex-col p-[5.5rem_1.5rem_2rem_1.5rem] sm:p-[6rem_2rem_2rem_2rem] overflow-y-auto z-10 backdrop-blur-[16px] pointer-events-auto shadow-2xl border-l border-black/5 dark:border-white/10"
+            style={{ WebkitBackdropFilter: 'blur(16px)' }}
+          >
+            <div className="sm-panel-inner flex-1 flex flex-col justify-between gap-6 min-h-0">
+              <ul
+                className="sm-panel-list list-none m-0 p-0 flex flex-col gap-1 sm:gap-2"
+                role="list"
+                data-numbering={displayItemNumbering || undefined}
+              >
+                {items && items.length ? (
+                  items.map((it, idx) => {
+                    const isActive = typeof window !== 'undefined' && window.location.pathname === it.link;
+                    return (
+                      <li className="sm-panel-itemWrap relative overflow-hidden leading-none" key={it.label + idx}>
+                        <Link
+                          className={`sm-panel-item relative font-[800] text-2xl sm:text-3xl cursor-pointer leading-none tracking-tight uppercase transition-colors duration-200 inline-block no-underline py-2.5 pr-[1.4em] ${
+                            isActive ? 'text-brand-accent font-black' : 'text-neutral-900 dark:text-white hover:text-brand-accent dark:hover:text-brand-accent'
+                          }`}
+                          to={it.link}
+                          onClick={() => closeMenu()}
+                          aria-label={it.ariaLabel}
+                          data-index={idx + 1}
+                        >
+                          <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
+                            {it.label}
+                          </span>
+                        </Link>
+                      </li>
+                    );
+                  })
+                ) : (
+                  <li className="sm-panel-itemWrap relative overflow-hidden leading-none" aria-hidden="true">
+                    <span className="sm-panel-item relative text-neutral-900 dark:text-white font-semibold text-xl sm:text-2xl cursor-pointer leading-none tracking-tight uppercase inline-block no-underline pr-[1.4em]">
+                      <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
+                        No items
+                      </span>
+                    </span>
+                  </li>
+                )}
+              </ul>
+
+              {bottomContent && (
+                <div className="mt-auto border-t border-black/10 dark:border-white/10 pt-6">
+                  {typeof bottomContent === 'function' ? bottomContent(closeMenu) : bottomContent}
+                </div>
+              )}
+
+              {displaySocials && socialItems && socialItems.length > 0 && (
+                <div className="sm-socials pt-4 flex flex-col gap-3 border-t border-black/10 dark:border-white/10" aria-label="Social links">
+                  <h3 className="sm-socials-title m-0 text-xs font-black tracking-widest uppercase text-neutral-500 dark:text-neutral-400">Connect With Us</h3>
+                  <ul
+                    className="sm-socials-list list-none m-0 p-0 flex flex-row items-center gap-6 flex-wrap"
+                    role="list"
+                  >
+                    {socialItems.map((s, i) => (
+                      <li key={s.label + i} className="sm-socials-item">
+                        <a
+                          href={s.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="sm-socials-link text-sm font-bold uppercase tracking-wider text-neutral-800 dark:text-neutral-200 no-underline relative inline-block py-[2px] transition-colors duration-200 hover:text-brand-accent dark:hover:text-brand-accent"
+                        >
+                          {s.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </aside>
+        </div>
       </div>
 
       <style>{`
-.sm-scope .staggered-menu-wrapper { position: relative; width: 100%; height: 100%; z-index: 50; pointer-events: none; }
-.sm-scope .sm-logo { display: flex; align-items: center; user-select: none; }
-.sm-scope .sm-logo-img { display: block; height: 32px; width: auto; object-fit: contain; }
-.sm-scope .sm-toggle { position: relative; display: inline-flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; color: #e9e9ef; font-weight: 500; line-height: 1; overflow: visible; outline: none; -webkit-tap-highlight-color: transparent; }
+.sm-scope .staggered-menu-wrapper { position: relative; width: 100%; height: 100%; }
+.sm-scope .sm-toggle { position: relative; display: inline-flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; line-height: 1; overflow: visible; outline: none; -webkit-tap-highlight-color: transparent; }
 .sm-scope .sm-toggle:focus-visible, .sm-scope .sm-toggle:focus { outline: none; }
-.sm-scope .sm-line:last-of-type { margin-top: 6px; }
 .sm-scope .sm-icon { position: relative; width: 24px; height: 24px; flex: 0 0 24px; display: inline-flex; align-items: center; justify-content: center; will-change: transform; }
 .sm-scope .sm-panel-itemWrap { position: relative; overflow: hidden; line-height: 1; }
-.sm-scope .sm-icon-line { position: absolute; left: 50%; top: 50%; width: 100%; height: 2px; background: currentColor; border-radius: 2px; transform: translate(-50%, -50%); will-change: transform; }
-.sm-scope .sm-line { display: none !important; }
-.sm-scope .staggered-menu-panel { position: absolute; top: 0; right: 0; width: clamp(260px, 38vw, 420px); height: 100vh; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; padding: 6em 2em 2em 2em; overflow-y: auto; z-index: 10; pointer-events: auto; }
+.sm-scope .sm-icon-line { position: absolute; left: 50%; top: 50%; width: 100%; height: 2.5px; background: currentColor; border-radius: 2px; transform: translate(-50%, -50%); will-change: transform; }
+.sm-scope .staggered-menu-panel { position: fixed; top: 0; right: 0; width: 100vw; height: 100vh; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: flex; flex-direction: column; overflow-y: auto; pointer-events: auto; }
+@media (min-width: 640px) {
+  .sm-scope .staggered-menu-panel { width: 400px; }
+}
+@media (min-width: 768px) {
+  .sm-scope .staggered-menu-panel { width: 420px; }
+}
 .sm-scope [data-position='left'] .staggered-menu-panel { right: auto; left: 0; }
-.sm-scope .sm-prelayers { position: absolute; top: 0; right: 0; bottom: 0; width: clamp(260px, 38vw, 420px); pointer-events: none; z-index: 5; }
+.sm-scope .sm-prelayers { position: fixed; top: 0; right: 0; bottom: 0; width: 100vw; pointer-events: none; z-index: 5; }
+@media (min-width: 640px) {
+  .sm-scope .sm-prelayers { width: 400px; }
+}
+@media (min-width: 768px) {
+  .sm-scope .sm-prelayers { width: 420px; }
+}
 .sm-scope [data-position='left'] .sm-prelayers { right: auto; left: 0; }
 .sm-scope .sm-prelayer { position: absolute; top: 0; right: 0; height: 100vh; width: 100%; transform: translateX(0); }
-.sm-scope .sm-panel-inner { flex: 1; display: flex; flex-direction: column; gap: 1.25rem; }
-.sm-scope .sm-socials { margin-top: auto; padding-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.sm-scope .sm-panel-inner { flex: 1; display: flex; flex-direction: column; }
+.sm-scope .sm-socials { margin-top: auto; padding-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
 .sm-scope .sm-socials-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: row; align-items: center; gap: 1rem; flex-wrap: wrap; }
 .sm-scope .sm-socials-list .sm-socials-link { opacity: 1; transition: opacity 0.3s ease; }
 .sm-scope .sm-socials-list:hover .sm-socials-link:not(:hover) { opacity: 0.35; }
 .sm-scope .sm-socials-list:focus-within .sm-socials-link:not(:focus-visible) { opacity: 0.35; }
 .sm-scope .sm-socials-list .sm-socials-link:hover,
 .sm-scope .sm-socials-list .sm-socials-link:focus-visible { opacity: 1; }
-.sm-scope .sm-socials-link:focus-visible { outline: 2px solid var(--sm-accent, #ff0000); outline-offset: 3px; }
-.sm-scope .sm-socials-link { font-size: 1.2rem; font-weight: 500; text-decoration: none; position: relative; padding: 2px 0; display: inline-block; transition: color 0.3s ease, opacity 0.3s ease; }
-.sm-scope .sm-socials-link:hover { color: var(--sm-accent, #ff0000); }
+.sm-scope .sm-socials-link:focus-visible { outline: 2px solid var(--sm-accent, #ffda0a); outline-offset: 3px; }
+.sm-scope .sm-socials-link { font-size: 1.1rem; font-weight: 500; text-decoration: none; position: relative; padding: 2px 0; display: inline-block; transition: color 0.3s ease, opacity 0.3s ease; }
+.sm-scope .sm-socials-link:hover { color: var(--sm-accent, #ffda0a); }
 .sm-scope .sm-panel-title { margin: 0; font-size: 1rem; font-weight: 600; text-transform: uppercase; }
-.sm-scope .sm-panel-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.sm-scope .sm-panel-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.25rem; }
 .sm-scope .sm-panel-item { position: relative; cursor: pointer; line-height: 1.2; text-transform: uppercase; transition: background 0.25s, color 0.25s; display: inline-block; text-decoration: none; }
 .sm-scope .sm-panel-itemLabel { display: inline-block; will-change: transform; transform-origin: 50% 100%; }
-.sm-scope .sm-panel-item:hover { color: var(--sm-accent, #ff0000); }
+.sm-scope .sm-panel-item:hover { color: var(--sm-accent, #ffda0a); }
 .sm-scope .sm-panel-list[data-numbering] { counter-reset: smItem; }
 .sm-scope .sm-panel-list[data-numbering] .sm-panel-item::after { counter-increment: smItem; content: counter(smItem, decimal-leading-zero); position: absolute; top: 0.1em; left: 100%; margin-left: 12px; font-size: 14px; font-weight: 700; opacity: 0.3; letter-spacing: 0; pointer-events: none; user-select: none; opacity: var(--sm-num-opacity, 0); }
-@media (max-width: 1024px) { .sm-scope .staggered-menu-panel, .sm-scope .sm-prelayers { width: 100vw; left: 0; right: 0; } .sm-scope .staggered-menu-wrapper[data-open] .sm-logo-img { filter: invert(100%); } }
-@media (max-width: 640px) { .sm-scope .staggered-menu-panel, .sm-scope .sm-prelayers { width: 100vw; left: 0; right: 0; } .sm-scope .staggered-menu-wrapper[data-open] .sm-logo-img { filter: invert(100%); } }
+@media (max-width: 640px) {
+  .sm-scope .staggered-menu-panel, .sm-scope .sm-prelayers { width: 100vw; left: 0; right: 0; }
+}
       `}</style>
     </div>
   );

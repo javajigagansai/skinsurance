@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, useInView, animate } from 'framer-motion';
 import { FaShieldAlt, FaUserShield, FaUsers, FaAward } from 'react-icons/fa';
 
 const STAT_ICONS = [FaShieldAlt, FaUserShield, FaUsers, FaAward];
@@ -10,6 +10,82 @@ interface Stat {
   icon?: any;
   size?: string;
 }
+
+const AnimatedStatNumber = ({
+  rawString = '',
+  isInView,
+  delay = 0,
+}: {
+  rawString?: string;
+  isInView: boolean;
+  delay?: number;
+}) => {
+  const [display, setDisplay] = useState('0');
+
+  useEffect(() => {
+    if (!isInView || !rawString) return;
+
+    let prefix = '';
+    let suffix = '';
+    let targetNum = 0;
+    let decimals = 0;
+    let isLocale = false;
+
+    if (rawString.includes('98.7')) {
+      targetNum = 98.7;
+      decimals = 1;
+      suffix = '%';
+    } else if (rawString.includes('420')) {
+      prefix = '₹';
+      targetNum = 420;
+      suffix = 'L+';
+    } else if (rawString.includes('150')) {
+      targetNum = 150000;
+      suffix = '+';
+      isLocale = true;
+    } else if (rawString.includes('4.9')) {
+      targetNum = 4.9;
+      decimals = 1;
+      suffix = ' / 5';
+    } else {
+      const match = rawString.match(/^([^0-9.]*)([0-9,.]+)(.*)$/);
+      if (match) {
+        prefix = match[1] || '';
+        const numStr = match[2].replace(/,/g, '');
+        targetNum = parseFloat(numStr) || 0;
+        if (numStr.includes('.')) {
+          decimals = numStr.split('.')[1].length;
+        }
+        suffix = match[3] || '';
+        isLocale = match[2].includes(',');
+      } else {
+        setDisplay(rawString);
+        return;
+      }
+    }
+
+    const controls = animate(0, targetNum, {
+      duration: 1.8,
+      delay,
+      ease: [0.16, 1, 0.3, 1], // Smooth premium ease-out curve
+      onUpdate(latest) {
+        let formatted = '';
+        if (decimals > 0) {
+          formatted = latest.toFixed(decimals);
+        } else if (isLocale) {
+          formatted = Math.round(latest).toLocaleString('en-IN');
+        } else {
+          formatted = Math.round(latest).toString();
+        }
+        setDisplay(`${prefix}${formatted}${suffix}`);
+      },
+    });
+
+    return () => controls.stop();
+  }, [isInView, rawString, delay]);
+
+  return <span>{display || rawString}</span>;
+};
 
 export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -25,10 +101,10 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
   const displayStats = stats && stats.length > 0 ? stats : defaultStats;
 
   return (
-    <section ref={sectionRef} className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 border-b border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300">
+    <section ref={sectionRef} className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 border-b border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300">
       
       {/* Header Section */}
-      <div className="w-full max-w-4xl mx-auto mb-8 sm:mb-12 text-center space-y-3">
+      <div className="w-full max-w-4xl mx-auto mb-10 sm:mb-14 text-center space-y-3">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
@@ -36,7 +112,7 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
           className="flex items-center justify-center gap-3"
         >
           <span className="w-8 h-[1.5px] bg-brand-accent hidden sm:block"></span>
-          <span className="text-[11px] sm:text-[12px] font-black text-brand-accent tracking-[0.25em] uppercase">
+          <span className="text-[11px] sm:text-xs font-black text-brand-accent tracking-[0.25em] uppercase">
             OUR TRACK RECORD
           </span>
           <span className="w-8 h-[1.5px] bg-brand-accent hidden sm:block"></span>
@@ -66,7 +142,7 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
         initial={{ opacity: 0, y: 25 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
         transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-        className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
+        className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"
       >
         {displayStats.map((item, index) => {
           const Icon = item.icon || STAT_ICONS[index % STAT_ICONS.length];
@@ -74,7 +150,7 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
           return (
             <div
               key={index}
-              className="relative p-6 sm:p-8 rounded-3xl bg-neutral-50/80 dark:bg-neutral-900/60 border border-black/5 dark:border-white/10 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] flex flex-col items-center justify-center text-center group hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
+              className="relative p-7 sm:p-8 rounded-3xl bg-white dark:bg-neutral-900/90 border border-slate-200/80 dark:border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] flex flex-col items-center justify-center text-center group hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
             >
               {/* Subtle Ambient Hover Glow */}
               <div className="absolute inset-0 bg-gradient-to-b from-brand-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
@@ -84,9 +160,13 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
                 <Icon />
               </div>
 
-              {/* Stat Number */}
-              <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-neutral-900 dark:text-brand-accent tracking-tight mb-2 tabular-nums">
-                {item.number}
+              {/* Stat Number with Count-Up Animation on Viewport Entry */}
+              <div className="text-4xl sm:text-4xl lg:text-5xl font-black text-neutral-900 dark:text-brand-accent tracking-tight mb-2 tabular-nums">
+                <AnimatedStatNumber
+                  rawString={item.number}
+                  isInView={isInView}
+                  delay={0.1 + index * 0.1}
+                />
               </div>
 
               {/* Stat Label */}

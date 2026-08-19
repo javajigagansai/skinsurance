@@ -6,6 +6,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import { AppRoutes } from './routes';
 import { ChatWidget } from './components/ui/ChatWidget';
 import { LeadWelcomeModal } from './components/common/LeadWelcomeModal';
+import { InitialAppLoader } from './components/ui/PageLoader';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 
 const ScrollToTop = () => {
@@ -24,17 +25,19 @@ function App() {
       <LanguageProvider>
         <ThemeProvider>
           <AuthProvider>
-            <BrowserRouter>
-              <Helmet>
-                <title>SK Smart Investments</title>
-                <meta name="description" content="Premium insurance portfolios and policies. Start your digital application instantly." />
-                <meta name="theme-color" content="#FFB300" />
-              </Helmet>
-              <ScrollToTop />
-              <LeadWelcomeModal />
-              <AppRoutes />
-              <ChatWidget />
-            </BrowserRouter>
+            <InitialAppLoader>
+              <BrowserRouter>
+                <Helmet>
+                  <title>SK Smart Investments</title>
+                  <meta name="description" content="Premium insurance portfolios and policies. Start your digital application instantly." />
+                  <meta name="theme-color" content="#FFB300" />
+                </Helmet>
+                <ScrollToTop />
+                <LeadWelcomeModal />
+                <AppRoutes />
+                <ChatWidget />
+              </BrowserRouter>
+            </InitialAppLoader>
           </AuthProvider>
         </ThemeProvider>
       </LanguageProvider>

@@ -81,14 +81,25 @@ export const Footer = () => {
               {[
                 { name: t('about'), path: "/about" },
                 { name: "Careers", path: "/careers" },
-                { name: t('book_appointment'), path: "/appointment", highlight: true },
+                { name: t('book_appointment'), path: "/appointment", highlight: true, noArrow: true },
                 { name: t('contact'), path: "/support" },
               ].map((link, idx) => (
                 <li key={idx}>
-                  <Link to={link.path} className={`group flex items-center gap-2 text-sm font-medium transition-colors ${link.highlight ? 'text-brand-accent hover:text-brand-accent/80 drop-shadow-[0_0_10px_rgba(255,179,0,0.3)]' : 'text-neutral-400 hover:text-white'}`}>
-                    <span className={`${link.highlight ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'} text-brand-accent transition-all duration-300`}>
-                      <FaArrowRight className="text-[10px]" />
-                    </span>
+                  <Link
+                    to={link.path}
+                    className={`group flex items-center gap-2 text-sm font-medium transition-colors ${
+                      link.highlight
+                        ? 'text-brand-accent hover:text-brand-accent/80 drop-shadow-[0_0_10px_rgba(255,179,0,0.3)]'
+                        : 'text-neutral-400 hover:text-white'
+                    }`}
+                  >
+                    {!link.noArrow ? (
+                      <span className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 text-brand-accent transition-all duration-300">
+                        <FaArrowRight className="text-[10px]" />
+                      </span>
+                    ) : (
+                      <span className="w-[10px] h-[10px] invisible shrink-0 pointer-events-none" aria-hidden="true" />
+                    )}
                     <span className="group-hover:translate-x-1 transition-transform duration-300">{link.name}</span>
                   </Link>
                 </li>

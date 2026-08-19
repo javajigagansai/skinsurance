@@ -11,8 +11,11 @@ import { StickyStackedCards } from '../../features/marketing/components/StickySt
 import { PremiumEditorialStats } from '../../features/marketing/components/PremiumEditorialStats';
 import { EditorialTrustValues } from '../../features/marketing/components/EditorialTrustValues';
 import { StaggerTestimonials } from '../../components/ui/stagger-testimonials';
+import { HowItWorks } from '../../features/marketing/components/HowItWorks';
+import { LeadCaptureSection } from '../../features/marketing/components/LeadCaptureSection';
 import { Calculator } from '../Calculator';
 import { HeroFlyerCarousel } from '../../features/marketing/components/HeroFlyerCarousel';
+import { PinterestCardCarousel } from '../../features/marketing/components/PinterestCardCarousel';
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -283,69 +286,29 @@ export const Home = () => {
   return (
     <div className="relative">
       {/* Modern 2-Column Hero Section */}
-      <section className="relative w-full flex items-center justify-center pt-24 pb-14 sm:pt-28 sm:pb-16 lg:pt-32 lg:pb-20 bg-slate-50 dark:bg-neutral-950 overflow-hidden border-b border-black/5 dark:border-white/5 transition-colors duration-300">
+      <section className="relative w-full flex items-center justify-center pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-36 lg:pb-24 bg-slate-50 dark:bg-neutral-950 overflow-hidden border-b border-black/5 dark:border-white/5 transition-colors duration-300">
         
         {/* Ambient background glow */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-brand-accent/5 dark:bg-brand-accent/10 blur-[140px] rounded-full pointer-events-none" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             
-            {/* Left Side: Certified Partner Companies with Highlighted Tata AIA */}
+            {/* Left Side: Interactive Pinterest-Style Stacked Card Carousel */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
-              className="lg:col-span-6 space-y-5 text-left"
+              className="lg:col-span-6 space-y-6 text-left"
             >
-              {/* Tata AIA Logo */}
-              <div className="flex items-center justify-start py-1">
-                <img
-                  src="/logos/tata_aia.png"
-                  alt="Tata AIA Life Insurance"
-                  className="h-20 sm:h-24 w-auto object-contain transition-transform duration-300 hover:scale-105"
-                />
-              </div>
-
-              {/* Other Insurance Partners Grid */}
-              <div className="space-y-2">
-                <p className="text-[11px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">
-                  COMPARE PLANS ACROSS TOP CERTIFIED INSURERS:
-                </p>
-                <div className="grid grid-cols-4 sm:grid-cols-4 gap-2.5">
-                  {[
-                    { name: 'HDFC Life', logo: '/logos/hdfc_life.png' },
-                    { name: 'ICICI Prudential', logo: '/logos/icici_prudential.png' },
-                    { name: 'SBI Life', logo: '/logos/sbi_life.png' },
-                    { name: 'Star Health', logo: '/logos/star_health.png' },
-                    { name: 'LIC of India', logo: '/logos/lic.png' },
-                    { name: 'Niva Bupa', logo: '/logos/niva_bupa.png' },
-                    { name: 'Bajaj Allianz', logo: '/logos/bajaj_allianz.png' },
-                    { name: 'Care Health', logo: '/logos/care_health.png' }
-                  ].map((partner) => (
-                    <div
-                      key={partner.name}
-                      className="h-12 p-2 rounded-xl bg-white dark:bg-neutral-900 border border-slate-200/70 dark:border-white/10 shadow-xs flex items-center justify-center hover:border-brand-accent/50 hover:scale-105 transition-all group"
-                      title={partner.name}
-                    >
-                      <img
-                        src={partner.logo}
-                        alt={partner.name}
-                        className="max-h-7 w-auto object-contain grayscale group-hover:grayscale-0 transition-all opacity-85 group-hover:opacity-100"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none';
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
+              {/* Pinterest-Style Stacked Card Carousel */}
+              <PinterestCardCarousel />
 
               {/* Actions Bar */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1">
                 <button
                   onClick={() => navigate('/appointment')}
-                  className="px-8 py-4 rounded-2xl bg-brand-accent text-neutral-950 text-xs sm:text-sm font-black uppercase tracking-wider hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-neutral-950 transition-all transform hover:scale-105 shadow-xl flex items-center gap-2.5 cursor-pointer"
+                  className="px-9 py-4 rounded-2xl bg-brand-accent text-neutral-950 text-xs sm:text-sm font-black uppercase tracking-wider hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-neutral-950 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-95 flex items-center gap-2.5 cursor-pointer"
                 >
                   <FaPhoneAlt className="text-xs" />
                   <span>Book a Free Call</span>
@@ -353,7 +316,7 @@ export const Home = () => {
               </div>
 
               {/* Hotline info */}
-              <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+              <div className="flex items-center justify-center lg:justify-start gap-2 text-xs text-neutral-600 dark:text-neutral-400 font-medium">
                 <span>Direct Advisor Hotline:</span>
                 <a href="tel:+919994451300" className="font-bold text-neutral-900 dark:text-brand-accent hover:underline">
                   +91 99944 51300
@@ -387,13 +350,19 @@ export const Home = () => {
       {/* Educational Section: What is Insurance & Types */}
       <StickyStackedCards />
 
+      {/* 4-Step Process Section: How It Works */}
+      <HowItWorks />
+
       {/* Testimonials Strip */}
       <StaggerTestimonials testimonials={testimonials} />
 
-      {/* Interactive Insurance Premium & SIP Calculator Section at the Bottom */}
+      {/* Interactive Insurance Premium & SIP Calculator Section */}
       <section id="calculator" className="w-full border-t border-black/5 dark:border-white/5 bg-neutral-50/50 dark:bg-neutral-950/40">
         <Calculator isEmbedded={true} />
       </section>
+
+      {/* Direct Lead Capture Section: Let's Plan Your Protection */}
+      <LeadCaptureSection />
 
       </div>
     </div>

@@ -43,24 +43,24 @@ export const SimpleCard: React.FC<SimpleCardProps> = ({ card, idx }) => {
       <motion.div 
         layoutId={layoutId}
         onClick={() => setIsOpen(true)}
-        className="w-full relative min-h-[260px] sm:min-h-[280px] h-full rounded-3xl p-6 sm:p-7 border border-black/5 dark:border-white/10 flex flex-col justify-between bg-stone-50/90 dark:bg-neutral-900/80 backdrop-blur-md cursor-pointer transition-all duration-300 group hover:border-black/20 dark:hover:border-white/20 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:-translate-y-1.5 overflow-hidden"
+        className="w-full relative min-h-[280px] sm:min-h-[300px] h-full rounded-3xl p-7 sm:p-8 border border-slate-200/80 dark:border-white/10 flex flex-col justify-between bg-white dark:bg-neutral-900/90 shadow-[0_10px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] cursor-pointer transition-all duration-300 group hover:border-black/20 dark:hover:border-white/20 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1.5 overflow-hidden"
       >
         <div className={`absolute inset-0 pointer-events-none transition-colors duration-300 rounded-3xl ${card.bgHoverClass || ''}`} />
         <div className="flex flex-col items-start w-full h-full relative z-10 justify-between">
           <div className="w-full">
-            <motion.div className="p-3.5 bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white rounded-2xl inline-block mb-4 shadow-xs transition-all duration-300 group-hover:scale-110">
-              <card.icon className={`text-2xl lg:text-3xl text-black dark:text-white transition-all duration-300 ${card.colorClass || ''}`} />
+            <motion.div className="w-12 h-12 bg-slate-100 dark:bg-neutral-800 text-black dark:text-white rounded-2xl flex items-center justify-center mb-5 shadow-xs transition-all duration-300 group-hover:scale-110">
+              <card.icon className={`text-xl transition-all duration-300 ${card.colorClass || ''}`} />
             </motion.div>
-            <motion.h3 className="text-lg lg:text-xl font-black text-neutral-900 dark:text-white tracking-tight mb-2">
+            <motion.h3 className="text-xl font-black text-neutral-900 dark:text-white tracking-tight mb-2.5">
               {card.title}
             </motion.h3>
-            <motion.p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed font-normal">
+            <motion.p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed font-medium">
               {card.desc}
             </motion.p>
           </div>
-          <div className="mt-5 flex items-center justify-end w-full text-brand-accent">
-            <div className="flex items-center justify-center w-9 h-9 rounded-full border border-black/10 dark:border-white/10 group-hover:bg-brand-accent group-hover:text-black dark:group-hover:border-brand-accent transition-all duration-300">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          <div className="mt-6 flex items-center justify-end w-full text-brand-accent">
+            <div className="flex items-center justify-center w-10 h-10 rounded-full border border-slate-200 dark:border-white/10 group-hover:bg-brand-accent group-hover:text-black dark:group-hover:border-brand-accent transition-all duration-300 shadow-xs">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </div>
           </div>
         </div>

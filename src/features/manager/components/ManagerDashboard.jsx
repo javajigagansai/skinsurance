@@ -14,6 +14,7 @@ import { CompanyLogo } from '../../../pages/Plans/index';
 import { CareersManager } from './CareersManager';
 import { ApplicationsManager } from './ApplicationsManager';
 import { FlyersManager } from './FlyersManager';
+import { LeadsManager } from './LeadsManager';
 
 const DEFAULT_COMPANIES = [
   'SBI Life Insurance', 'LIC', 'Tata AIA', 'HDFC Life', 
@@ -84,6 +85,9 @@ export const ManagerDashboard = ({ tab }) => {
   }
   if (tab === 'applications') {
     return <ApplicationsManager />;
+  }
+  if (tab === 'leads' || tab === 'consultations') {
+    return <LeadsManager />;
   }
 
   const [view, setView] = useState('list');

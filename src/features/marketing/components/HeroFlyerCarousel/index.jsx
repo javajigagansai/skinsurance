@@ -7,13 +7,11 @@ import {
 } from 'react-icons/fa';
 import { getFlyers, DEFAULT_FLYERS } from '../../../../services/api';
 import { subscribeToCollection } from '../../../../services/firebaseService';
-
 export const HeroFlyerCarousel = () => {
   const [flyers, setFlyers] = useState(DEFAULT_FLYERS);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const navigate = useNavigate();
-
   useEffect(() => {
     getFlyers().then(data => {
       if (data && data.length > 0) setFlyers(data.filter(f => f.status !== 'Closed'));
@@ -44,11 +42,8 @@ export const HeroFlyerCarousel = () => {
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % flyers.length);
   };
-
   if (!flyers || flyers.length === 0) return null;
-
   const currentFlyer = flyers[currentIndex] || flyers[0];
-
   return (
     <div 
       className="relative w-full max-w-xl mx-auto flex flex-col space-y-4 select-none"

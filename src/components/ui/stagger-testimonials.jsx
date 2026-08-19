@@ -38,7 +38,7 @@ export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
   if (!testimonials || testimonials.length === 0) return null;
 
   return (
-    <section className="relative w-full py-12 sm:py-16 lg:py-20 border-t border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300 overflow-hidden">
+    <section className="relative w-full py-16 sm:py-20 lg:py-24 border-t border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300 overflow-hidden">
       
       {/* Self-contained 60FPS Hardware Accelerated CSS Marquee */}
       <style>{`
@@ -53,7 +53,7 @@ export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
         .sk-marquee-track {
           display: flex !important;
           width: max-content !important;
-          animation: skMarqueeScroll 30s linear infinite !important;
+          animation: skMarqueeScroll 32s linear infinite !important;
           will-change: transform;
         }
         .sk-marquee-container:hover .sk-marquee-track {
@@ -61,10 +61,10 @@ export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
         }
       `}</style>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12 text-center space-y-3">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 sm:mb-14 text-center space-y-3">
         <div className="flex items-center justify-center gap-3">
           <span className="w-8 h-[1.5px] bg-brand-accent hidden sm:block"></span>
-          <span className="text-[11px] sm:text-[12px] font-black text-brand-accent tracking-[0.25em] uppercase">
+          <span className="text-[11px] sm:text-xs font-black text-brand-accent tracking-[0.25em] uppercase">
             CLIENT FEEDBACK
           </span>
           <span className="w-8 h-[1.5px] bg-brand-accent hidden sm:block"></span>
@@ -79,39 +79,39 @@ export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
       </div>
 
       {/* Infinite Marquee Container */}
-      <div className="sk-marquee-container relative w-full flex overflow-hidden py-2">
+      <div className="sk-marquee-container relative w-full flex overflow-hidden py-3">
         {/* Gradients for smooth fade in/out on edges */}
         <div className="absolute top-0 left-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-white dark:from-neutral-1000 to-transparent z-10 pointer-events-none" />
         <div className="absolute top-0 right-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-white dark:from-neutral-1000 to-transparent z-10 pointer-events-none" />
         
         <div className="sk-marquee-track">
           {/* First Set */}
-          <div className="flex gap-5 pr-5 shrink-0">
+          <div className="flex gap-6 pr-6 shrink-0">
             {testimonials.map((testimonial, index) => (
               <div 
                 key={`first-${index}`} 
-                className="shrink-0 w-[280px] sm:w-[340px] p-6 sm:p-7 rounded-3xl bg-neutral-50/90 dark:bg-neutral-900/80 border border-black/5 dark:border-white/10 flex flex-col justify-between hover:border-brand-accent/40 transition-all duration-300 shadow-sm cursor-pointer hover:-translate-y-1"
+                className="shrink-0 w-[300px] sm:w-[380px] p-7 sm:p-8 rounded-3xl bg-white dark:bg-neutral-900/90 border border-slate-200/80 dark:border-white/10 flex flex-col justify-between hover:border-brand-accent/60 transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] cursor-pointer hover:-translate-y-1.5"
               >
                 <div>
-                  <FaQuoteLeft className="text-brand-accent text-lg mb-3.5 opacity-80" />
-                  <p className="text-neutral-800 dark:text-neutral-200 text-xs sm:text-sm font-medium leading-relaxed mb-6">
+                  <FaQuoteLeft className="text-brand-accent text-xl mb-4 opacity-90" />
+                  <p className="text-neutral-800 dark:text-neutral-200 text-sm sm:text-[15px] font-medium leading-relaxed mb-6">
                     "{testimonial.testimonial}"
                   </p>
                 </div>
                 
-                <div className="flex items-center gap-3 pt-3 border-t border-black/5 dark:border-white/5">
+                <div className="flex items-center gap-3.5 pt-4 border-t border-slate-100 dark:border-white/5">
                   {testimonial.imgSrc && (
                     <img
                       src={testimonial.imgSrc}
                       alt={testimonial.by}
-                      className="w-10 h-10 rounded-full object-cover border border-black/10 dark:border-white/10"
+                      className="w-11 h-11 rounded-full object-cover border border-slate-200 dark:border-white/10"
                     />
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-white leading-tight truncate">
+                    <p className="text-sm font-bold text-neutral-900 dark:text-white leading-tight truncate">
                       {testimonial.by.split(',')[0]}
                     </p>
-                    <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-0.5 leading-tight truncate">
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5 leading-tight truncate">
                       {testimonial.by.split(',').slice(1).join(',').trim()}
                     </p>
                   </div>
@@ -121,32 +121,32 @@ export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
           </div>
 
           {/* Second Set (Duplicate for seamless infinite looping) */}
-          <div className="flex gap-5 pr-5 shrink-0">
+          <div className="flex gap-6 pr-6 shrink-0">
             {testimonials.map((testimonial, index) => (
               <div 
                 key={`second-${index}`} 
-                className="shrink-0 w-[280px] sm:w-[340px] p-6 sm:p-7 rounded-3xl bg-neutral-50/90 dark:bg-neutral-900/80 border border-black/5 dark:border-white/10 flex flex-col justify-between hover:border-brand-accent/40 transition-all duration-300 shadow-sm cursor-pointer hover:-translate-y-1"
+                className="shrink-0 w-[300px] sm:w-[380px] p-7 sm:p-8 rounded-3xl bg-white dark:bg-neutral-900/90 border border-slate-200/80 dark:border-white/10 flex flex-col justify-between hover:border-brand-accent/60 transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] cursor-pointer hover:-translate-y-1.5"
               >
                 <div>
-                  <FaQuoteLeft className="text-brand-accent text-lg mb-3.5 opacity-80" />
-                  <p className="text-neutral-800 dark:text-neutral-200 text-xs sm:text-sm font-medium leading-relaxed mb-6">
+                  <FaQuoteLeft className="text-brand-accent text-xl mb-4 opacity-90" />
+                  <p className="text-neutral-800 dark:text-neutral-200 text-sm sm:text-[15px] font-medium leading-relaxed mb-6">
                     "{testimonial.testimonial}"
                   </p>
                 </div>
                 
-                <div className="flex items-center gap-3 pt-3 border-t border-black/5 dark:border-white/5">
+                <div className="flex items-center gap-3.5 pt-4 border-t border-slate-100 dark:border-white/5">
                   {testimonial.imgSrc && (
                     <img
                       src={testimonial.imgSrc}
                       alt={testimonial.by}
-                      className="w-10 h-10 rounded-full object-cover border border-black/10 dark:border-white/10"
+                      className="w-11 h-11 rounded-full object-cover border border-slate-200 dark:border-white/10"
                     />
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-white leading-tight truncate">
+                    <p className="text-sm font-bold text-neutral-900 dark:text-white leading-tight truncate">
                       {testimonial.by.split(',')[0]}
                     </p>
-                    <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-0.5 leading-tight truncate">
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5 leading-tight truncate">
                       {testimonial.by.split(',').slice(1).join(',').trim()}
                     </p>
                   </div>

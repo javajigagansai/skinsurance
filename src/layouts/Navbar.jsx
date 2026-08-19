@@ -86,20 +86,38 @@ export const Navbar = () => {
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 ${
           isTransparent || isOpen
-            ? 'bg-transparent backdrop-blur-none border-transparent py-1.5 md:py-3'
-            : 'bg-white/85 dark:bg-neutral-950/85 backdrop-blur-[20px] shadow-premium-soft dark:shadow-premium-dark border-b border-black/5 dark:border-white/10 py-1.5'
+            ? 'bg-transparent backdrop-blur-none border-transparent py-2 sm:py-2.5 md:py-3'
+            : 'bg-white/85 dark:bg-neutral-950/85 backdrop-blur-[20px] shadow-premium-soft dark:shadow-premium-dark border-b border-black/5 dark:border-white/10 py-2 sm:py-2.5 md:py-3'
         }`}
         style={{ fontFamily: "'Poppins', sans-serif" }}
       >
-        <div className="max-w-[1280px] mx-auto px-6 lg:px-8 flex items-center justify-between">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between min-h-[52px] sm:min-h-[60px]">
           {/* Left: Logo */}
-          <Link to="/" className="flex items-center transition-opacity hover:opacity-90">
+          <Link to="/" className="flex items-center transition-opacity hover:opacity-90 shrink-0">
             {/* If the background is transparent (light video hero), use dark logo. If solid (dark navbar), use light logo. */}
             <Logo showTagline={false} isDark={!isTransparent} />
           </Link>
 
+          {/* Mobile Center: Company Name (Visible on mobile/tablet, hidden on desktop lg:) */}
+          <div className="lg:hidden flex-1 px-1.5 sm:px-3 text-center min-w-0 flex items-center justify-center">
+            <span
+              className={`block truncate font-bold uppercase transition-colors duration-300 ${
+                isTransparent
+                  ? 'text-neutral-900'
+                  : 'text-neutral-900 dark:text-white'
+              }`}
+              style={{
+                fontSize: 'clamp(11px, 3.2vw, 15px)',
+                letterSpacing: '0.06em',
+                lineHeight: '1.2'
+              }}
+            >
+              SK SMART INVESTMENTS
+            </span>
+          </div>
+
           {/* Center: Nav Links */}
-          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-10">
+          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
             {navLinks.map((link) => {
               const active = isActive(link.path);
               return (
@@ -107,29 +125,36 @@ export const Navbar = () => {
                   key={link.name}
                   to={link.path}
                   onClick={(e) => handleNavClick(e, link.path)}
-                  className={`relative px-2 py-2 text-[15px] font-medium whitespace-nowrap transition-all duration-300 inline-block transform hover:scale-110 ${
+                  className={`relative px-3 py-2 text-sm xl:text-[15px] font-semibold whitespace-nowrap transition-colors duration-200 rounded-lg group ${
                     active 
-                      ? (isTransparent ? 'text-black font-bold scale-105' : 'text-brand-accent font-bold scale-105 drop-shadow-[0_0_8px_rgba(255,179,0,0.6)]') 
-                      : (isTransparent ? 'text-black hover:text-black/70' : 'text-black dark:text-white hover:text-brand-accent hover:drop-shadow-[0_0_8px_rgba(255,179,0,0.4)]')
+                      ? (isTransparent ? 'text-black font-bold' : 'text-neutral-950 dark:text-brand-accent font-bold') 
+                      : (isTransparent ? 'text-black/80 hover:text-black' : 'text-neutral-700 dark:text-neutral-200 hover:text-amber-600 dark:hover:text-brand-accent')
                   }`}
                 >
-                  {link.name}
+                  <span>{link.name}</span>
+                  {active && (
+                    <motion.div
+                      layoutId="activeNavIndicator"
+                      className="absolute bottom-0 left-2 right-2 h-0.5 bg-brand-accent rounded-full"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
                 </Link>
               );
             })}
           </nav>
 
           {/* Right: Actions */}
-          <div className="hidden lg:flex items-center space-x-4 xl:space-x-8">
+          <div className="hidden lg:flex items-center space-x-4 xl:space-x-6">
             {/* Language Selector */}
             <div className="relative" ref={langDropdownRef}>
                 <button
                   onClick={() => setShowLangDropdown(!showLangDropdown)}
-                  className={`flex items-center space-x-1.5 text-[14px] font-medium transition-colors cursor-pointer ${isTransparent ? 'text-black hover:text-black/70' : 'text-black dark:text-white hover:text-brand-accent'}`}
+                  className={`flex items-center space-x-1.5 text-sm font-semibold transition-colors cursor-pointer px-2.5 py-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 ${isTransparent ? 'text-black' : 'text-neutral-800 dark:text-neutral-200 hover:text-brand-accent'}`}
                 >
-                <FaGlobe className="text-[16px]" />
+                <FaGlobe className="text-sm" />
                 <span>{languages.find(l => l.code === currentLang)?.label || 'EN'}</span>
-                <FaChevronDown className="text-[10px]" />
+                <FaChevronDown className="text-[9px]" />
               </button>
 
               <AnimatePresence>
@@ -139,7 +164,7 @@ export const Navbar = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute right-0 mt-4 w-32 bg-neutral-900 border border-white/10 rounded-[12px] shadow-premium-dark z-50 overflow-hidden text-left"
+                    className="absolute right-0 mt-4 w-32 bg-white dark:bg-neutral-900 border border-black/10 dark:border-white/10 rounded-2xl shadow-xl z-50 overflow-hidden text-left p-1"
                   >
                     {languages.map((lang) => (
                       <button
@@ -148,10 +173,10 @@ export const Navbar = () => {
                           setCurrentLang(lang.code);
                           setShowLangDropdown(false);
                         }}
-                        className={`w-full px-4 py-3 text-[14px] transition-colors text-left font-medium cursor-pointer ${
+                        className={`w-full px-3.5 py-2.5 text-xs rounded-xl transition-colors text-left font-bold cursor-pointer ${
                           currentLang === lang.code 
-                            ? 'text-brand-accent font-bold bg-brand-accent/10' 
-                            : 'text-neutral-300 hover:bg-white/5 hover:text-brand-accent'
+                            ? 'text-neutral-950 bg-brand-accent font-black' 
+                            : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-white/5'
                         }`}
                       >
                         {lang.name}
@@ -165,18 +190,18 @@ export const Navbar = () => {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className={`flex items-center justify-center p-2 rounded-full transition-colors ${isTransparent ? 'text-black hover:bg-black/10' : 'text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/10 hover:text-brand-accent'}`}
+              className={`flex items-center justify-center p-2.5 rounded-xl transition-all ${isTransparent ? 'text-black hover:bg-black/10' : 'text-neutral-700 dark:text-neutral-200 hover:bg-black/5 dark:hover:bg-white/10 hover:text-brand-accent'}`}
               aria-label="Toggle Theme"
             >
-              {isDarkMode ? <FaSun className="text-[16px]" /> : <FaMoon className="text-[16px]" />}
+              {isDarkMode ? <FaSun className="text-sm text-brand-accent" /> : <FaMoon className="text-sm text-neutral-800" />}
             </button>
 
             {/* Auth Buttons */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
               {isManager && (
                 <button
                   onClick={() => navigate('/dashboard')}
-                  className="px-6 py-2.5 rounded-[14px] bg-brand-accent hover:bg-brand-hover text-black font-bold text-[15px] cursor-pointer"
+                  className="px-6 py-2.5 rounded-xl bg-brand-accent hover:bg-brand-hover text-neutral-950 font-bold text-sm shadow-sm cursor-pointer transition-all hover:scale-105 active:scale-95"
                 >
                   Dashboard
                 </button>
@@ -185,7 +210,7 @@ export const Navbar = () => {
               {!isManager && (
                 <button
                   onClick={() => navigate('/appointment')}
-                  className={`px-7 py-2.5 rounded-xl backdrop-blur-md font-medium text-[15px] cursor-pointer transition-all duration-300 hover:border-brand-accent hover:bg-brand-accent hover:text-black hover:shadow-[0_0_15px_rgba(255, 179, 0,0.3)] ${isTransparent ? 'bg-black/5 border-black/20 text-black' : 'bg-black/5 dark:bg-black/40 border-black/10 dark:border-white/10 text-black dark:text-white'}`}
+                  className="px-6 py-2.5 rounded-xl bg-brand-accent hover:bg-neutral-950 hover:text-white dark:hover:bg-white dark:hover:text-neutral-950 text-neutral-950 font-black text-xs uppercase tracking-wider cursor-pointer transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95"
                 >
                   Get Started
                 </button>
@@ -194,7 +219,7 @@ export const Navbar = () => {
           </div>
 
           {/* Mobile GSAP StaggeredMenu (Handles its own toggle) */}
-          <div className="lg:hidden block">
+          <div className="lg:hidden flex items-center shrink-0">
             <StaggeredMenu
               position="right"
               items={navLinks.map(link => ({

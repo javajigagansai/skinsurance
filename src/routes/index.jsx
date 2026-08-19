@@ -2,7 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { Routes, Route, useLocation, Outlet, Navigate } from 'react-router-dom';
 import { Navbar } from '../layouts/Navbar';
 import { Footer } from '../layouts/Footer';
-import { Loader } from '../components/ui/Loader';
+import { PageLoader } from '../components/ui/PageLoader';
 import { ProtectedRoute } from '../components/common/ProtectedRoute';
 
 // Lazy load pages for code splitting
@@ -22,9 +22,7 @@ const TermsOfService = lazy(() => import('../pages/Terms').then(module => ({ def
 const Appointment = lazy(() => import('../pages/Appointment').then(module => ({ default: module.Appointment })));
 
 const FallbackLoader = () => (
-  <div className="flex items-center justify-center min-h-screen bg-white dark:bg-black">
-    <Loader />
-  </div>
+  <PageLoader fullScreen={false} />
 );
 
 const PublicLayout = () => {

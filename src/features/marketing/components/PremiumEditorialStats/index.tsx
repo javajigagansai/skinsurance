@@ -101,10 +101,10 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
   const displayStats = stats && stats.length > 0 ? stats : defaultStats;
 
   return (
-    <section ref={sectionRef} className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 border-b border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300">
+    <section ref={sectionRef} className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 border-b border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300">
       
       {/* Header Section */}
-      <div className="w-full max-w-4xl mx-auto mb-10 sm:mb-14 text-center space-y-3">
+      <div className="w-full max-w-4xl mx-auto mb-8 sm:mb-10 text-center space-y-2.5">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
@@ -142,16 +142,16 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
         initial={{ opacity: 0, y: 25 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
         transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-        className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"
+        className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 items-stretch"
       >
         {displayStats.map((item, index) => {
           return (
             <div
               key={index}
-              className="relative p-7 sm:p-8 rounded-3xl bg-white dark:bg-neutral-900/90 border border-slate-200/80 dark:border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] flex flex-col items-center justify-center text-center group hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
+              className="relative p-6 sm:p-8 min-h-[160px] sm:min-h-[175px] rounded-3xl bg-white dark:bg-neutral-900/90 border border-slate-200/80 dark:border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] flex flex-col items-center justify-center text-center group hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
             >
               {/* Stat Number with Count-Up Animation on Viewport Entry */}
-              <div className="text-4xl sm:text-4xl lg:text-5xl font-black text-neutral-900 dark:text-brand-accent tracking-tight mb-2 tabular-nums">
+              <div className="text-4xl sm:text-4xl lg:text-5xl font-black text-neutral-900 dark:text-brand-accent tracking-tight mb-2.5 tabular-nums flex items-center justify-center">
                 <AnimatedStatNumber
                   rawString={item.number}
                   isInView={isInView}

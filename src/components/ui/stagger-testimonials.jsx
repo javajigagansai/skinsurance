@@ -40,9 +40,14 @@ export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
   const trackRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Mouse cursor position driven translation
+  // Mouse cursor position driven translation with buttery smooth physics
   const cursorX = useMotionValue(0);
-  const smoothCursorX = useSpring(cursorX, { damping: 30, stiffness: 150 });
+  const smoothCursorX = useSpring(cursorX, { 
+    damping: 45, 
+    stiffness: 50,
+    mass: 0.8,
+    restDelta: 0.001
+  });
 
   if (!testimonials || testimonials.length === 0) return null;
 
@@ -50,9 +55,9 @@ export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
     if (!containerRef.current || isDragging) return;
     const rect = containerRef.current.getBoundingClientRect();
     const relativeX = e.clientX - rect.left;
-    const percentage = relativeX / rect.width; // 0 to 1
+    const percentage = Math.max(0, Math.min(1, relativeX / rect.width)); // Clamped 0 to 1
     // Moving cursor LEFT shifts track LEFT (-), moving cursor RIGHT shifts track RIGHT (+)
-    const targetOffset = (percentage - 0.5) * 800;
+    const targetOffset = (percentage - 0.5) * 650;
     cursorX.set(targetOffset);
   };
 

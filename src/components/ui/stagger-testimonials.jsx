@@ -51,8 +51,8 @@ export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
     const rect = containerRef.current.getBoundingClientRect();
     const relativeX = e.clientX - rect.left;
     const percentage = relativeX / rect.width; // 0 to 1
-    // Shift track based on cursor position relative to center (-250px to +250px)
-    const targetOffset = (0.5 - percentage) * 450;
+    // Moving cursor LEFT shifts track LEFT (-), moving cursor RIGHT shifts track RIGHT (+)
+    const targetOffset = (percentage - 0.5) * 800;
     cursorX.set(targetOffset);
   };
 
@@ -88,7 +88,7 @@ export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
         <motion.div
           ref={trackRef}
           drag="x"
-          dragConstraints={{ left: -1000, right: 200 }}
+          dragConstraints={{ left: -1000, right: 1000 }}
           dragElastic={0.15}
           onDragStart={() => setIsDragging(true)}
           onDragEnd={() => setIsDragging(false)}

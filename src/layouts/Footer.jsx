@@ -167,11 +167,6 @@ export const Footer = () => {
           <p className="text-xs text-neutral-500 font-medium tracking-wide">
             {t('footer_rights')}
           </p>
-          <div className="flex items-center gap-6 text-[10px] sm:text-[11px] text-neutral-500 font-bold uppercase tracking-widest md:pr-16 lg:pr-20">
-            <Link to="/careers" className="hover:text-brand-accent transition-colors">Careers</Link>
-            <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-          </div>
         </div>
       </div>
     </footer>

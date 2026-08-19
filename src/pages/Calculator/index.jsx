@@ -387,12 +387,6 @@ export const Calculator = ({ isEmbedded = false }) => {
         {/* ── Section Header ── */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8 sm:mb-10">
           <div className="space-y-2 max-w-xl">
-            <div className="flex items-center gap-2">
-              <span className="w-6 h-[1.5px] bg-brand-accent"></span>
-              <span className="text-[11px] sm:text-xs font-black text-brand-accent tracking-[0.25em] uppercase">
-                FINANCIAL PLANNING SUITE
-              </span>
-            </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-slate-900 dark:text-white leading-tight">
               PLAN YOUR <span className="text-brand-accent">FINANCIAL FUTURE</span>
             </h2>

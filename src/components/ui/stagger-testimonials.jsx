@@ -96,9 +96,6 @@ export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-black dark:text-black uppercase leading-tight">
           WHAT OUR CLIENTS SAY
         </h2>
-        <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-medium">
-          Move your cursor across to guide the continuous review stream
-        </p>
       </div>
 
       {/* Interactive Container responding to Cursor Position */}

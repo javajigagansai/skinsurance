@@ -381,12 +381,12 @@ export const Calculator = ({ isEmbedded = false }) => {
   const risk = riskColors[healthBreakdown.riskLevel] || riskColors['Low'];
 
   return (
-    <div className={`w-full ${isEmbedded ? 'py-16 sm:py-20 lg:py-24 border-t border-black/5 dark:border-white/5 bg-slate-50/50 dark:bg-neutral-950/40' : 'min-h-screen pt-28 pb-20'} text-slate-900 dark:text-white transition-colors`}>
+    <div className={`w-full ${isEmbedded ? 'py-8 sm:py-10 lg:py-12 border-t border-black/5 dark:border-white/5 bg-slate-50/50 dark:bg-neutral-950/40' : 'min-h-screen pt-24 pb-16'} text-slate-900 dark:text-white transition-colors`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* ── Section Header ── */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8 sm:mb-10">
-          <div className="space-y-2 max-w-xl">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 sm:gap-6 mb-5 sm:mb-6">
+          <div className="space-y-1 sm:space-y-2 max-w-xl">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-slate-900 dark:text-white leading-tight">
               PLAN YOUR <span className="text-brand-accent">FINANCIAL FUTURE</span>
             </h2>
@@ -404,7 +404,7 @@ export const Calculator = ({ isEmbedded = false }) => {
                 <button
                   key={tab.id}
                   onClick={() => setSuiteTab(tab.id)}
-                  className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all whitespace-nowrap cursor-pointer ${
+                  className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-bold rounded-xl transition-all whitespace-nowrap cursor-pointer ${
                     isActive 
                       ? 'bg-brand-accent text-neutral-950 shadow-sm font-black' 
                       : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-neutral-800'
@@ -419,10 +419,10 @@ export const Calculator = ({ isEmbedded = false }) => {
         </div>
 
         {/* ── Single Viewport 2-Column Dashboard ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-stretch">
           
           {/* ── Left Column: Controls & Inputs ── */}
-          <div className="lg:col-span-7 bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 rounded-3xl p-6 sm:p-8 shadow-[0_10px_30px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] flex flex-col justify-between space-y-6">
+          <div className="lg:col-span-7 bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 sm:p-6 lg:p-7 shadow-[0_10px_30px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] flex flex-col justify-between space-y-4 sm:space-y-5">
             
             {/* If in Premium Calculator, show sub-category pill selector */}
             {suiteTab === 'premium' && (

@@ -12,5 +12,10 @@ export default defineConfig({
       targets: ['defaults', 'not IE 11'],
     }),
   ],
+  server: {
+    watch: {
+      ignored: ['**/*.~tmp', '**/*.tmp', '**/*.swp'],
+    },
+  },
 })
 

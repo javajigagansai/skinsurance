@@ -11,6 +11,58 @@ interface Stat {
   size?: string;
 }
 
+const parseStatString = (rawString: string) => {
+  let prefix = '';
+  let suffix = '';
+  let targetNum = 0;
+  let decimals = 0;
+  let isLocale = false;
+
+  if (rawString.includes('98.7')) {
+    targetNum = 98.7;
+    decimals = 1;
+    suffix = '%';
+  } else if (rawString.includes('420')) {
+    prefix = '₹';
+    targetNum = 420;
+    suffix = 'L+';
+  } else if (rawString.includes('150')) {
+    targetNum = 150000;
+    suffix = '+';
+    isLocale = true;
+  } else if (rawString.includes('4.9')) {
+    targetNum = 4.9;
+    decimals = 1;
+    suffix = ' / 5';
+  } else {
+    const match = rawString.match(/^([^0-9.]*)([0-9,.]+)(.*)$/);
+    if (match) {
+      prefix = match[1] || '';
+      const numStr = match[2].replace(/,/g, '');
+      targetNum = parseFloat(numStr) || 0;
+      if (numStr.includes('.')) {
+        decimals = numStr.split('.')[1].length;
+      }
+      suffix = match[3] || '';
+      isLocale = match[2].includes(',');
+    }
+  }
+
+  const formatValue = (val: number) => {
+    let formatted = '';
+    if (decimals > 0) {
+      formatted = val.toFixed(decimals);
+    } else if (isLocale) {
+      formatted = Math.round(val).toLocaleString('en-IN');
+    } else {
+      formatted = Math.round(val).toString();
+    }
+    return `${prefix}${formatted}${suffix}`;
+  };
+
+  return { targetNum, formatValue };
+};
+
 const AnimatedStatNumber = ({
   rawString = '',
   isInView,
@@ -20,69 +72,23 @@ const AnimatedStatNumber = ({
   isInView: boolean;
   delay?: number;
 }) => {
-  const [display, setDisplay] = useState('0');
+  const { targetNum, formatValue } = parseStatString(rawString);
+  const [display, setDisplay] = useState(() => formatValue(0));
 
   useEffect(() => {
-    if (!isInView || !rawString) return;
-
-    let prefix = '';
-    let suffix = '';
-    let targetNum = 0;
-    let decimals = 0;
-    let isLocale = false;
-
-    if (rawString.includes('98.7')) {
-      targetNum = 98.7;
-      decimals = 1;
-      suffix = '%';
-    } else if (rawString.includes('420')) {
-      prefix = '₹';
-      targetNum = 420;
-      suffix = 'L+';
-    } else if (rawString.includes('150')) {
-      targetNum = 150000;
-      suffix = '+';
-      isLocale = true;
-    } else if (rawString.includes('4.9')) {
-      targetNum = 4.9;
-      decimals = 1;
-      suffix = ' / 5';
-    } else {
-      const match = rawString.match(/^([^0-9.]*)([0-9,.]+)(.*)$/);
-      if (match) {
-        prefix = match[1] || '';
-        const numStr = match[2].replace(/,/g, '');
-        targetNum = parseFloat(numStr) || 0;
-        if (numStr.includes('.')) {
-          decimals = numStr.split('.')[1].length;
-        }
-        suffix = match[3] || '';
-        isLocale = match[2].includes(',');
-      } else {
-        setDisplay(rawString);
-        return;
-      }
-    }
+    if (!isInView || !rawString || !targetNum) return;
 
     const controls = animate(0, targetNum, {
-      duration: 1.8,
+      duration: 2.0,
       delay,
-      ease: [0.16, 1, 0.3, 1], // Smooth premium ease-out curve
+      ease: [0.16, 1, 0.3, 1], // Premium ease-out curve
       onUpdate(latest) {
-        let formatted = '';
-        if (decimals > 0) {
-          formatted = latest.toFixed(decimals);
-        } else if (isLocale) {
-          formatted = Math.round(latest).toLocaleString('en-IN');
-        } else {
-          formatted = Math.round(latest).toString();
-        }
-        setDisplay(`${prefix}${formatted}${suffix}`);
+        setDisplay(formatValue(latest));
       },
     });
 
     return () => controls.stop();
-  }, [isInView, rawString, delay]);
+  }, [isInView, rawString, delay, targetNum]);
 
   return <span>{display || rawString}</span>;
 };
@@ -101,22 +107,11 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
   const displayStats = stats && stats.length > 0 ? stats : defaultStats;
 
   return (
-    <section ref={sectionRef} className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 border-b border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300">
+    <section ref={sectionRef} className="w-full min-h-screen flex flex-col justify-center snap-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 border-b border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300">
       
       {/* Header Section */}
       <div className="w-full max-w-4xl mx-auto mb-8 sm:mb-10 text-center space-y-2.5">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center justify-center gap-3"
-        >
-          <span className="w-8 h-[1.5px] bg-brand-accent hidden sm:block"></span>
-          <span className="text-[11px] sm:text-xs font-black text-brand-accent tracking-[0.25em] uppercase">
-            OUR TRACK RECORD
-          </span>
-          <span className="w-8 h-[1.5px] bg-brand-accent hidden sm:block"></span>
-        </motion.div>
+
         
         <motion.h2
           initial={{ opacity: 0, y: 15 }}

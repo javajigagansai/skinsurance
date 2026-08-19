@@ -12,7 +12,7 @@ import { PremiumEditorialStats } from '../../features/marketing/components/Premi
 import { EditorialTrustValues } from '../../features/marketing/components/EditorialTrustValues';
 import { StaggerTestimonials } from '../../components/ui/stagger-testimonials';
 import { HowItWorks } from '../../features/marketing/components/HowItWorks';
-import { LeadCaptureSection } from '../../features/marketing/components/LeadCaptureSection';
+
 import { Calculator } from '../Calculator';
 import { HeroFlyerCarousel } from '../../features/marketing/components/HeroFlyerCarousel';
 import { PinterestCardCarousel } from '../../features/marketing/components/PinterestCardCarousel';
@@ -286,7 +286,7 @@ export const Home = () => {
   return (
     <div className="relative">
       {/* Modern 2-Column Hero Section */}
-      <section className="relative w-full flex items-center justify-center pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-36 lg:pb-24 bg-slate-50 dark:bg-neutral-950 overflow-hidden border-b border-black/5 dark:border-white/5 transition-colors duration-300">
+      <section className="relative w-full min-h-[calc(100vh-80px)] flex flex-col justify-center snap-start pt-24 pb-12 sm:pt-28 sm:pb-16 bg-slate-50 dark:bg-neutral-950 overflow-hidden border-b border-black/5 dark:border-white/5 transition-colors duration-300">
         
         {/* Ambient background glow */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-brand-accent/5 dark:bg-brand-accent/10 blur-[140px] rounded-full pointer-events-none" />
@@ -315,13 +315,7 @@ export const Home = () => {
                 </button>
               </div>
 
-              {/* Hotline info */}
-              <div className="flex items-center justify-center lg:justify-start gap-2 text-xs text-neutral-600 dark:text-neutral-400 font-medium">
-                <span>Direct Advisor Hotline:</span>
-                <a href="tel:+919994451300" className="font-bold text-neutral-900 dark:text-brand-accent hover:underline">
-                  +91 99944 51300
-                </a>
-              </div>
+
             </motion.div>
 
             {/* Right Side: Dynamic Insurance Flyers Carousel */}
@@ -357,12 +351,11 @@ export const Home = () => {
       <StaggerTestimonials testimonials={testimonials} />
 
       {/* Interactive Insurance Premium & SIP Calculator Section */}
-      <section id="calculator" className="w-full border-t border-black/5 dark:border-white/5 bg-neutral-50/50 dark:bg-neutral-950/40">
+      <section id="calculator" className="w-full min-h-screen flex flex-col justify-center snap-start border-t border-black/5 dark:border-white/5 bg-neutral-50/50 dark:bg-neutral-950/40">
         <Calculator isEmbedded={true} />
       </section>
 
-      {/* Direct Lead Capture Section: Let's Plan Your Protection */}
-      <LeadCaptureSection />
+
 
       </div>
     </div>

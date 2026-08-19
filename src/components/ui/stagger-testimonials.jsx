@@ -38,7 +38,7 @@ export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
   if (!testimonials || testimonials.length === 0) return null;
 
   return (
-    <section className="relative w-full py-16 sm:py-20 lg:py-24 border-t border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300 overflow-hidden">
+    <section className="relative w-full min-h-screen flex flex-col justify-center snap-start py-12 sm:py-16 lg:py-20 border-t border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300 overflow-hidden">
       
       {/* Self-contained 60FPS Hardware Accelerated CSS Marquee */}
       <style>{`
@@ -62,20 +62,12 @@ export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
       `}</style>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 sm:mb-14 text-center space-y-3">
-        <div className="flex items-center justify-center gap-3">
-          <span className="w-8 h-[1.5px] bg-brand-accent hidden sm:block"></span>
-          <span className="text-[11px] sm:text-xs font-black text-brand-accent tracking-[0.25em] uppercase">
-            CLIENT FEEDBACK
-          </span>
-          <span className="w-8 h-[1.5px] bg-brand-accent hidden sm:block"></span>
-        </div>
+
 
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight">
           WHAT OUR <span className="text-brand-accent">CLIENTS SAY</span>
         </h2>
-        <p className="text-xs sm:text-sm md:text-base text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto font-medium leading-relaxed">
-          Hear from families, professionals, and business owners who trust SK Smart Investments.
-        </p>
+
       </div>
 
       {/* Infinite Marquee Container */}

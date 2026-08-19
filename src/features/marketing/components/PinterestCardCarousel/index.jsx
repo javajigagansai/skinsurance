@@ -275,7 +275,7 @@ export const PinterestCardCarousel = ({ cards = INSURER_CARDS, autoPlayInterval 
       </div>
 
       {/* ── 3D Card Stack Stage ── */}
-      <div className="relative w-full h-[260px] sm:h-[275px] flex items-center justify-center overflow-hidden [perspective:1200px] py-2">
+      <div className="relative w-full h-[220px] sm:h-[235px] flex items-center justify-center overflow-hidden [perspective:1200px] py-1">
         {cards.map((card, index) => {
           const style = getCardStyle(index);
           const isActive = index === activeIndex;
@@ -307,62 +307,28 @@ export const PinterestCardCarousel = ({ cards = INSURER_CARDS, autoPlayInterval 
                   navigate(card.link);
                 }
               }}
-              className={`absolute w-[86%] sm:w-[315px] md:w-[335px] h-[230px] sm:h-[245px] rounded-2xl cursor-pointer overflow-hidden flex flex-col justify-between p-4 sm:p-5 border transition-colors duration-300 ${
+              className={`absolute w-[86%] sm:w-[315px] md:w-[335px] h-[200px] sm:h-[215px] rounded-2xl cursor-pointer overflow-hidden flex items-center justify-center p-4 border transition-colors duration-300 ${
                 isActive
                   ? 'bg-white dark:bg-[#151518] border-amber-400/80 dark:border-amber-400/50'
                   : 'bg-white dark:bg-[#18181c] border-slate-200 dark:border-white/10 hover:border-brand-accent/40'
               }`}
             >
-              {/* Card Ambient Glow Header */}
+              {/* Card Ambient Glow */}
               <div 
                 className="absolute top-0 right-0 w-32 h-32 rounded-full blur-2xl pointer-events-none opacity-15"
                 style={{ backgroundColor: card.accentColor }}
               />
 
-              {/* ── Top Header: Brand Logo & Tag Badge ── */}
-              <div className="relative z-10 flex items-center justify-between gap-3">
-                <div className="w-[120px] sm:w-[138px] h-11 sm:h-12 px-3 py-1.5 rounded-xl bg-white border border-slate-200/90 dark:border-white/20 flex items-center justify-center shadow-xs shrink-0">
-                  <img
-                    src={card.logo}
-                    alt={card.name}
-                    className="w-auto h-full max-h-8 sm:max-h-9 max-w-[105px] sm:max-w-[122px] object-contain transition-all"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                </div>
-
-                <div className="flex flex-col items-end shrink-0">
-                  <span className="px-2.5 py-0.5 rounded-full bg-brand-accent/15 border border-brand-accent/30 text-[9px] font-black tracking-wider text-amber-700 dark:text-brand-accent uppercase whitespace-nowrap">
-                    {card.tag}
-                  </span>
-                  <span className="text-[10px] font-bold text-neutral-400 dark:text-neutral-500 mt-0.5 whitespace-nowrap">
-                    {card.category}
-                  </span>
-                </div>
-              </div>
-
-              {/* ── Middle: Plan Details & Highlight ── */}
-              <div className="relative z-10 my-auto py-1">
-                <h4 className="text-base sm:text-lg font-black text-neutral-900 dark:text-white tracking-tight leading-snug">
-                  {card.name}
-                </h4>
-                <p className="text-xs text-neutral-600 dark:text-neutral-300 font-medium line-clamp-2 mt-1 leading-relaxed">
-                  {card.highlight}
-                </p>
-              </div>
-
-              {/* ── Bottom: Credential Badge & Interactive Prompt ── */}
-              <div className="relative z-10 pt-2.5 border-t border-slate-100 dark:border-white/10 flex items-center justify-between">
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-neutral-700 dark:text-neutral-200">
-                  <card.statIcon className="text-xs text-brand-accent shrink-0" />
-                  <span className="truncate">{card.statBadge}</span>
-                </div>
-
-                <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-brand-accent group-hover:translate-x-0.5 transition-transform">
-                  <span>Explore</span>
-                  <FaArrowRight className="text-[9px]" />
-                </span>
+              {/* ── Logo Only (No text inside card) ── */}
+              <div className="relative z-10 w-full h-full p-4 rounded-xl bg-white border border-slate-200/90 dark:border-white/20 flex items-center justify-center shadow-xs">
+                <img
+                  src={card.logo}
+                  alt={card.name}
+                  className="w-auto h-full max-h-24 sm:max-h-28 max-w-[88%] object-contain transition-all"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
               </div>
             </motion.div>
           );

@@ -84,11 +84,7 @@ export const Navbar = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 ${
-          isTransparent || isOpen
-            ? 'bg-transparent backdrop-blur-none border-transparent py-2 sm:py-2.5 md:py-3'
-            : 'bg-white/85 dark:bg-neutral-950/85 backdrop-blur-[20px] shadow-premium-soft dark:shadow-premium-dark border-b border-black/5 dark:border-white/10 py-2 sm:py-2.5 md:py-3'
-        }`}
+        className="fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 bg-white dark:bg-neutral-950 backdrop-blur-[20px] shadow-premium-soft dark:shadow-premium-dark border-b border-black/5 dark:border-white/10 py-2 sm:py-2.5 md:py-3"
         style={{ fontFamily: "'Poppins', sans-serif" }}
       >
         <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between min-h-[52px] sm:min-h-[60px]">

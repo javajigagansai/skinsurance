@@ -56,7 +56,7 @@ export const HowItWorks = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative w-full py-16 sm:py-20 lg:py-24 border-t border-black/5 dark:border-white/5 bg-slate-50/70 dark:bg-neutral-950/60 transition-colors duration-300 overflow-hidden"
+      className="relative w-full min-h-screen flex flex-col justify-center snap-start py-12 sm:py-16 lg:py-20 border-t border-black/5 dark:border-white/5 bg-slate-50/70 dark:bg-neutral-950/60 transition-colors duration-300 overflow-hidden"
     >
       {/* Subtle Background Accent */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-brand-accent/5 dark:bg-brand-accent/5 blur-[120px] rounded-full pointer-events-none" />
@@ -81,7 +81,7 @@ export const HowItWorks = () => {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="text-xs sm:text-sm md:text-base text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto font-medium leading-relaxed"
           >
-            Four effortless steps designed to eliminate confusion and guide you towards confident, lifelong financial protection.
+
           </motion.p>
         </div>
 

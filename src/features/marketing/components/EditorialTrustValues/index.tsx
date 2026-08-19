@@ -41,7 +41,7 @@ export const EditorialTrustValues = ({ values }: { values?: ValueCard[] }) => {
   return (
     <section 
       ref={containerRef} 
-      className="w-full bg-[#ffda0a] border-y border-black/10 py-16 sm:py-20 lg:py-24 relative overflow-hidden select-none"
+      className="w-full min-h-screen flex flex-col justify-center snap-start bg-[#ffda0a] border-y border-black/10 py-12 sm:py-16 lg:py-20 relative overflow-hidden select-none"
     >
       {/* Subtle Ambient Decorative Dot Pattern */}
       <div 

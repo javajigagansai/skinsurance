@@ -64,20 +64,7 @@ export const HowItWorks = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* ── Section Header ── */}
-        <div className="w-full max-w-3xl mx-auto mb-12 sm:mb-16 text-center space-y-3">
-          
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-            transition={{ duration: 0.5 }}
-            className="flex items-center justify-center gap-3"
-          >
-            <span className="w-8 h-[1.5px] bg-brand-accent hidden sm:block"></span>
-            <span className="text-[11px] sm:text-xs font-black text-brand-accent tracking-[0.25em] uppercase">
-              SIMPLE & TRANSPARENT PROCESS
-            </span>
-            <span className="w-8 h-[1.5px] bg-brand-accent hidden sm:block"></span>
-          </motion.div>
+        <div className="w-full max-w-3xl mx-auto mb-10 sm:mb-14 text-center space-y-3">
 
           <motion.h2
             initial={{ opacity: 0, y: 15 }}

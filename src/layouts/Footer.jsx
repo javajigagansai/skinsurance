@@ -18,7 +18,7 @@ export const Footer = () => {
           <div className="space-y-6">
             <Link to="/" className="inline-block relative group">
               <div className="absolute inset-0 bg-brand-accent/20 blur-[30px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              <Logo showTagline={false} />
+              <Logo showTagline={false} imageClassName="!h-[60px] sm:!h-[68px] md:!h-[72px] !max-w-[260px]" />
             </Link>
 
             <div className="flex flex-wrap gap-3 pt-2">

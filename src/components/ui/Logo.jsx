@@ -1,12 +1,12 @@
 import React from 'react';
 
-export const Logo = ({ variant = 'horizontal', showTagline = false, className = '', isDark = false }) => {
+export const Logo = ({ variant = 'horizontal', showTagline = false, className = '', imageClassName = '', isDark = false }) => {
   if (variant === 'vertical') {
     return (
       <div className={`flex flex-col items-center text-center ${className}`}>
         <img
           src="/logo.png"
-          className="h-16 sm:h-20 w-auto object-contain"
+          className={`h-16 sm:h-20 w-auto object-contain ${imageClassName}`}
           alt="SK Smart Investments"
         />
         {showTagline && (
@@ -22,7 +22,7 @@ export const Logo = ({ variant = 'horizontal', showTagline = false, className = 
     <div className={`flex flex-col items-start justify-center ${className}`}>
       <img
         src="/logo.png" 
-        className="h-10 sm:h-11 md:h-12 w-auto max-w-[160px] sm:max-w-[200px] object-contain transition-all duration-300" 
+        className={`h-10 sm:h-11 md:h-12 w-auto max-w-[160px] sm:max-w-[200px] object-contain transition-all duration-300 ${imageClassName}`} 
         alt="SK Smart Investments" 
       />
       {showTagline && (

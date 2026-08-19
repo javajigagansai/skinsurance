@@ -183,15 +183,6 @@ export const Navbar = () => {
               </AnimatePresence>
             </div>
 
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className={`flex items-center justify-center p-2.5 rounded-xl transition-all ${isTransparent ? 'text-black hover:bg-black/10' : 'text-neutral-700 dark:text-neutral-200 hover:bg-black/5 dark:hover:bg-white/10 hover:text-brand-accent'}`}
-              aria-label="Toggle Theme"
-            >
-              {isDarkMode ? <FaSun className="text-sm text-brand-accent" /> : <FaMoon className="text-sm text-neutral-800" />}
-            </button>
-
             {/* Auth Buttons */}
             <div className="flex items-center space-x-3">
               {isManager && (
@@ -236,15 +227,8 @@ export const Navbar = () => {
               onMenuClose={() => setIsOpen(false)}
               bottomContent={(closeMenu) => (
                 <div className="flex flex-col space-y-6">
-                  {/* Mobile Theme & Language */}
+                  {/* Mobile Language */}
                   <div className="flex items-center justify-center space-x-8 mb-6">
-                    <button
-                      onClick={toggleTheme}
-                      className="flex items-center justify-center text-[18px] font-bold transition-colors cursor-pointer text-black dark:text-white hover:text-brand-accent dark:hover:text-brand-accent"
-                      aria-label="Toggle Theme"
-                    >
-                      {isDarkMode ? <FaSun /> : <FaMoon />}
-                    </button>
 
                     <div className="relative flex justify-center">
                     <button

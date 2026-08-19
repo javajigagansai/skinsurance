@@ -387,8 +387,8 @@ export const Calculator = ({ isEmbedded = false }) => {
         {/* ── Section Header ── */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 sm:gap-6 mb-5 sm:mb-6">
           <div className="space-y-1 sm:space-y-2 max-w-xl">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-slate-900 dark:text-white leading-tight">
-              PLAN YOUR <span className="text-brand-accent">FINANCIAL FUTURE</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-black dark:text-black leading-tight">
+              PLAN YOUR FINANCIAL FUTURE
             </h2>
             <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-medium">
               Estimate your insurance premium and investment requirements in seconds.

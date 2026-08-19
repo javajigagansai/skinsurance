@@ -70,9 +70,9 @@ export const HowItWorks = () => {
             initial={{ opacity: 0, y: 15 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight"
+            className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-black dark:text-black uppercase leading-tight"
           >
-            HOW IT <span className="text-brand-accent">WORKS</span>
+            HOW IT WORKS
           </motion.h2>
 
           <motion.p

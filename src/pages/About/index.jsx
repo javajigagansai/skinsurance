@@ -553,7 +553,7 @@ export const About = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <SectionEyebrow>OUR VISION</SectionEyebrow>
+
             
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-900 dark:text-white uppercase tracking-tight mb-6">
               WHERE WE'RE HEADED
@@ -579,7 +579,7 @@ export const About = () => {
       ═══════════════════════════════════════════════════════════ */}
       <section className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-black/5 dark:border-white/5">
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <SectionEyebrow>OUR MISSION</SectionEyebrow>
+
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight">
             WHAT DRIVES US
           </h2>

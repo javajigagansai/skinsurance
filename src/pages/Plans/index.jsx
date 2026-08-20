@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from '../../context/LanguageContext';
 import { Modal } from '../../components/ui/Modal';
 import { subscribeToCollection } from '../../services/firebaseService';
+import { getPlans } from '../../features/plans/services/planService';
 import { FaCheck, FaShieldAlt, FaUserShield, FaBriefcase, FaFileSignature, FaHeartbeat, FaCar, FaSearch, FaArrowRight, FaTimes, FaCheckCircle } from 'react-icons/fa';
 import { cn } from '../../utils/cn';
 
@@ -149,13 +150,23 @@ export const Plans = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     const params = new URLSearchParams(location.search);
-    const category = params.get('category');
-    if (category) {
-      if (['Health', 'Motor'].includes(category)) {
+    const rawCat = params.get('category');
+    if (rawCat) {
+      const lower = rawCat.toLowerCase();
+      if (lower === 'health') {
         setActiveFilter('General');
-        setActiveSubFilter(category);
+        setActiveSubFilter('Health');
+      } else if (lower === 'motor') {
+        setActiveFilter('General');
+        setActiveSubFilter('Motor');
+      } else if (lower === 'life') {
+        setActiveFilter('Life');
+        setActiveSubFilter('General');
+      } else if (lower === 'general') {
+        setActiveFilter('General');
+        setActiveSubFilter('General');
       } else {
-        setActiveFilter(category);
+        setActiveFilter(rawCat);
         setActiveSubFilter('General');
       }
     } else {
@@ -166,6 +177,22 @@ export const Plans = () => {
 
   useEffect(() => {
     setLoading(true);
+
+    // Immediate initial load
+    getPlans().then(res => {
+      if (res && res.plans && res.plans.length > 0) {
+        const activePlans = res.plans.filter(plan => plan.status !== 'Inactive');
+        const sorted = [...activePlans].sort((a, b) => {
+          const orderA = a.priority !== undefined ? parseInt(a.priority) : 999;
+          const orderB = b.priority !== undefined ? parseInt(b.priority) : 999;
+          return orderA - orderB;
+        });
+        setPlans(sorted);
+      }
+      setLoading(false);
+    }).catch(() => setLoading(false));
+
+    // Real-time synchronization & event listener
     const unsubscribe = subscribeToCollection('plans', (data) => {
       if (data && data.length > 0) {
         const activePlans = data.filter(plan => plan.status !== 'Inactive');
@@ -175,8 +202,6 @@ export const Plans = () => {
           return orderA - orderB;
         });
         setPlans(sorted);
-      } else {
-        setPlans([]); 
       }
       setLoading(false);
     });

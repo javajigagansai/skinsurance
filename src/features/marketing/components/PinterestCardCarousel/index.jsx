@@ -275,7 +275,7 @@ export const PinterestCardCarousel = ({ cards = INSURER_CARDS, autoPlayInterval 
       </div>
 
       {/* ── 3D Card Stack Stage ── */}
-      <div className="relative w-full h-[220px] sm:h-[235px] flex items-center justify-center overflow-hidden [perspective:1200px] py-1">
+      <div className="relative w-full h-[255px] sm:h-[275px] flex items-center justify-center overflow-hidden [perspective:1200px] py-1">
         {cards.map((card, index) => {
           const style = getCardStyle(index);
           const isActive = index === activeIndex;
@@ -307,24 +307,24 @@ export const PinterestCardCarousel = ({ cards = INSURER_CARDS, autoPlayInterval 
                   navigate(card.link);
                 }
               }}
-              className={`absolute w-[86%] sm:w-[315px] md:w-[335px] h-[200px] sm:h-[215px] rounded-2xl cursor-pointer overflow-hidden flex items-center justify-center p-4 border transition-colors duration-300 ${
+              className={`absolute w-[90%] sm:w-[350px] md:w-[370px] h-[235px] sm:h-[255px] rounded-3xl cursor-pointer overflow-hidden flex items-center justify-center p-4 sm:p-5 border transition-colors duration-300 ${
                 isActive
-                  ? 'bg-white dark:bg-[#151518] border-amber-400/80 dark:border-amber-400/50'
-                  : 'bg-white dark:bg-[#18181c] border-slate-200 dark:border-white/10 hover:border-brand-accent/40'
+                  ? 'bg-white dark:bg-[#151518] border-amber-400/80 dark:border-amber-400/50 shadow-xl'
+                  : 'bg-white dark:bg-[#18181c] border-slate-200 dark:border-white/10 hover:border-brand-accent/40 shadow-sm'
               }`}
             >
               {/* Card Ambient Glow */}
               <div 
-                className="absolute top-0 right-0 w-32 h-32 rounded-full blur-2xl pointer-events-none opacity-15"
+                className="absolute top-0 right-0 w-36 h-36 rounded-full blur-2xl pointer-events-none opacity-20"
                 style={{ backgroundColor: card.accentColor }}
               />
 
-              {/* ── Logo Only (No text inside card) ── */}
-              <div className="relative z-10 w-full h-full p-4 rounded-xl bg-white border border-slate-200/90 dark:border-white/20 flex items-center justify-center shadow-xs">
+              {/* ── Large Logo Container (Enhanced Size & Clarity) ── */}
+              <div className="relative z-10 w-full h-full p-4 sm:p-6 rounded-2xl bg-white border border-slate-200/90 dark:border-white/20 flex items-center justify-center shadow-xs">
                 <img
                   src={card.logo}
                   alt={card.name}
-                  className="w-auto h-full max-h-24 sm:max-h-28 max-w-[88%] object-contain transition-all"
+                  className="w-auto h-full max-h-32 sm:max-h-36 max-w-[92%] object-contain transition-all duration-300"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                   }}

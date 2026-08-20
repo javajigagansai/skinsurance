@@ -415,12 +415,24 @@ export const deleteJobApplication = async (id, user = null) => {
 // -------------------------------------------------------------
 export const DEFAULT_FLYERS = [
   {
-    id: 'flyer-video-spotlight',
+    id: 'flyer-video-presenter',
+    title: 'SK Smart Investments Advisory Presentation',
+    subtitle: 'Comprehensive financial planning, family protection, and expert insurance guidance.',
+    tag: 'VIDEO SPOTLIGHT',
+    image: '/Video_Script_Spoken_by_Presen.mp4',
+    video: '/Video_Script_Spoken_by_Presen.mp4',
+    mediaType: 'video',
+    category: 'Video Spotlight',
+    link: '/appointment',
+    status: 'Active'
+  },
+  {
+    id: 'flyer-video-wa0007',
     title: 'SK Smart Digital Protection & Advisory',
     subtitle: 'Watch how SK Smart Investments delivers 100% paperless digital onboarding and 45-minute claim support.',
     tag: 'VIDEO SPOTLIGHT',
-    image: '/sk_mobile_compressed.mp4',
-    video: '/sk_mobile_compressed.mp4',
+    image: '/VID-20260815-WA0007.mp4',
+    video: '/VID-20260815-WA0007.mp4',
     mediaType: 'video',
     category: 'Video Spotlight',
     link: '/appointment',
@@ -480,7 +492,7 @@ export const getFlyers = async () => {
     const local = localStorage.getItem('sk_flyers_local');
     if (local) {
       const parsed = JSON.parse(local);
-      if (parsed && parsed.some(f => f.id === 'flyer-tata-cancer')) {
+      if (parsed && parsed.some(f => f.id === 'flyer-video-presenter')) {
         return parsed;
       }
     }

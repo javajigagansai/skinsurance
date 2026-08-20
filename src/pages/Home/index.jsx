@@ -304,13 +304,13 @@ export const Home = () => {
               {/* Pinterest-Style Stacked Card Carousel */}
               <PinterestCardCarousel />
 
-              {/* Actions Bar */}
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1">
+              {/* Actions Bar - Positioned Lower with Increased Size */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-4 sm:pt-6">
                 <button
                   onClick={() => navigate('/appointment')}
-                  className="px-9 py-4 rounded-2xl bg-brand-accent text-neutral-950 text-xs sm:text-sm font-black uppercase tracking-wider hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-neutral-950 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-95 flex items-center gap-2.5 cursor-pointer"
+                  className="px-10 py-4.5 rounded-2xl bg-brand-accent text-neutral-950 text-sm sm:text-base font-black uppercase tracking-wider hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-neutral-950 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1 active:scale-95 flex items-center gap-3 cursor-pointer"
                 >
-                  <FaPhoneAlt className="text-xs" />
+                  <FaPhoneAlt className="text-sm" />
                   <span>Book a Free Call</span>
                 </button>
               </div>
@@ -351,7 +351,7 @@ export const Home = () => {
       <StaggerTestimonials testimonials={testimonials} />
 
       {/* Interactive Insurance Premium & SIP Calculator Section */}
-      <section id="calculator" className="w-full min-h-screen flex flex-col justify-center snap-start border-t border-black/5 dark:border-white/5 bg-neutral-50/50 dark:bg-neutral-950/40">
+      <section id="calculator" className="w-full min-h-screen lg:h-screen flex flex-col justify-center snap-start border-t border-black/5 dark:border-white/5 bg-slate-50/50 dark:bg-neutral-950/40 overflow-hidden">
         <Calculator isEmbedded={true} />
       </section>
 

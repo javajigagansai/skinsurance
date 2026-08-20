@@ -109,69 +109,80 @@ export const Footer = () => {
           <div>
             <h4 className="text-xs font-[900] text-white uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
-              {t('footer_contact')}
+              <span>Contact Us</span>
             </h4>
-            <ul className="space-y-6">
+
+            <div className="space-y-5">
               
-              <li>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <FaMapMarkerAlt className="text-brand-accent text-xs" />
-                    <p className="font-[900] text-white text-[10px] uppercase tracking-widest">Corporate Office</p>
-                  </div>
-                  <div className="relative w-full h-32 rounded-2xl overflow-hidden border border-white/10 shadow-lg group hover:border-brand-accent/50 transition-all duration-300">
-                    <iframe
-                      src="https://maps.google.com/maps?q=104%20MD%20Plaza%20West%20Raja%20Street%20Kanchipuram%20631502&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                      width="100%"
-                      height="100%"
-                      style={{ border: 0 }}
-                      allowFullScreen=""
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                      title="SK Smart Investments Office Location"
-                      className="w-full h-full grayscale-[15%] contrast-125 opacity-90 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300"
-                    />
-                    <a 
-                      href="https://maps.google.com/?q=104+MD+Plaza+West+Raja+Street+Kanchipuram+631502"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="absolute bottom-2 right-2 px-2.5 py-1 bg-black/85 hover:bg-brand-accent hover:text-neutral-950 text-white text-[10px] font-bold rounded-lg border border-white/20 backdrop-blur-md transition-all shadow-md flex items-center gap-1"
-                    >
-                      <span>Get Directions ↗</span>
-                    </a>
-                  </div>
+              {/* Corporate Office & Map */}
+              <div className="space-y-2.5">
+                <div className="flex items-center gap-2 text-white">
+                  <FaMapMarkerAlt className="text-brand-accent text-xs shrink-0" />
+                  <p className="font-[900] text-white text-[11px] uppercase tracking-wider font-['Plus_Jakarta_Sans',sans-serif]">
+                    Corporate Office
+                  </p>
                 </div>
-              </li>
 
-              <li>
-                <a href="mailto:skinvestments2025@gmail.com" className="flex items-start gap-4 group cursor-pointer block">
-                  <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brand-accent/10 group-hover:border-brand-accent/30 transition-all duration-300 shadow-xl">
-                    <FaEnvelope className="text-neutral-400 group-hover:text-brand-accent transition-colors" />
-                  </div>
-                  <div>
-                    <p className="font-[900] text-white text-[10px] uppercase tracking-widest mb-1">{t('footer_email')}</p>
-                    <span className="text-sm text-neutral-400 font-medium group-hover:text-white transition-colors block">
-                      skinvestments2025@gmail.com
-                    </span>
-                  </div>
-                </a>
-              </li>
+                <div className="relative w-full h-32 rounded-2xl overflow-hidden border border-white/10 shadow-lg group hover:border-brand-accent/50 transition-all duration-300">
+                  <iframe
+                    src="https://maps.google.com/maps?q=104%20MD%20Plaza%20West%20Raja%20Street%20Kanchipuram%20631502&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="SK Smart Investments Office Location"
+                    className="w-full h-full grayscale-[15%] contrast-125 opacity-90 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300"
+                  />
+                  <a 
+                    href="https://maps.google.com/?q=104+MD+Plaza+West+Raja+Street+Kanchipuram+631502"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute bottom-2 right-2 px-2.5 py-1 bg-black/85 hover:bg-brand-accent hover:text-neutral-950 text-white text-[10px] font-bold rounded-lg border border-white/20 backdrop-blur-md transition-all shadow-md flex items-center gap-1 font-['Plus_Jakarta_Sans',sans-serif]"
+                  >
+                    <span>Get Directions ↗</span>
+                  </a>
+                </div>
+              </div>
 
-              <li>
-                <a href="tel:+919994451300" className="flex items-start gap-4 group cursor-pointer block">
-                  <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brand-accent/10 group-hover:border-brand-accent/30 transition-all duration-300 shadow-xl">
-                    <FaPhoneAlt className="text-neutral-400 group-hover:text-brand-accent transition-colors" />
-                  </div>
-                  <div>
-                    <p className="font-[900] text-white text-[10px] uppercase tracking-widest mb-1">Phone Hotline</p>
-                    <span className="text-sm text-neutral-400 font-medium group-hover:text-white transition-colors block font-sans">
-                      +91 99944 51300
-                    </span>
-                  </div>
-                </a>
-              </li>
+              {/* Email Communications */}
+              <a 
+                href="mailto:skinvestments2025@gmail.com" 
+                className="flex items-center gap-3.5 p-2 -mx-2 rounded-xl hover:bg-white/5 transition-colors group cursor-pointer"
+              >
+                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brand-accent/15 group-hover:border-brand-accent/40 transition-all shadow-sm">
+                  <FaEnvelope className="text-neutral-400 group-hover:text-brand-accent text-sm transition-colors" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="font-[900] text-neutral-400 text-[10px] uppercase tracking-wider mb-0.5 group-hover:text-brand-accent transition-colors font-['Plus_Jakarta_Sans',sans-serif]">
+                    Email Communications
+                  </p>
+                  <p className="text-xs sm:text-sm text-neutral-200 font-semibold group-hover:text-white transition-colors truncate font-sans">
+                    skinvestments2025@gmail.com
+                  </p>
+                </div>
+              </a>
 
-            </ul>
+              {/* Phone Hotline */}
+              <a 
+                href="tel:+919994451300" 
+                className="flex items-center gap-3.5 p-2 -mx-2 rounded-xl hover:bg-white/5 transition-colors group cursor-pointer"
+              >
+                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brand-accent/15 group-hover:border-brand-accent/40 transition-all shadow-sm">
+                  <FaPhoneAlt className="text-neutral-400 group-hover:text-brand-accent text-sm transition-colors" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="font-[900] text-neutral-400 text-[10px] uppercase tracking-wider mb-0.5 group-hover:text-brand-accent transition-colors font-['Plus_Jakarta_Sans',sans-serif]">
+                    Phone Hotline
+                  </p>
+                  <p className="text-xs sm:text-sm text-neutral-200 font-semibold group-hover:text-white transition-colors truncate font-sans">
+                    +91 99944 51300
+                  </p>
+                </div>
+              </a>
+
+            </div>
           </div>
 
         </div>

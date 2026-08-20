@@ -14,7 +14,7 @@ export default defineConfig({
   ],
   server: {
     watch: {
-      ignored: ['**/*.~tmp', '**/*.tmp', '**/*.swp'],
+      ignored: ['**/*.mp4', '**/*.jpg', '**/*.jpeg', '**/*.png', '**/*.webp', '**/*.~tmp', '**/*.tmp', '**/*.swp'],
     },
   },
 })

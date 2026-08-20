@@ -121,15 +121,6 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
         >
           A LEGACY MEASURED IN TRUST
         </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="text-xs sm:text-sm md:text-base text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto font-medium"
-        >
-          Proven reliability with transparent claim settlements and lifelong advisory across Tamil Nadu.
-        </motion.p>
       </div>
 
       {/* Perfectly Aligned 4-Column Stats Grid */}

@@ -18,6 +18,8 @@ import {
   FaCheckCircle
 } from 'react-icons/fa';
 
+import { isFirebaseConfigured } from '../../firebase/config';
+
 export const Auth = () => {
   const { login, register, sendPasswordReset } = useAuth();
   const navigate = useNavigate();
@@ -102,6 +104,26 @@ export const Auth = () => {
                 <p className="text-sm text-neutral-400 font-light pl-[56px] hidden md:block">
                   Secure access to your account.
                 </p>
+              </div>
+            )}
+
+            {/* Local Sandbox Notice */}
+            {!isFirebaseConfigured && !isForgot && (
+              <div className="mb-6 p-3.5 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-between text-xs text-amber-300 relative z-10">
+                <div className="flex items-center gap-2">
+                  <FaInfoCircle className="text-brand-accent shrink-0 text-sm" />
+                  <span>Localhost Mode Active</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEmail('admin@sksmart.com');
+                    setPassword('admin123');
+                  }}
+                  className="px-2.5 py-1 rounded-lg bg-brand-accent text-neutral-950 font-black text-[10px] uppercase hover:bg-white transition-colors cursor-pointer"
+                >
+                  Auto Fill
+                </button>
               </div>
             )}
 

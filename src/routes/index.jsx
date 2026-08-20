@@ -62,6 +62,7 @@ export const AppRoutes = () => {
         <Route path="/calculator" element={<Navigate to="/#calculator" replace />} />
         <Route path="/careers" element={<Careers />} />
         <Route path="/support" element={<Support />} />
+        <Route path="/contact" element={<Support />} />
         <Route path="/claims" element={<Claims />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/login" element={<Auth />} />

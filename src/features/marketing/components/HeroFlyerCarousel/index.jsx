@@ -63,12 +63,12 @@ export const HeroFlyerCarousel = () => {
 
   return (
     <div 
-      className="relative w-full max-w-xl mx-auto flex flex-col space-y-4 select-none"
+      className="relative w-full max-w-[611px] mx-auto flex flex-col space-y-4 select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* ── Modern Sleek Poster Card Frame ── */}
-      <div className="relative w-full h-[400px] sm:h-[470px] lg:h-[500px] rounded-3xl bg-neutral-900 border border-neutral-700/60 dark:border-white/15 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)] overflow-hidden group">
+      {/* ── Modern Sleek Poster Card Frame (+15px Width & Height) ── */}
+      <div className="relative w-full h-[420px] sm:h-[490px] lg:h-[520px] rounded-3xl bg-neutral-900 border border-neutral-700/60 dark:border-white/15 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)] overflow-hidden group">
         
         {/* Subtle Ambient Halo Glow */}
         <div className="absolute -top-20 -right-20 w-64 h-64 bg-brand-accent/15 rounded-full blur-[80px] pointer-events-none" />
@@ -88,18 +88,7 @@ export const HeroFlyerCarousel = () => {
             >
               {isVideo ? (
                 <>
-                  {/* Blurred Background Video Atmospheric Tone */}
-                  <video
-                    key={`bg-vid-${currentFlyer.id || currentIndex}`}
-                    src={mediaSrc}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="absolute inset-0 w-full h-full object-cover blur-2xl scale-125 opacity-35 select-none pointer-events-none"
-                  />
-
-                  {/* Main Foreground Video */}
+                  {/* Main Foreground Video - Edge-to-Edge Full Fit */}
                   <video
                     key={`fg-vid-${currentFlyer.id || currentIndex}`}
                     src={mediaSrc}
@@ -108,24 +97,16 @@ export const HeroFlyerCarousel = () => {
                     muted={isMuted}
                     playsInline
                     controls={false}
-                    className="relative z-10 w-full h-full object-cover sm:object-contain object-center drop-shadow-2xl"
+                    className="relative z-10 w-full h-full object-cover object-center"
                   />
                 </>
               ) : (
                 <>
-                  {/* Blurred Background Atmospheric Tone */}
-                  <img
-                    src={currentFlyer.image}
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute inset-0 w-full h-full object-cover blur-2xl scale-125 opacity-35 select-none pointer-events-none"
-                  />
-
-                  {/* Foreground Poster Image */}
+                  {/* Foreground Poster Image - Edge-to-Edge Full Fit */}
                   <img
                     src={currentFlyer.image}
                     alt={currentFlyer.title || 'Insurance Flyer'}
-                    className="relative z-10 w-full h-full object-contain object-top drop-shadow-2xl transition-transform duration-500 group-hover:scale-[1.01]"
+                    className="relative z-10 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                     onError={(e) => {
                       e.currentTarget.src = '/casual/healthinsurance.jpg';
                     }}
@@ -138,37 +119,19 @@ export const HeroFlyerCarousel = () => {
             </motion.div>
           </AnimatePresence>
 
-          {/* ── Top Floating Badges ── */}
-          <div className="absolute top-3.5 left-3.5 right-3.5 z-20 flex items-center justify-between pointer-events-none">
-            <div className="flex items-center gap-2">
-              <motion.span 
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                key={`tag-${currentIndex}`}
-                className="px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-brand-accent/40 text-[10px] sm:text-[11px] font-black text-brand-accent tracking-widest uppercase shadow-xl flex items-center gap-1.5"
+          {/* ── Top Floating Video Audio Control (if video) ── */}
+          {isVideo && (
+            <div className="absolute top-3.5 right-3.5 z-20 flex items-center gap-2">
+              <button
+                onClick={() => setIsMuted(!isMuted)}
+                className="px-2.5 py-1 rounded-full bg-black/80 hover:bg-brand-accent hover:text-neutral-950 text-white backdrop-blur-md border border-white/20 text-[10px] font-bold tracking-wider uppercase shadow-lg flex items-center gap-1.5 cursor-pointer pointer-events-auto transition-all"
+                title={isMuted ? 'Unmute video audio' : 'Mute video audio'}
               >
-                {isVideo ? <FaVideo className="text-[9px] text-brand-accent animate-pulse" /> : <FaStar className="text-[9px] text-brand-accent animate-pulse" />}
-                <span>{currentFlyer.tag || (isVideo ? 'VIDEO SPOTLIGHT' : 'SPECIAL FEATURE')}</span>
-              </motion.span>
+                {isMuted ? <FaVolumeMute className="text-brand-accent text-xs" /> : <FaVolumeUp className="text-brand-accent text-xs" />}
+                <span>{isMuted ? 'Muted' : 'Sound On'}</span>
+              </button>
             </div>
-
-            <div className="flex items-center gap-2">
-              {isVideo && (
-                <button
-                  onClick={() => setIsMuted(!isMuted)}
-                  className="px-2.5 py-1 rounded-full bg-black/80 hover:bg-brand-accent hover:text-neutral-950 text-white backdrop-blur-md border border-white/20 text-[10px] font-bold tracking-wider uppercase shadow-lg flex items-center gap-1.5 cursor-pointer pointer-events-auto transition-all"
-                  title={isMuted ? 'Unmute video audio' : 'Mute video audio'}
-                >
-                  {isMuted ? <FaVolumeMute className="text-brand-accent text-xs" /> : <FaVolumeUp className="text-brand-accent text-xs" />}
-                  <span>{isMuted ? 'Muted' : 'Sound On'}</span>
-                </button>
-              )}
-
-              <span className="px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md border border-white/20 text-[9px] sm:text-[10px] font-black text-white uppercase tracking-wider shadow-lg">
-                {currentFlyer.category || 'INSURANCE'}
-              </span>
-            </div>
-          </div>
+          )}
 
           {/* ── Left / Right Floating Arrows ── */}
           {flyers.length > 1 && (

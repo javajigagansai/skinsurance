@@ -318,26 +318,6 @@ export const Claims = () => {
         </div>
       </section>
 
-      {/* 10. CLIENT EXPERIENCES - Real Support When It Matters */}
-      <section className="py-24 px-6 lg:px-12 max-w-[1440px] mx-auto border-b border-black/10 dark:border-white/10">
-        <h2 className="text-4xl font-bold text-black dark:text-white tracking-tight mb-16">REAL SUPPORT WHEN IT MATTERS</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="border-t-4 border-black/20 dark:border-white/20 pt-8">
-            <p className="text-xl text-neutral-700 dark:text-neutral-300 leading-relaxed mb-8">
-              "Our health insurance claim was handled professionally from start to finish. The team at SK Smart Investments coordinated with the hospital for cashless approval in the middle of the night. The entire process was smooth and stress-free."
-            </p>
-            <h4 className="text-black dark:text-white font-bold uppercase tracking-wider text-sm">Rajesh Kumar</h4>
-            <p className="text-neutral-500 text-sm">Health Claim</p>
-          </div>
-          <div className="border-t-4 border-black/20 dark:border-white/20 pt-8">
-            <p className="text-xl text-neutral-700 dark:text-neutral-300 leading-relaxed mb-8">
-              "When my car was involved in an accident, I just had to make one call. They arranged the towing, surveyor inspection, and ensured the cashless repair was completed without me having to visit the garage constantly. Exceptional service."
-            </p>
-            <h4 className="text-black dark:text-white font-bold uppercase tracking-wider text-sm">Anita Desai</h4>
-            <p className="text-neutral-500 text-sm">General Claim</p>
-          </div>
-        </div>
-      </section>
 
       {/* 11. Final CTA */}
       <section className="py-32 px-6 lg:px-12 bg-black dark:bg-white text-white dark:text-black text-center">

@@ -64,6 +64,7 @@ export const AppRoutes = () => {
         <Route path="/support" element={<Support />} />
         <Route path="/contact" element={<Support />} />
         <Route path="/claims" element={<Claims />} />
+        <Route path="/claims2" element={<Navigate to="/claims" replace />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/login" element={<Auth />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />

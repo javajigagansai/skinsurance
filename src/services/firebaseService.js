@@ -159,6 +159,27 @@ export const subscribeToCollection = (collectionName, callback) => {
       return () => window.removeEventListener('sk_plans_updated', handleUpdate);
     }
 
+    if (collectionName === 'awards') {
+      const getLocalAwards = () => {
+        try {
+          const raw = localStorage.getItem('sk_awards_local');
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          }
+        } catch (e) {}
+        return [];
+      };
+      callback(getLocalAwards());
+
+      const handleAwardsUpdate = (e) => {
+        if (e.detail && Array.isArray(e.detail)) callback(e.detail);
+        else callback(getLocalAwards());
+      };
+      window.addEventListener('sk_awards_updated', handleAwardsUpdate);
+      return () => window.removeEventListener('sk_awards_updated', handleAwardsUpdate);
+    }
+
     callback([]);
     return () => {};
   }

@@ -15,6 +15,7 @@ import { CareersManager } from './CareersManager';
 import { ApplicationsManager } from './ApplicationsManager';
 import { FlyersManager } from './FlyersManager';
 import { LeadsManager } from './LeadsManager';
+import { AwardsManager } from './AwardsManager';
 
 const DEFAULT_COMPANIES = [
   'SBI Life Insurance', 'LIC', 'Tata AIA', 'HDFC Life', 
@@ -77,6 +78,9 @@ const planSchema = z.object({
 });
 
 export const ManagerDashboard = ({ tab }) => {
+  if (tab === 'awards') {
+    return <AwardsManager />;
+  }
   if (tab === 'flyers') {
     return <FlyersManager />;
   }

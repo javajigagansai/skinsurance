@@ -7,9 +7,12 @@ import {
   FaArrowRight, FaArrowLeft, FaCheckCircle, FaPhoneAlt, FaCalendarAlt,
   FaFileContract, FaHandshake, FaMedal, FaExternalLinkAlt,
   FaMapMarkerAlt, FaEnvelope, FaChevronLeft, FaChevronRight,
-  FaLightbulb, FaUserTie
+  FaLightbulb, FaUserTie, FaBuilding
 } from 'react-icons/fa';
 import { useTranslation } from '../../context/LanguageContext';
+import { getAwards, DEFAULT_AWARDS_DATA } from '../../services/api';
+import { subscribeToCollection } from '../../services/firebaseService';
+import { WhatDrivesUs } from '../../features/marketing/components/WhatDrivesUs';
 
 /* ─── Smooth Animated Stat Number ─── */
 const AnimatedStat = ({ value, suffix = "", prefix = "" }) => {
@@ -36,154 +39,29 @@ const AnimatedStat = ({ value, suffix = "", prefix = "" }) => {
   return <span ref={ref}>{display}</span>;
 };
 
-/* ─── Real Awards Data (17 Verified Honors) ─── */
-const AWARDS_DATA = [
-  {
-    id: 1,
-    title: 'Dream Agency Elite Aspirant Award',
-    tag: 'INDUSTRY LEADERSHIP',
-    year: '2024',
-    desc: 'Recognized for remarkable progress, commitment to advisory excellence, and continuous professional development.',
-    img: '/Awards_JPG/IMG_3623.jpg',
-    featured: true
-  },
-  {
-    id: 2,
-    title: 'MDRT Aspirant Achievement',
-    tag: 'GLOBAL BENCHMARK',
-    year: '2023',
-    desc: 'Honored for successfully qualifying for the Million Dollar Round Table Aspirant milestone, reflecting world-class fiduciary standards.',
-    img: '/Awards_JPG/IMG_3631.jpg',
-    featured: true
-  },
-  {
-    id: 3,
-    title: 'InfinPro Consultant Excellence',
-    tag: 'CONSULTING MERIT',
-    year: '2023',
-    desc: 'Presented in appreciation of outstanding consultant performance and quality portfolio guidance.',
-    img: '/Awards_JPG/IMG_3624.jpg'
-  },
-  {
-    id: 4,
-    title: 'Tambaram Branch Performance Excellence',
-    tag: 'BRANCH LEADERSHIP',
-    year: '2023',
-    desc: 'Recognized as a top-performing branch for outstanding business growth, customer satisfaction, and leadership.',
-    img: '/Awards_JPG/IMG_3634.jpg'
-  },
-  {
-    id: 5,
-    title: 'Dronacharya Branch Excellence Award',
-    tag: 'TATA AIA RECOGNITION',
-    year: '2022',
-    desc: 'Awarded by Tata AIA Life Insurance for outstanding branch leadership, business excellence, and consistent advisory performance.',
-    img: '/Awards_JPG/IMG_3619.jpg'
-  },
-  {
-    id: 6,
-    title: 'Outstanding Performer Award',
-    tag: 'ANNUAL EXCELLENCE',
-    year: '2022',
-    desc: 'Recognized as a consistent top performer for exceptional business achievements and client service excellence.',
-    img: '/Awards_JPG/IMG_3628.jpg'
-  },
-  {
-    id: 7,
-    title: 'Million Dollar Club Qualifier',
-    tag: 'SALES EXCELLENCE',
-    year: '2022',
-    desc: 'Qualified for the prestigious Million Dollar Club in recognition of outstanding sales performance and client trust.',
-    img: '/Awards_JPG/IMG_3638.jpg'
-  },
-  {
-    id: 8,
-    title: 'Pragati Business Growth Excellence',
-    tag: 'INNOVATION & GROWTH',
-    year: '2021',
-    desc: 'Recognized for achieving exceptional business growth, innovation, and consistent client-focused financial advisory services.',
-    img: '/Awards_JPG/IMG_3620.jpg'
-  },
-  {
-    id: 9,
-    title: 'Family Inspiration Recognition',
-    tag: 'COMMUNITY IMPACT',
-    year: '2021',
-    desc: 'A special recognition celebrating dedication, family support, and commitment behind entrepreneurial success.',
-    img: '/Awards_JPG/IMG_3626.jpg'
-  },
-  {
-    id: 10,
-    title: 'Malaysia Training Conclave Qualifier',
-    tag: 'INTERNATIONAL MERIT',
-    year: '2020',
-    desc: 'Qualified to participate in the exclusive Malaysia Training Conclave, recognizing outstanding business achievement.',
-    img: '/Awards_JPG/IMG_3643.jpg'
-  },
-  {
-    id: 11,
-    title: 'Dream Agency Aspirant Recognition',
-    tag: 'HIGH POTENTIAL',
-    year: '2020',
-    desc: 'Honored as a high-potential advisor demonstrating exceptional dedication, leadership, and business performance.',
-    img: '/Awards_JPG/IMG_3622.jpg'
-  },
-  {
-    id: 12,
-    title: 'Leadership Appreciation Certificate',
-    tag: 'ORGANIZATIONAL LEADERSHIP',
-    year: '2019',
-    desc: 'Presented in recognition of leadership, professional integrity, and continuous contribution to organizational success.',
-    img: '/Awards_JPG/IMG_3629.jpg'
-  },
-  {
-    id: 13,
-    title: 'Donautsav Business Excellence Award',
-    tag: 'BUSINESS EXCELLENCE',
-    year: '2019',
-    desc: 'Honored for exceptional business performance, customer commitment, and continued professional growth.',
-    img: '/Awards_JPG/IMG_3639.jpg'
-  },
-  {
-    id: 14,
-    title: 'Business Growth Achievement Certificate',
-    tag: 'CAPACITY BUILDING',
-    year: '2018',
-    desc: 'Awarded for successfully completing the Aim For Your Business Growth leadership workshop.',
-    img: '/Awards_JPG/IMG_3625.jpg'
-  },
-  {
-    id: 15,
-    title: 'MDRT Aspirant Excellence Award',
-    tag: 'PERFORMANCE BENCHMARK',
-    year: '2018',
-    desc: 'Awarded for outstanding commitment toward achieving Million Dollar Round Table performance benchmarks.',
-    img: '/Awards_JPG/IMG_3633.jpg'
-  },
-  {
-    id: 16,
-    title: 'AI & Technology Learning Certificate',
-    tag: 'DIGITAL INNOVATION',
-    year: '2024',
-    desc: 'Successfully completed advanced AI learning programs focused on improving modern advisory practices.',
-    img: '/Awards_JPG/IMG_3627.jpg'
-  },
-  {
-    id: 17,
-    title: 'Dream Agency Branch Champion',
-    tag: 'BRANCH EXCELLENCE',
-    year: '2021',
-    desc: 'Awarded for exceptional branch management, operational excellence, and sustained business performance.',
-    img: '/Awards_JPG/IMG_3636.jpg'
-  }
-];
-
 export const About = () => {
   const { t } = useTranslation();
+  const [awards, setAwards] = useState(DEFAULT_AWARDS_DATA);
   const [selectedAwardIndex, setSelectedAwardIndex] = useState(null);
   const [zoomLevel, setZoomLevel] = useState(1);
   const touchStartXRef = useRef(0);
   const touchEndXRef = useRef(0);
+
+  useEffect(() => {
+    getAwards().then(data => {
+      if (data && data.length > 0) {
+        setAwards(data.filter(a => a.status !== 'Inactive'));
+      }
+    });
+
+    const unsubscribe = subscribeToCollection('awards', (data) => {
+      if (data && data.length > 0) {
+        setAwards(data.filter(a => a.status !== 'Inactive'));
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // Zoom handlers
   const handleZoomIn = () => setZoomLevel((prev) => Math.min(prev + 0.5, 3));
@@ -194,13 +72,13 @@ export const About = () => {
   // Navigation handlers
   const handlePrevAward = useCallback(() => {
     setZoomLevel(1);
-    setSelectedAwardIndex((prev) => (prev !== null && prev > 0 ? prev - 1 : AWARDS_DATA.length - 1));
-  }, []);
+    setSelectedAwardIndex((prev) => (prev !== null && prev > 0 ? prev - 1 : awards.length - 1));
+  }, [awards.length]);
 
   const handleNextAward = useCallback(() => {
     setZoomLevel(1);
-    setSelectedAwardIndex((prev) => (prev !== null && prev < AWARDS_DATA.length - 1 ? prev + 1 : 0));
-  }, []);
+    setSelectedAwardIndex((prev) => (prev !== null && prev < awards.length - 1 ? prev + 1 : 0));
+  }, [awards.length]);
 
   const handleCloseLightbox = useCallback(() => {
     setSelectedAwardIndex(null);
@@ -243,7 +121,7 @@ export const About = () => {
   };
 
   const handleTouchEnd = () => {
-    if (zoomLevel > 1) return; // Ignore swipe if user is zoomed in
+    if (zoomLevel > 1) return;
     const distance = touchStartXRef.current - touchEndXRef.current;
     const minSwipeDistance = 45;
     if (distance > minSwipeDistance) {
@@ -252,69 +130,6 @@ export const About = () => {
       handlePrevAward();
     }
   };
-
-  const scrollToStory = () => {
-    const el = document.getElementById('company-foundation');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  // 6 Core Pillars of Mission (What Drives Us)
-  const missionPillars = [
-    {
-      num: '01',
-      title: 'Personalized Solutions',
-      desc: 'Deliver tailored insurance and wealth preservation blueprints aligned with individual family milestones.',
-      icon: FaLightbulb,
-      colorClass: 'text-amber-800 dark:text-amber-300',
-      cardBg: 'bg-amber-500/15 dark:bg-amber-500/20 border-2 border-amber-500/40 dark:border-amber-400/40',
-      iconBg: 'bg-amber-500/25 text-amber-800 dark:text-amber-300'
-    },
-    {
-      num: '02',
-      title: 'Premium Products',
-      desc: 'Curate top-tier policies from India’s leading insurers with maximum claim clearance and competitive premiums.',
-      icon: FaShieldAlt,
-      colorClass: 'text-blue-800 dark:text-blue-300',
-      cardBg: 'bg-blue-500/15 dark:bg-blue-500/20 border-2 border-blue-500/40 dark:border-blue-400/40',
-      iconBg: 'bg-blue-500/25 text-blue-800 dark:text-blue-300'
-    },
-    {
-      num: '03',
-      title: 'Expert Guidance',
-      desc: 'Simplify complex clauses through unbiased advice from certified advisors with over 22 years of field expertise.',
-      icon: FaUserTie,
-      colorClass: 'text-emerald-800 dark:text-emerald-300',
-      cardBg: 'bg-emerald-500/15 dark:bg-emerald-500/20 border-2 border-emerald-500/40 dark:border-emerald-400/40',
-      iconBg: 'bg-emerald-500/25 text-emerald-800 dark:text-emerald-300'
-    },
-    {
-      num: '04',
-      title: 'Seamless Digital Support',
-      desc: 'Ensure rapid policy issuance, digital onboarding, annual portfolio reviews, and frictionless renewals.',
-      icon: FaFileContract,
-      colorClass: 'text-purple-800 dark:text-purple-300',
-      cardBg: 'bg-purple-500/15 dark:bg-purple-500/20 border-2 border-purple-500/40 dark:border-purple-400/40',
-      iconBg: 'bg-purple-500/25 text-purple-800 dark:text-purple-300'
-    },
-    {
-      num: '05',
-      title: 'Claims Advocacy',
-      desc: 'Provide dedicated on-ground hospitalization coordination and end-to-end claim settlement assistance.',
-      icon: FaMedal,
-      colorClass: 'text-rose-800 dark:text-rose-300',
-      cardBg: 'bg-rose-500/15 dark:bg-rose-500/20 border-2 border-rose-500/40 dark:border-rose-400/40',
-      iconBg: 'bg-rose-500/25 text-rose-800 dark:text-rose-300'
-    },
-    {
-      num: '06',
-      title: 'Visionary Leadership',
-      desc: 'Lead with absolute integrity, ethical governance, and a steadfast commitment to generational security.',
-      icon: FaHandshake,
-      colorClass: 'text-indigo-800 dark:text-indigo-300',
-      cardBg: 'bg-indigo-500/15 dark:bg-indigo-500/20 border-2 border-indigo-500/40 dark:border-indigo-400/40',
-      iconBg: 'bg-indigo-500/25 text-indigo-800 dark:text-indigo-300'
-    }
-  ];
 
   // Guiding Principles
   const principles = [
@@ -381,13 +196,28 @@ export const About = () => {
     {
       year: '2025',
       tag: 'CORPORATE HEADQUARTERS',
-      title: 'MD Plaza HQ and Digital Suite',
+      title: 'MD Plaza HQ & Digital Suite',
       desc: 'Inaugurates premier corporate headquarters at #104, West Raja Street, Kanchipuram, introducing digital planning suites.'
     }
   ];
 
-  // Leadership Data
+  // Leadership Data (1st: Mr. Prakash Gajendiran, 2nd: Mrs. Kumutha Krishnamoorthy)
   const leaders = [
+    {
+      name: "Mr. Prakash Gajendiran",
+      role: "Founder & Managing Director",
+      bio: "Certified Financial Consultant, Proud BNI Member, Lions Club Member, and Senior Business Associate Leader with over 22 years of seasoned expertise, guiding thousands of families toward robust financial security and disciplined wealth creation.",
+      image: "/prakash_gajendiran.jpg",
+      bniBadge: "/images.jpg",
+      lionsBadge: "/lions_club_logo.png",
+      stats: [
+        { val: 22, suffix: "+", label: "Years Experience" },
+        { val: 5000, suffix: "+", label: "Families Guided" },
+        { val: 3, suffix: "x", label: "Aura Achiever" }
+      ],
+      points: ["Certified Financial Planner", "Proud BNI Member", "Lions Club International", "MDRT Aspirant Leader", "Lifelong Claims Advocate"],
+      showConsultBtn: true
+    },
     {
       name: "Mrs. Kumutha Krishnamoorthy",
       role: "CEO & Founder",
@@ -399,19 +229,6 @@ export const About = () => {
         { val: 24, suffix: "/7", label: "Client Advocacy" }
       ],
       points: ["Strategic Governance", "Operational Integrity", "Client-First Culture"]
-    },
-    {
-      name: "Mr. Prakash Gajendiran",
-      role: "Founder & Managing Director",
-      bio: "Certified Financial Consultant, Proud BNI Member, and Senior Business Associate Leader with over 22 years of seasoned expertise, guiding thousands of families toward robust financial security and disciplined wealth creation.",
-      image: "/prakash_gajendiran.jpg",
-      bniBadge: "/images.jpg",
-      stats: [
-        { val: 22, suffix: "+", label: "Years Experience" },
-        { val: 5000, suffix: "+", label: "Families Guided" },
-        { val: 3, suffix: "x", label: "Aura Achiever" }
-      ],
-      points: ["Certified Financial Planner", "Proud BNI Member", "MDRT Aspirant Leader", "Lifelong Claims Advocate"]
     }
   ];
 
@@ -419,9 +236,9 @@ export const About = () => {
     <div className="min-h-screen bg-slate-50 dark:bg-neutral-950 text-neutral-900 dark:text-white transition-colors duration-300 font-sans selection:bg-brand-accent selection:text-neutral-950">
 
       {/* ═══════════════════════════════════════════════════════════
-          1. HERO SECTION: Confident, Spacious, Established
+          1. HERO SECTION: Full Viewport Presence
       ═══════════════════════════════════════════════════════════ */}
-      <section className="relative pt-28 pb-16 sm:pt-36 sm:pb-20 lg:pt-40 lg:pb-24 overflow-hidden border-b border-black/5 dark:border-white/5">
+      <section className="relative min-h-[calc(100vh-5rem)] flex flex-col justify-between pt-16 pb-12 sm:pt-20 sm:pb-16 lg:pt-24 lg:pb-16 overflow-hidden border-b border-black/5 dark:border-white/5">
 
         {/* Soft Ambient Radial Glows */}
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden">
@@ -429,23 +246,26 @@ export const About = () => {
           <div className="absolute bottom-0 right-10 w-96 h-96 bg-brand-accent/5 blur-[120px] rounded-full" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left flex flex-col items-start">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left flex flex-col justify-between flex-1 w-full my-auto space-y-12 sm:space-y-16">
 
-          <motion.h1
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight text-neutral-950 dark:text-white max-w-5xl leading-[1.08] text-left font-['Plus_Jakarta_Sans',sans-serif]"
+            className="w-full pt-4 sm:pt-8"
           >
-            SECURING WEALTH, EMPOWERING FUTURES.
-          </motion.h1>
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-neutral-950 dark:text-white w-full leading-[1.05] text-left font-['Plus_Jakarta_Sans',sans-serif]">
+              SECURING WEALTH, <br className="hidden sm:inline" />
+              EMPOWERING FUTURES.
+            </h1>
+          </motion.div>
 
           {/* Trust Stats Strip */}
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="w-full max-w-4xl mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-slate-200/80 dark:border-white/10 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8"
+            className="w-full pt-8 sm:pt-10 border-t border-slate-200/80 dark:border-white/10 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-10"
           >
             {[
               { val: 22, suffix: '+', label: 'Years of Trust' },
@@ -454,10 +274,10 @@ export const About = () => {
               { val: 4.9, suffix: ' / 5', label: 'Client Rating' }
             ].map((stat, idx) => (
               <div key={idx} className="flex flex-col items-start text-left">
-                <div className="text-3xl sm:text-4xl lg:text-4xl font-black text-neutral-900 dark:text-brand-accent tracking-tight tabular-nums font-['Plus_Jakarta_Sans',sans-serif]">
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-neutral-900 dark:text-brand-accent tracking-tight tabular-nums font-['Plus_Jakarta_Sans',sans-serif]">
                   <AnimatedStat value={stat.val} suffix={stat.suffix} prefix={stat.prefix} />
                 </div>
-                <div className="text-[11px] sm:text-xs text-neutral-500 dark:text-neutral-400 mt-1 font-bold uppercase tracking-wider">
+                <div className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mt-1.5 font-bold uppercase tracking-wider font-['Plus_Jakarta_Sans',sans-serif]">
                   {stat.label}
                 </div>
               </div>
@@ -468,11 +288,160 @@ export const About = () => {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════
-          2. FOUNDATION OF OUR LEGACY (Who We Are)
+          2. VISIONARY LEADERSHIP (Human-Centered Profiles)
       ═══════════════════════════════════════════════════════════ */}
-      <section id="company-foundation" className="py-16 sm:py-20 lg:py-24 border-b border-black/5 dark:border-white/5">
+      <section id="leadership" className="py-20 sm:py-24 lg:py-32 bg-white dark:bg-neutral-900/50 border-b border-black/5 dark:border-white/5 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
+              VISIONARY LEADERSHIP
+            </h2>
+          </div>
+
+          <div className="space-y-12 lg:space-y-16">
+            {leaders.map((leader, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="relative p-6 sm:p-10 lg:p-12 rounded-3xl bg-white dark:bg-neutral-900 border border-slate-200/90 dark:border-white/10 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center"
+              >
+                {/* Top-Right Badges (BNI & Lions Club International) */}
+                {(leader.bniBadge || leader.lionsBadge) && (
+                  <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8 z-20 flex items-center gap-2.5 sm:gap-3">
+                    {leader.bniBadge && (
+                      <div 
+                        className="w-11 h-11 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full overflow-hidden shadow-md border-2 border-red-600/30 bg-white hover:scale-105 transition-transform duration-300 flex items-center justify-center p-0.5"
+                        title="Proud BNI Member"
+                      >
+                        <img
+                          src={leader.bniBadge}
+                          alt="Proud BNI Member"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    )}
+                    {leader.lionsBadge && (
+                      <div 
+                        className="w-11 h-11 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full overflow-hidden shadow-md border-2 border-amber-500/40 bg-white hover:scale-105 transition-transform duration-300 flex items-center justify-center p-0.5"
+                        title="Lions Club International Member"
+                      >
+                        <img
+                          src={leader.lionsBadge}
+                          alt="Lions Club International"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Leader Photograph (Circle Shape) */}
+                <div className="lg:col-span-5 flex justify-center items-center">
+                  <div className="relative w-52 h-52 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden bg-slate-100 dark:bg-neutral-950 border-4 border-brand-accent/60 shadow-2xl group ring-4 sm:ring-8 ring-brand-accent/15">
+                    <img
+                      src={leader.image}
+                      alt={leader.name}
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                </div>
+
+                {/* Leader Narrative & Credentials */}
+                <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-left">
+                  <div className="space-y-2 pr-12 sm:pr-0">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-800 dark:text-brand-accent text-xs font-bold uppercase tracking-wide font-['Plus_Jakarta_Sans',sans-serif]">
+                        <FaAward className="text-xs shrink-0" />
+                        <span>{leader.role}</span>
+                      </div>
+
+                      {leader.bniBadge && (
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-600/10 dark:bg-red-600/20 border border-red-600/30 text-red-700 dark:text-red-400 text-xs font-bold uppercase tracking-wide font-['Plus_Jakarta_Sans',sans-serif]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse shrink-0" />
+                          <span>PROUD BNI MEMBER</span>
+                        </div>
+                      )}
+
+                      {leader.lionsBadge && (
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-800 dark:text-amber-300 text-xs font-bold uppercase tracking-wide font-['Plus_Jakarta_Sans',sans-serif]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse shrink-0" />
+                          <span>LIONS CLUB INTERNATIONAL</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-neutral-950 dark:text-white tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
+                      {leader.name}
+                    </h3>
+                  </div>
+
+                  {/* Clean Executive Bio */}
+                  <div className="border-l-3 border-brand-accent pl-4 py-1">
+                    <p className="text-sm sm:text-base text-neutral-700 dark:text-neutral-200 font-normal leading-relaxed font-['Inter',sans-serif]">
+                      "{leader.bio}"
+                    </p>
+                  </div>
+
+                  {/* Key Focus Highlights */}
+                  {leader.points && (
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {leader.points.map((pt, pIdx) => (
+                        <span
+                          key={pIdx}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-neutral-800 border border-slate-200 dark:border-white/10 text-neutral-800 dark:text-neutral-200 text-xs font-semibold font-['Inter',sans-serif] shadow-xs"
+                        >
+                          <FaCheckCircle className="text-emerald-500 text-xs shrink-0" />
+                          <span>{pt}</span>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Quantitative Stats */}
+                  {leader.stats && (
+                    <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-4 border-t border-slate-200 dark:border-white/10">
+                      {leader.stats.map((st, sIdx) => (
+                        <div key={sIdx} className="space-y-0.5">
+                          <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-neutral-950 dark:text-brand-accent tabular-nums font-['Plus_Jakarta_Sans',sans-serif] tracking-tight">
+                            {st.val}{st.suffix}
+                          </div>
+                          <div className="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider font-['Plus_Jakarta_Sans',sans-serif] leading-tight">
+                            {st.label}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Action CTA */}
+                  {leader.showConsultBtn && (
+                    <div className="pt-2">
+                      <Link
+                        to="/appointment"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-accent text-neutral-950 text-xs sm:text-sm font-extrabold uppercase tracking-wider hover:bg-neutral-950 hover:text-white dark:hover:bg-white dark:hover:text-neutral-950 transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:scale-95 font-['Plus_Jakarta_Sans',sans-serif] cursor-pointer text-center"
+                      >
+                        <FaCalendarAlt className="text-xs" />
+                        <span>Consult with {leader.name.replace(/^(Mr\.|Mrs\.|Dr\.)\s+/i, '').split(' ')[0]}</span>
+                      </Link>
+                    </div>
+                  )}
+                </div>
+
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════
+          3. FOUNDATION OF OUR LEGACY (Who We Are)
+      ═══════════════════════════════════════════════════════════ */}
+      <section id="company-foundation" className="py-20 sm:py-24 lg:py-32 bg-slate-50 dark:bg-neutral-950 border-b border-black/5 dark:border-white/5 transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
 
             {/* Left Column: Authentic Company Story */}
             <motion.div
@@ -480,13 +449,13 @@ export const About = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="lg:col-span-7 space-y-5 text-left"
+              className="lg:col-span-6 space-y-6 text-left"
             >
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
                 THE FOUNDATION OF OUR LEGACY
               </h2>
 
-              <div className="space-y-4 text-base sm:text-lg text-neutral-600 dark:text-neutral-300 font-medium leading-relaxed font-['Inter',sans-serif]">
+              <div className="space-y-4 text-base sm:text-lg text-neutral-600 dark:text-neutral-300 font-normal leading-relaxed font-['Inter',sans-serif]">
                 <p>
                   At <strong className="text-neutral-950 dark:text-white font-extrabold">SK Smart Investments</strong>, we believe true financial resilience begins with transparent advice and lifelong fiduciary commitment.
                 </p>
@@ -499,16 +468,16 @@ export const About = () => {
               </div>
 
               <div className="pt-2 flex flex-wrap items-center gap-4 sm:gap-6">
-                <div className="inline-flex items-center gap-2 text-sm font-bold text-neutral-900 dark:text-white">
-                  <FaCheckCircle className="text-rose-500 text-base shrink-0" />
+                <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-neutral-900 dark:text-white">
+                  <FaCheckCircle className="text-rose-500 text-sm sm:text-base shrink-0" />
                   <span>IRDAI Compliant</span>
                 </div>
-                <div className="inline-flex items-center gap-2 text-sm font-bold text-neutral-900 dark:text-white">
-                  <FaCheckCircle className="text-amber-400 text-base shrink-0" />
+                <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-neutral-900 dark:text-white">
+                  <FaCheckCircle className="text-amber-400 text-sm sm:text-base shrink-0" />
                   <span>Multi-Partner Choice</span>
                 </div>
-                <div className="inline-flex items-center gap-2 text-sm font-bold text-neutral-900 dark:text-white">
-                  <FaCheckCircle className="text-emerald-500 text-base shrink-0" />
+                <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-neutral-900 dark:text-white">
+                  <FaCheckCircle className="text-emerald-500 text-sm sm:text-base shrink-0" />
                   <span>Zero Commission Bias</span>
                 </div>
               </div>
@@ -520,7 +489,7 @@ export const About = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="lg:col-span-5 space-y-4"
+              className="lg:col-span-6 space-y-4"
             >
               {[
                 {
@@ -528,35 +497,38 @@ export const About = () => {
                   title: 'Tailored Advisory',
                   desc: 'Every family carries unique aspirations. We customize life, health, and wealth blueprints to fit your cash flow without forcing unnecessary policies.',
                   iconColor: 'text-amber-600 dark:text-amber-400',
-                  iconBg: 'bg-amber-500/10 dark:bg-amber-500/20'
+                  iconBg: 'bg-amber-500/10 dark:bg-amber-500/20',
+                  hoverBg: 'hover:bg-amber-500/10 dark:hover:bg-amber-500/20 hover:border-amber-500/50 dark:hover:border-amber-400/50 hover:shadow-md'
                 },
                 {
                   icon: FaShieldAlt,
                   title: 'Institutional Assurance',
                   desc: 'Official partner with India’s foremost insurers including Tata AIA, HDFC Life, SBI Life, and Star Health for rock-solid claim settlement.',
                   iconColor: 'text-blue-600 dark:text-blue-400',
-                  iconBg: 'bg-blue-500/10 dark:bg-blue-500/20'
+                  iconBg: 'bg-blue-500/10 dark:bg-blue-500/20',
+                  hoverBg: 'hover:bg-blue-500/10 dark:hover:bg-blue-500/20 hover:border-blue-500/50 dark:hover:border-blue-400/50 hover:shadow-md'
                 },
                 {
                   icon: FaHandshake,
                   title: 'Lifelong Care & Advocacy',
                   desc: 'From initial policy issuance to cashless emergency hospitalization coordination and annual portfolio reviews, we stand by your side.',
                   iconColor: 'text-emerald-600 dark:text-emerald-400',
-                  iconBg: 'bg-emerald-500/10 dark:bg-emerald-500/20'
+                  iconBg: 'bg-emerald-500/10 dark:bg-emerald-500/20',
+                  hoverBg: 'hover:bg-emerald-500/10 dark:hover:bg-emerald-500/20 hover:border-emerald-500/50 dark:hover:border-emerald-400/50 hover:shadow-md'
                 }
               ].map((item, idx) => {
                 const Icon = item.icon;
                 return (
                   <div
                     key={idx}
-                    className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_24px_rgba(0,0,0,0.25)] hover:-translate-y-1 transition-all duration-300 group"
+                    className={`p-5 sm:p-6 rounded-3xl bg-slate-50 dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 shadow-xs hover:-translate-y-1 ${item.hoverBg} transition-all duration-300 group text-left cursor-pointer`}
                   >
                     <div className="flex items-start gap-4">
-                      <div className={`w-11 h-11 rounded-xl ${item.iconBg} ${item.iconColor} flex items-center justify-center text-lg shrink-0 group-hover:scale-110 group-hover:bg-brand-accent group-hover:text-neutral-950 transition-all duration-300`}>
+                      <div className={`w-11 h-11 rounded-2xl ${item.iconBg} ${item.iconColor} flex items-center justify-center text-lg shrink-0 group-hover:scale-110 group-hover:bg-brand-accent group-hover:text-neutral-950 transition-all duration-300`}>
                         <Icon />
                       </div>
-                      <div>
-                        <h3 className="text-base sm:text-lg font-black text-neutral-900 dark:text-white tracking-tight mb-1 font-['Plus_Jakarta_Sans',sans-serif]">
+                      <div className="space-y-1">
+                        <h3 className="text-base sm:text-lg font-black text-neutral-900 dark:text-white tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
                           {item.title}
                         </h3>
                         <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-normal leading-relaxed font-['Inter',sans-serif]">
@@ -576,8 +548,8 @@ export const About = () => {
       {/* ═══════════════════════════════════════════════════════════
           3. WHERE WE'RE HEADED (Vision Statement)
       ═══════════════════════════════════════════════════════════ */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-white dark:bg-neutral-900/60 border-b border-black/5 dark:border-white/5 transition-colors">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-20 sm:py-24 lg:py-32 bg-slate-50 dark:bg-neutral-950 border-b border-black/5 dark:border-white/5 transition-colors">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
           <motion.div
             initial={{ opacity: 0, y: 15 }}
@@ -585,11 +557,11 @@ export const About = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-900 dark:text-white uppercase tracking-tight mb-6 font-['Plus_Jakarta_Sans',sans-serif]">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-900 dark:text-white uppercase tracking-tight mb-8 font-['Plus_Jakarta_Sans',sans-serif]">
               WHERE WE'RE HEADED
             </h2>
 
-            <div className="relative p-8 sm:p-12 rounded-3xl bg-slate-50 dark:bg-neutral-950 border border-slate-200/90 dark:border-white/10 shadow-lg shadow-black/5">
+            <div className="relative p-8 sm:p-12 lg:p-14 rounded-3xl bg-white dark:bg-neutral-900 border border-slate-200/90 dark:border-white/10 shadow-xl shadow-black/5">
               <div className="text-4xl sm:text-5xl font-serif text-brand-accent mb-3 leading-none">“</div>
               <p className="text-lg sm:text-2xl md:text-3xl text-neutral-800 dark:text-neutral-100 font-bold leading-relaxed tracking-tight max-w-3xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
                 Making financial protection simpler, more transparent, and reliably accessible for every family and enterprise across India.
@@ -602,67 +574,22 @@ export const About = () => {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════
-          4. WHAT DRIVES US (Our Mission - 6 Core Pillars)
+          4. WHAT DRIVES US (Sticky Scroll-Driven In-Place Replacement)
       ═══════════════════════════════════════════════════════════ */}
-      <section className="py-16 sm:py-20 lg:py-24 border-b border-black/5 dark:border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
-              WHAT DRIVES US
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 items-stretch">
-            {missionPillars.map((pillar, idx) => {
-              const Icon = pillar.icon;
-              return (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.06 * idx }}
-                  className={`relative rounded-3xl p-6 sm:p-7 ${pillar.cardBg} shadow-[0_8px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1.5 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group overflow-hidden h-full`}
-                >
-                  <div className="relative z-10 flex flex-col justify-between h-full space-y-5">
-                    {/* Top Row: Icon and Step Number */}
-                    <div className="flex items-center justify-between">
-                      <div className={`w-12 h-12 rounded-2xl ${pillar.iconBg} flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-all duration-300`}>
-                        <Icon className="text-xl" />
-                      </div>
-                      <span className={`text-2xl sm:text-3xl font-black ${pillar.colorClass} opacity-60 tracking-tighter font-['Plus_Jakarta_Sans',sans-serif]`}>
-                        {pillar.num}
-                      </span>
-                    </div>
-
-                    <div>
-                      <h3 className="text-lg sm:text-xl font-extrabold text-neutral-950 dark:text-white tracking-tight mb-2 font-['Plus_Jakarta_Sans',sans-serif]">
-                        {pillar.title}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 font-normal leading-relaxed font-['Inter',sans-serif]">
-                        {pillar.desc}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <WhatDrivesUs />
 
       {/* ═══════════════════════════════════════════════════════════
           5. GUIDING PRINCIPLES (How We Work)
       ═══════════════════════════════════════════════════════════ */}
-      <section className="py-16 sm:py-20 lg:py-24 border-b border-black/5 dark:border-white/5">
+      <section className="py-20 sm:py-24 lg:py-32 bg-slate-50 dark:bg-neutral-950 border-b border-black/5 dark:border-white/5 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
               OUR GUIDING PRINCIPLES
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 items-stretch">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 items-stretch">
             {principles.map((principle, idx) => {
               const Icon = principle.icon;
               return (
@@ -672,10 +599,10 @@ export const About = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.08 * idx }}
-                  className={`p-6 sm:p-7 rounded-3xl bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col justify-between hover:-translate-y-1.5 ${principle.hoverBg} transition-all duration-300 h-full group cursor-pointer`}
+                  className={`p-6 sm:p-8 rounded-3xl bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 shadow-xs flex flex-col justify-between hover:-translate-y-1.5 ${principle.hoverBg} transition-all duration-300 h-full group cursor-pointer text-left`}
                 >
                   <div>
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl shrink-0 shadow-2xs transition-all duration-300 group-hover:scale-110 mb-4 ${principle.iconBg} ${principle.colorClass}`}>
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl shrink-0 shadow-2xs transition-all duration-300 group-hover:scale-110 mb-5 ${principle.iconBg} ${principle.colorClass}`}>
                       <Icon />
                     </div>
                     <h3 className="text-base sm:text-lg font-extrabold text-neutral-950 dark:text-white tracking-tight mb-2 font-['Plus_Jakarta_Sans',sans-serif]">
@@ -693,11 +620,11 @@ export const About = () => {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════
-          6. MILESTONES (Interactive Timeline)
+          6. MILESTONES (Interactive Connected Timeline)
       ═══════════════════════════════════════════════════════════ */}
-      <section className="py-16 sm:py-20 lg:py-24 border-b border-black/5 dark:border-white/5 overflow-hidden">
+      <section className="py-20 sm:py-24 lg:py-32 bg-white dark:bg-neutral-900/50 border-b border-black/5 dark:border-white/5 transition-colors overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
               MILESTONES THAT MATTER
             </h2>
@@ -735,8 +662,7 @@ export const About = () => {
                 </div>
 
                 {/* Milestone Card */}
-                <div className="w-full p-4 sm:p-5 rounded-2xl bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 shadow-xs flex flex-col justify-between flex-1 text-left transition-all duration-300 group-hover:border-brand-accent/50 dark:group-hover:border-brand-accent/40 group-hover:shadow-[0_12px_25px_rgba(0,0,0,0.06)] dark:group-hover:shadow-[0_12px_25px_rgba(0,0,0,0.35)] relative overflow-hidden">
-                  {/* Top Accent Line on hover */}
+                <div className="w-full p-4 sm:p-5 rounded-2xl bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 shadow-xs flex flex-col justify-between flex-1 text-left transition-all duration-300 group-hover:border-brand-accent/50 dark:group-hover:border-brand-accent/40 group-hover:shadow-lg relative overflow-hidden">
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-brand-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                   <div>
@@ -757,7 +683,6 @@ export const About = () => {
 
           {/* Mobile & Tablet View: Purpose-Built Vertical Timeline */}
           <div className="lg:hidden relative pl-6 sm:pl-10 space-y-6 ml-3 sm:ml-6">
-            {/* Animated Vertical Line */}
             <motion.div
               initial={{ scaleY: 0 }}
               whileInView={{ scaleY: 1 }}
@@ -776,12 +701,11 @@ export const About = () => {
                 whileHover={{ x: 4 }}
                 className="relative group cursor-pointer"
               >
-                {/* Timeline Bullet Node with Glow */}
                 <div className="absolute -left-[30px] sm:-left-[46px] top-4 flex items-center justify-center">
                   <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-brand-accent border-4 border-slate-50 dark:border-neutral-950 shadow-md group-hover:scale-125 transition-transform duration-300 group-hover:ring-4 group-hover:ring-brand-accent/30" />
                 </div>
 
-                <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 shadow-xs space-y-2 transition-all duration-300 group-hover:border-brand-accent/50 dark:group-hover:border-brand-accent/40 group-hover:shadow-[0_10px_25px_rgba(0,0,0,0.05)] dark:group-hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] relative overflow-hidden">
+                <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 shadow-xs space-y-2 transition-all duration-300 group-hover:border-brand-accent/50 dark:group-hover:border-brand-accent/40 relative overflow-hidden text-left">
                   <div className="flex items-center justify-between">
                     <span className="px-2.5 py-0.5 rounded-full bg-brand-accent text-neutral-950 font-extrabold text-xs font-['Plus_Jakarta_Sans',sans-serif] shadow-2xs group-hover:scale-105 transition-transform">
                       {m.year}
@@ -807,55 +731,57 @@ export const About = () => {
       {/* ═══════════════════════════════════════════════════════════
           7. AWARDS & ACHIEVEMENTS: Premium Gallery & Lightbox
       ═══════════════════════════════════════════════════════════ */}
-      <section className="py-16 sm:py-20 lg:py-24 border-b border-black/5 dark:border-white/5">
+      <section className="py-20 sm:py-24 lg:py-32 bg-slate-50 dark:bg-neutral-950 border-b border-black/5 dark:border-white/5 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
               AWARDS & ACHIEVEMENTS
             </h2>
           </div>
 
           {/* Featured Spotlight Award Card */}
-          <div className="mb-10 p-6 sm:p-8 rounded-3xl bg-white dark:bg-neutral-900 border-2 border-brand-accent/40 shadow-xl grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
-            <div
-              className="md:col-span-5 h-[240px] sm:h-[290px] rounded-2xl overflow-hidden bg-slate-100 dark:bg-neutral-950 p-3 flex items-center justify-center border border-slate-200 dark:border-white/10 group cursor-pointer"
-              onClick={() => { setSelectedAwardIndex(0); setZoomLevel(1); }}
-            >
-              <img
-                src={AWARDS_DATA[0].img}
-                alt={AWARDS_DATA[0].title}
-                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-            <div className="md:col-span-7 space-y-3 text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-accent text-neutral-950 text-xs font-black uppercase tracking-wider font-['Plus_Jakarta_Sans',sans-serif]">
-                <FaAward className="text-xs" />
-                <span>FEATURED SPOTLIGHT RECOGNITION</span>
+          {awards.length > 0 && (
+            <div className="mb-12 p-6 sm:p-8 lg:p-10 rounded-3xl bg-white dark:bg-neutral-900 border-2 border-brand-accent/40 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
+              <div
+                className="lg:col-span-5 h-[240px] sm:h-[290px] rounded-2xl overflow-hidden bg-slate-100 dark:bg-neutral-950 p-3 flex items-center justify-center border border-slate-200 dark:border-white/10 group cursor-pointer"
+                onClick={() => { setSelectedAwardIndex(0); setZoomLevel(1); }}
+              >
+                <img
+                  src={awards[0].img}
+                  alt={awards[0].title}
+                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                />
               </div>
-              <h3 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
-                {AWARDS_DATA[0].title}
-              </h3>
-              <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-300 font-normal leading-relaxed font-['Inter',sans-serif]">
-                {AWARDS_DATA[0].desc} Honoring sustained leadership benchmarks in ethical distribution and client-first financial architecture.
-              </p>
-              <div className="pt-2">
-                <button
-                  onClick={() => { setSelectedAwardIndex(0); setZoomLevel(1); }}
-                  className="px-6 py-3 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 text-xs font-bold uppercase tracking-wider hover:bg-brand-accent hover:text-neutral-950 transition-colors flex items-center gap-2 cursor-pointer shadow-md"
-                >
-                  <FaExternalLinkAlt className="text-xs" />
-                  <span>View Full Certificate</span>
-                </button>
+              <div className="lg:col-span-7 space-y-3.5 text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-accent text-neutral-950 text-xs font-black uppercase tracking-wider font-['Plus_Jakarta_Sans',sans-serif]">
+                  <FaAward className="text-xs" />
+                  <span>FEATURED SPOTLIGHT RECOGNITION</span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
+                  {awards[0].title}
+                </h3>
+                <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-300 font-normal leading-relaxed font-['Inter',sans-serif]">
+                  {awards[0].desc || 'Honoring sustained leadership benchmarks in ethical distribution and client-first financial architecture.'}
+                </p>
+                <div className="pt-2">
+                  <button
+                    onClick={() => { setSelectedAwardIndex(0); setZoomLevel(1); }}
+                    className="px-6 py-3 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 text-xs font-bold uppercase tracking-wider hover:bg-brand-accent hover:text-neutral-950 transition-colors flex items-center gap-2 cursor-pointer shadow-md"
+                  >
+                    <FaExternalLinkAlt className="text-xs" />
+                    <span>View Full Certificate</span>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Gallery Grid of All Verified Certificates */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 items-stretch">
-            {AWARDS_DATA.map((award, idx) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 items-stretch">
+            {awards.map((award, idx) => (
               <motion.div
-                key={award.id}
+                key={award.id || idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -874,10 +800,10 @@ export const About = () => {
                 </div>
 
                 {/* Award Details */}
-                <div className="p-4 flex flex-col justify-between flex-1 space-y-2">
+                <div className="p-4 flex flex-col justify-between flex-1 space-y-2 text-left">
                   <div>
                     <span className="text-[9px] font-black uppercase tracking-wider text-amber-800 dark:text-brand-accent block mb-1 font-['Plus_Jakarta_Sans',sans-serif]">
-                      {award.tag}
+                      {award.tag || award.category}
                     </span>
                     <h4 className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-white line-clamp-2 leading-snug font-['Plus_Jakarta_Sans',sans-serif]">
                       {award.title}
@@ -895,128 +821,7 @@ export const About = () => {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════
-          8. VISIONARY LEADERSHIP (Human-Centered Profiles)
-      ═══════════════════════════════════════════════════════════ */}
-      <section className="py-16 sm:py-20 lg:py-24 border-b border-black/5 dark:border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
-              VISIONARY LEADERSHIP
-            </h2>
-          </div>
 
-          <div className="space-y-12 lg:space-y-16">
-            {leaders.map((leader, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="relative p-5 sm:p-10 lg:p-12 rounded-3xl bg-white dark:bg-neutral-900 border border-slate-200/90 dark:border-white/10 shadow-[0_12px_36px_rgba(0,0,0,0.04)] dark:shadow-[0_12px_36px_rgba(0,0,0,0.3)] grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center overflow-hidden"
-              >
-                {/* Top-Right BNI Member Badge */}
-                {leader.bniBadge && (
-                  <div className="absolute top-3 right-3 sm:top-6 sm:right-6 lg:top-8 lg:right-8 z-20 flex flex-col items-center">
-                    <div className="w-13 h-13 xs:w-16 xs:h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full overflow-hidden shadow-md sm:shadow-lg border-2 border-red-600/30 bg-white hover:scale-105 transition-transform duration-300">
-                      <img
-                        src={leader.bniBadge}
-                        alt="Proud BNI Member"
-                        className="w-full h-full object-contain p-0.5"
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* Leader Photograph (Circle Shape) */}
-                <div className="lg:col-span-5 flex justify-center items-center">
-                  <div className="relative w-48 h-48 xs:w-56 xs:h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden bg-slate-100 dark:bg-neutral-950 border-4 border-brand-accent/60 shadow-2xl group ring-4 sm:ring-8 ring-brand-accent/15">
-                    <img
-                      src={leader.image}
-                      alt={leader.name}
-                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
-                    />
-                  </div>
-                </div>
-
-                {/* Leader Narrative & Credentials */}
-                <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-left">
-                  <div className="space-y-1.5 sm:space-y-2 pr-12 sm:pr-0">
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
-                      <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-800 dark:text-brand-accent text-[11px] sm:text-xs font-black uppercase tracking-wider font-['Plus_Jakarta_Sans',sans-serif]">
-                        <FaAward className="text-[10px] sm:text-xs shrink-0" />
-                        <span>{leader.role}</span>
-                      </div>
-
-                      {leader.bniBadge && (
-                        <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-red-600/10 dark:bg-red-600/20 border border-red-600/30 text-red-700 dark:text-red-400 text-[11px] sm:text-xs font-black uppercase tracking-wider font-['Plus_Jakarta_Sans',sans-serif]">
-                          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-red-600 animate-pulse shrink-0" />
-                          <span>PROUD BNI MEMBER</span>
-                        </div>
-                      )}
-                    </div>
-
-                    <h3 className="text-xl xs:text-2xl sm:text-3xl lg:text-4xl font-black text-neutral-950 dark:text-white tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
-                      {leader.name}
-                    </h3>
-                  </div>
-
-                  {/* Executive Pull-Quote Bio */}
-                  <div className="border-l-2 border-brand-accent/80 pl-3.5 sm:pl-4 py-1">
-                    <p className="text-xs xs:text-sm sm:text-base lg:text-[17px] text-neutral-700 dark:text-neutral-200 font-normal leading-relaxed italic font-['Outfit',sans-serif]">
-                      "{leader.bio}"
-                    </p>
-                  </div>
-
-                  {/* Key Focus Highlights */}
-                  {leader.points && (
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1">
-                      {leader.points.map((pt, pIdx) => (
-                        <span
-                          key={pIdx}
-                          className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-slate-100 dark:bg-neutral-800/90 border border-slate-200/90 dark:border-white/10 text-neutral-900 dark:text-neutral-100 text-[11px] sm:text-xs font-bold font-['Plus_Jakarta_Sans',sans-serif] shadow-2xs"
-                        >
-                          <FaCheckCircle className="text-emerald-500 text-[10px] sm:text-xs shrink-0" />
-                          <span>{pt}</span>
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Quantitative Stats */}
-                  {leader.stats && (
-                    <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-3.5 sm:pt-4 border-t border-slate-200/90 dark:border-white/10">
-                      {leader.stats.map((st, sIdx) => (
-                        <div key={sIdx} className="space-y-0.5">
-                          <div className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-black text-neutral-950 dark:text-brand-accent tabular-nums font-['Plus_Jakarta_Sans',sans-serif] tracking-tight">
-                            {st.val}{st.suffix}
-                          </div>
-                          <div className="text-[9.5px] xs:text-[10.5px] sm:text-xs font-black text-neutral-500 dark:text-neutral-400 uppercase tracking-wider font-['Plus_Jakarta_Sans',sans-serif] leading-tight">
-                            {st.label}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Action CTA */}
-                  <div className="pt-2">
-                    <Link
-                      to="/appointment"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-brand-accent text-neutral-950 text-xs sm:text-sm font-black uppercase tracking-wider hover:bg-neutral-950 hover:text-white dark:hover:bg-white dark:hover:text-neutral-950 transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:scale-95 font-['Plus_Jakarta_Sans',sans-serif] cursor-pointer text-center"
-                    >
-                      <FaCalendarAlt className="text-xs" />
-                      <span>Consult with {leader.name.replace(/^(Mr\.|Mrs\.|Dr\.)\s+/i, '').split(' ')[0]}</span>
-                    </Link>
-                  </div>
-                </div>
-
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ═══════════════════════════════════════════════════════════
           9. JOIN OUR NETWORK: Complete CTA & Address Strip
@@ -1038,7 +843,7 @@ export const About = () => {
               <div className="flex flex-wrap items-center justify-center gap-4 pt-3">
                 <Link
                   to="/appointment"
-                  className="px-8 py-4 rounded-2xl bg-brand-accent text-neutral-950 text-xs sm:text-sm font-black uppercase tracking-wider hover:bg-white transition-all duration-300 shadow-xl hover:-translate-y-0.5 active:scale-95 flex items-center gap-2"
+                  className="px-8 py-4 rounded-2xl bg-brand-accent text-neutral-950 text-xs sm:text-sm font-black uppercase tracking-wider hover:bg-white transition-all duration-300 shadow-xl hover:-translate-y-0.5 active:scale-95 flex items-center gap-2 font-['Plus_Jakarta_Sans',sans-serif]"
                 >
                   <FaPhoneAlt className="text-xs" />
                   <span>Book a Free Consultation</span>
@@ -1046,7 +851,7 @@ export const About = () => {
 
                 <Link
                   to="/careers"
-                  className="px-8 py-4 rounded-2xl bg-white/10 text-white border border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-neutral-950 transition-all duration-300 hover:-translate-y-0.5 active:scale-95 flex items-center gap-2"
+                  className="px-8 py-4 rounded-2xl bg-white/10 text-white border border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-neutral-950 transition-all duration-300 hover:-translate-y-0.5 active:scale-95 flex items-center gap-2 font-['Plus_Jakarta_Sans',sans-serif]"
                 >
                   <span>Explore Careers</span>
                   <FaArrowRight className="text-xs" />
@@ -1054,7 +859,7 @@ export const About = () => {
 
                 <Link
                   to="/support"
-                  className="px-8 py-4 rounded-2xl bg-white/5 text-neutral-300 border border-white/10 text-xs sm:text-sm font-bold uppercase tracking-wider hover:text-white hover:border-white/30 transition-all duration-300 flex items-center gap-2"
+                  className="px-8 py-4 rounded-2xl bg-white/5 text-neutral-300 border border-white/10 text-xs sm:text-sm font-bold uppercase tracking-wider hover:text-white hover:border-white/30 transition-all duration-300 flex items-center gap-2 font-['Plus_Jakarta_Sans',sans-serif]"
                 >
                   <span>Contact Us</span>
                 </Link>
@@ -1069,6 +874,7 @@ export const About = () => {
                   <FaPhoneAlt className="text-brand-accent text-xs" />
                   <span>+91 99944 51300</span>
                 </a>
+
                 <a
                   href="mailto:skinvestments2025@gmail.com"
                   className="flex items-center gap-2 hover:text-brand-accent transition-colors"
@@ -1076,17 +882,12 @@ export const About = () => {
                   <FaEnvelope className="text-brand-accent text-xs" />
                   <span>skinvestments2025@gmail.com</span>
                 </a>
-                <a
-                  href="https://maps.google.com/?q=MD+Plaza+West+Raja+Street+Kanchipuram"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 hover:text-brand-accent transition-colors"
-                >
-                  <FaMapMarkerAlt className="text-brand-accent text-xs" />
-                  <span>#104, MD Plaza, West Raja Street, Kanchipuram - 631 502</span>
-                </a>
-              </div>
 
+                <span className="flex items-center gap-2">
+                  <FaMapMarkerAlt className="text-brand-accent text-xs" />
+                  <span>#104, MD Plaza, West Raja St, Kanchipuram - 631502</span>
+                </span>
+              </div>
             </div>
 
           </div>
@@ -1094,37 +895,34 @@ export const About = () => {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════
-          10. FULL-SCREEN INTERACTIVE AWARDS LIGHTBOX MODAL
+          10. LIGHTBOX MODAL: Zoom & Inspection
       ═══════════════════════════════════════════════════════════ */}
       <AnimatePresence>
-        {selectedAwardIndex !== null && (
+        {selectedAwardIndex !== null && awards[selectedAwardIndex] && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-2xl flex flex-col justify-between p-3 sm:p-6 select-none"
+            className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-xl flex flex-col justify-between p-4 sm:p-6 select-none"
             onClick={handleCloseLightbox}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
-            {/* Top Floating Control Bar */}
+            {/* Top Toolbar */}
             <div
-              className="relative z-30 flex items-center justify-between w-full max-w-5xl mx-auto py-2 px-4 rounded-2xl bg-neutral-900/90 border border-white/10 backdrop-blur-md shadow-2xl text-white"
+              className="relative z-30 flex items-center justify-between w-full max-w-5xl mx-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Left Side: Counter & Tag */}
+              {/* Left Side: Counter Indicator */}
               <div className="flex items-center gap-3">
-                <span className="px-2.5 py-1 rounded-lg bg-brand-accent text-neutral-950 font-black text-xs font-['Plus_Jakarta_Sans',sans-serif]">
-                  {selectedAwardIndex + 1} / {AWARDS_DATA.length}
-                </span>
-                <span className="text-[11px] font-black uppercase tracking-wider text-amber-400 hidden sm:inline-block font-['Plus_Jakarta_Sans',sans-serif]">
-                  {AWARDS_DATA[selectedAwardIndex].tag}
-                </span>
+                <div className="px-3.5 py-1.5 rounded-full bg-white/10 text-white text-xs font-black tracking-wider uppercase font-['Plus_Jakarta_Sans',sans-serif] backdrop-blur-md">
+                  {selectedAwardIndex + 1} / {awards.length}
+                </div>
               </div>
 
-              {/* Center: Image Controls (Zoom In, Zoom Out, Reset) */}
-              <div className="flex items-center gap-1.5 bg-black/40 p-1 rounded-xl border border-white/10">
+              {/* Center: Zoom Controls */}
+              <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-white/10">
                 <button
                   onClick={handleZoomOut}
                   disabled={zoomLevel <= 1}
@@ -1211,8 +1009,8 @@ export const About = () => {
                 title="Double click to toggle 2x zoom"
               >
                 <img
-                  src={AWARDS_DATA[selectedAwardIndex].img}
-                  alt={AWARDS_DATA[selectedAwardIndex].title}
+                  src={awards[selectedAwardIndex]?.img}
+                  alt={awards[selectedAwardIndex]?.title}
                   className="max-h-[68vh] max-w-full object-contain rounded-xl shadow-2xl transition-transform duration-300 ease-out"
                   style={{ transform: `scale(${zoomLevel})` }}
                   draggable={false}
@@ -1228,24 +1026,24 @@ export const About = () => {
               <div className="space-y-1">
                 <div className="flex items-center justify-center sm:justify-start gap-2">
                   <span className="text-[10px] font-black uppercase tracking-widest text-brand-accent font-['Plus_Jakarta_Sans',sans-serif]">
-                    {AWARDS_DATA[selectedAwardIndex].tag}
+                    {awards[selectedAwardIndex]?.tag || awards[selectedAwardIndex]?.category}
                   </span>
                   <span className="text-neutral-500">•</span>
                   <span className="text-xs font-black text-white">
-                    Year {AWARDS_DATA[selectedAwardIndex].year}
+                    Year {awards[selectedAwardIndex]?.year}
                   </span>
                 </div>
                 <h3 className="text-base sm:text-lg font-black text-white tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
-                  {AWARDS_DATA[selectedAwardIndex].title}
+                  {awards[selectedAwardIndex]?.title}
                 </h3>
                 <p className="text-xs text-neutral-300 font-normal leading-relaxed font-['Inter',sans-serif] max-w-2xl">
-                  {AWARDS_DATA[selectedAwardIndex].desc}
+                  {awards[selectedAwardIndex]?.desc}
                 </p>
               </div>
 
               <div className="shrink-0 flex items-center gap-2">
                 <button
-                  onClick={() => window.open(AWARDS_DATA[selectedAwardIndex].img, '_blank')}
+                  onClick={() => window.open(awards[selectedAwardIndex]?.img, '_blank')}
                   className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white text-white hover:text-neutral-950 text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer"
                 >
                   <FaExternalLinkAlt className="text-[10px]" />

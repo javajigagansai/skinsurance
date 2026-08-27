@@ -697,3 +697,311 @@ export const deleteConsultationLead = async (id, user = null) => {
     return true;
   }
 };
+
+// -------------------------------------------------------------
+// AWARDS & ACHIEVEMENTS DATA & MANAGEMENT
+// -------------------------------------------------------------
+
+export const DEFAULT_AWARDS_DATA = [
+  {
+    id: 'award-1',
+    title: 'Dream Agency Elite Aspirant Award',
+    category: 'Industry Leadership',
+    tag: 'INDUSTRY LEADERSHIP',
+    year: '2024',
+    org: 'Tata AIA Life Insurance',
+    desc: 'Recognized for remarkable progress, commitment to advisory excellence, and continuous professional development.',
+    img: '/Awards_JPG/IMG_3623.jpg',
+    status: 'Active',
+    priority: 1,
+    featured: true
+  },
+  {
+    id: 'award-2',
+    title: 'MDRT Aspirant Achievement',
+    category: 'Global Benchmark',
+    tag: 'GLOBAL BENCHMARK',
+    year: '2023',
+    org: 'Million Dollar Round Table',
+    desc: 'Honored for successfully qualifying for the Million Dollar Round Table Aspirant milestone, reflecting world-class fiduciary standards.',
+    img: '/Awards_JPG/IMG_3631.jpg',
+    status: 'Active',
+    priority: 2,
+    featured: true
+  },
+  {
+    id: 'award-3',
+    title: 'InfinPro Consultant Excellence',
+    category: 'Consulting Merit',
+    tag: 'CONSULTING MERIT',
+    year: '2023',
+    org: 'InfinPro Financial Network',
+    desc: 'Presented in appreciation of outstanding consultant performance and quality portfolio guidance.',
+    img: '/Awards_JPG/IMG_3624.jpg',
+    status: 'Active',
+    priority: 3
+  },
+  {
+    id: 'award-4',
+    title: 'Tambaram Branch Performance Excellence',
+    category: 'Branch Leadership',
+    tag: 'BRANCH LEADERSHIP',
+    year: '2023',
+    org: 'Tata AIA Life Insurance',
+    desc: 'Recognized as a top-performing branch for outstanding business growth, customer satisfaction, and leadership.',
+    img: '/Awards_JPG/IMG_3634.jpg',
+    status: 'Active',
+    priority: 4
+  },
+  {
+    id: 'award-5',
+    title: 'Dronacharya Branch Excellence Award',
+    category: 'Tata AIA Recognition',
+    tag: 'TATA AIA RECOGNITION',
+    year: '2022',
+    org: 'Tata AIA Life Insurance',
+    desc: 'Awarded by Tata AIA Life Insurance for outstanding branch leadership, business excellence, and consistent advisory performance.',
+    img: '/Awards_JPG/IMG_3619.jpg',
+    status: 'Active',
+    priority: 5
+  },
+  {
+    id: 'award-6',
+    title: 'Outstanding Performer Award',
+    category: 'Annual Excellence',
+    tag: 'ANNUAL EXCELLENCE',
+    year: '2022',
+    org: 'Insurance Advisory Forum',
+    desc: 'Recognized as a consistent top performer for exceptional business achievements and client service excellence.',
+    img: '/Awards_JPG/IMG_3628.jpg',
+    status: 'Active',
+    priority: 6
+  },
+  {
+    id: 'award-7',
+    title: 'Million Dollar Club Qualifier',
+    category: 'Sales Excellence',
+    tag: 'SALES EXCELLENCE',
+    year: '2022',
+    org: 'Million Dollar Club',
+    desc: 'Qualified for the prestigious Million Dollar Club in recognition of outstanding sales performance and client trust.',
+    img: '/Awards_JPG/IMG_3638.jpg',
+    status: 'Active',
+    priority: 7
+  },
+  {
+    id: 'award-8',
+    title: 'Pragati Business Growth Excellence',
+    category: 'Innovation & Growth',
+    tag: 'INNOVATION & GROWTH',
+    year: '2021',
+    org: 'Pragati Financial Conclave',
+    desc: 'Recognized for achieving exceptional business growth, innovation, and consistent client-focused financial advisory services.',
+    img: '/Awards_JPG/IMG_3620.jpg',
+    status: 'Active',
+    priority: 8
+  },
+  {
+    id: 'award-9',
+    title: 'Family Inspiration Recognition',
+    category: 'Community Impact',
+    tag: 'COMMUNITY IMPACT',
+    year: '2021',
+    org: 'SK Smart Investments Trust',
+    desc: 'A special recognition celebrating dedication, family support, and commitment behind entrepreneurial success.',
+    img: '/Awards_JPG/IMG_3626.jpg',
+    status: 'Active',
+    priority: 9
+  },
+  {
+    id: 'award-10',
+    title: 'Malaysia Training Conclave Qualifier',
+    category: 'International Merit',
+    tag: 'INTERNATIONAL MERIT',
+    year: '2020',
+    org: 'International Financial Forum',
+    desc: 'Qualified to participate in the exclusive Malaysia Training Conclave, recognizing outstanding business achievement.',
+    img: '/Awards_JPG/IMG_3643.jpg',
+    status: 'Active',
+    priority: 10
+  },
+  {
+    id: 'award-11',
+    title: 'Dream Agency Aspirant Recognition',
+    category: 'High Potential',
+    tag: 'HIGH POTENTIAL',
+    year: '2020',
+    org: 'Tata AIA Life Insurance',
+    desc: 'Honored as a high-potential advisor demonstrating exceptional dedication, leadership, and business performance.',
+    img: '/Awards_JPG/IMG_3622.jpg',
+    status: 'Active',
+    priority: 11
+  },
+  {
+    id: 'award-12',
+    title: 'Leadership Appreciation Certificate',
+    category: 'Organizational Leadership',
+    tag: 'ORGANIZATIONAL LEADERSHIP',
+    year: '2019',
+    org: 'Tata AIA Life Insurance',
+    desc: 'Presented in recognition of leadership, professional integrity, and continuous contribution to organizational success.',
+    img: '/Awards_JPG/IMG_3629.jpg',
+    status: 'Active',
+    priority: 12
+  },
+  {
+    id: 'award-13',
+    title: 'Donautsav Business Excellence Award',
+    category: 'Business Excellence',
+    tag: 'BUSINESS EXCELLENCE',
+    year: '2019',
+    org: 'Donautsav Financial Forum',
+    desc: 'Honored for exceptional business performance, customer commitment, and continued professional growth.',
+    img: '/Awards_JPG/IMG_3639.jpg',
+    status: 'Active',
+    priority: 13
+  },
+  {
+    id: 'award-14',
+    title: 'Business Growth Achievement Certificate',
+    category: 'Capacity Building',
+    tag: 'CAPACITY BUILDING',
+    year: '2018',
+    org: 'Business Growth Academy',
+    desc: 'Awarded for successfully completing the Aim For Your Business Growth leadership workshop.',
+    img: '/Awards_JPG/IMG_3625.jpg',
+    status: 'Active',
+    priority: 14
+  },
+  {
+    id: 'award-15',
+    title: 'MDRT Aspirant Excellence Award',
+    category: 'Performance Benchmark',
+    tag: 'PERFORMANCE BENCHMARK',
+    year: '2018',
+    org: 'Million Dollar Round Table',
+    desc: 'Awarded for outstanding commitment toward achieving Million Dollar Round Table performance benchmarks.',
+    img: '/Awards_JPG/IMG_3633.jpg',
+    status: 'Active',
+    priority: 15
+  },
+  {
+    id: 'award-16',
+    title: 'AI & Technology Learning Certificate',
+    category: 'Digital Innovation',
+    tag: 'DIGITAL INNOVATION',
+    year: '2024',
+    org: 'FinTech Learning Initiative',
+    desc: 'Successfully completed advanced AI learning programs focused on improving modern advisory practices.',
+    img: '/Awards_JPG/IMG_3627.jpg',
+    status: 'Active',
+    priority: 16
+  },
+  {
+    id: 'award-17',
+    title: 'Dream Agency Branch Champion',
+    category: 'Branch Excellence',
+    tag: 'BRANCH EXCELLENCE',
+    year: '2021',
+    org: 'Tata AIA Life Insurance',
+    desc: 'Awarded for exceptional branch management, operational excellence, and sustained business performance.',
+    img: '/Awards_JPG/IMG_3636.jpg',
+    status: 'Active',
+    priority: 17
+  }
+];
+
+export const getAwards = async () => {
+  try {
+    if (isFirebaseConfigured && db) {
+      const colRef = collection(db, 'awards');
+      const snapshot = await getDocs(colRef);
+      if (!snapshot.empty) {
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+          .sort((a, b) => (Number(a.priority) || 999) - (Number(b.priority) || 999));
+      }
+    }
+    const local = localStorage.getItem('sk_awards_local');
+    if (local) {
+      const parsed = JSON.parse(local);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+    localStorage.setItem('sk_awards_local', JSON.stringify(DEFAULT_AWARDS_DATA));
+    return [...DEFAULT_AWARDS_DATA];
+  } catch (error) {
+    logger.error("Failed to fetch awards", { error: error.message });
+    const local = localStorage.getItem('sk_awards_local');
+    return local ? JSON.parse(local) : [...DEFAULT_AWARDS_DATA];
+  }
+};
+
+export const createAward = async (awardData, user = null) => {
+  try {
+    const newAward = {
+      ...awardData,
+      status: awardData.status || 'Active',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    let docId = `award-${Date.now()}`;
+    if (isFirebaseConfigured && db) {
+      const ref = await addDocWithAudit('awards', newAward, user);
+      if (ref && typeof ref === 'string') docId = ref;
+      else if (ref && ref.id) docId = ref.id;
+    }
+    const current = JSON.parse(localStorage.getItem('sk_awards_local') || JSON.stringify(DEFAULT_AWARDS_DATA));
+    const created = { id: docId, ...newAward };
+    current.unshift(created);
+    localStorage.setItem('sk_awards_local', JSON.stringify(current));
+    window.dispatchEvent(new CustomEvent('sk_awards_updated', { detail: current }));
+    return created;
+  } catch (error) {
+    logger.error("Failed to create award", { error: error.message });
+    const created = { id: `award-${Date.now()}`, ...awardData, createdAt: new Date().toISOString() };
+    const current = JSON.parse(localStorage.getItem('sk_awards_local') || JSON.stringify(DEFAULT_AWARDS_DATA));
+    current.unshift(created);
+    localStorage.setItem('sk_awards_local', JSON.stringify(current));
+    window.dispatchEvent(new CustomEvent('sk_awards_updated', { detail: current }));
+    return created;
+  }
+};
+
+export const updateAward = async (id, awardData, user = null) => {
+  try {
+    if (isFirebaseConfigured && db) {
+      await updateDocWithAudit('awards', id, awardData, user);
+    }
+    const current = JSON.parse(localStorage.getItem('sk_awards_local') || JSON.stringify(DEFAULT_AWARDS_DATA));
+    const updated = current.map(a => a.id === id ? { ...a, ...awardData, updatedAt: new Date().toISOString() } : a);
+    localStorage.setItem('sk_awards_local', JSON.stringify(updated));
+    window.dispatchEvent(new CustomEvent('sk_awards_updated', { detail: updated }));
+    return true;
+  } catch (error) {
+    logger.error("Failed to update award", { error: error.message });
+    const current = JSON.parse(localStorage.getItem('sk_awards_local') || JSON.stringify(DEFAULT_AWARDS_DATA));
+    const updated = current.map(a => a.id === id ? { ...a, ...awardData, updatedAt: new Date().toISOString() } : a);
+    localStorage.setItem('sk_awards_local', JSON.stringify(updated));
+    window.dispatchEvent(new CustomEvent('sk_awards_updated', { detail: updated }));
+    return true;
+  }
+};
+
+export const deleteAward = async (id, user = null) => {
+  try {
+    if (isFirebaseConfigured && db) {
+      await deleteDocWithAudit('awards', id, user);
+    }
+    const current = JSON.parse(localStorage.getItem('sk_awards_local') || JSON.stringify(DEFAULT_AWARDS_DATA));
+    const filtered = current.filter(a => a.id !== id);
+    localStorage.setItem('sk_awards_local', JSON.stringify(filtered));
+    window.dispatchEvent(new CustomEvent('sk_awards_updated', { detail: filtered }));
+    return true;
+  } catch (error) {
+    logger.error("Failed to delete award", { error: error.message });
+    const current = JSON.parse(localStorage.getItem('sk_awards_local') || JSON.stringify(DEFAULT_AWARDS_DATA));
+    const filtered = current.filter(a => a.id !== id);
+    localStorage.setItem('sk_awards_local', JSON.stringify(filtered));
+    window.dispatchEvent(new CustomEvent('sk_awards_updated', { detail: filtered }));
+    return true;
+  }
+};

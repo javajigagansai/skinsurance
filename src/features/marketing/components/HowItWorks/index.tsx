@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
@@ -17,7 +17,11 @@ interface Step {
   desc: string;
   icon: any;
   tag: string;
-  progressPercent: number;
+  iconColor: string;
+  bgColor: string;
+  borderColor: string;
+  tagColor: string;
+  badgeGradient: string;
 }
 
 const STEPS: Step[] = [
@@ -27,7 +31,11 @@ const STEPS: Step[] = [
     desc: 'Share your family goals, coverage expectations, or medical history through a quick consultation or simple online form.',
     icon: FaClipboardList,
     tag: 'Discovery',
-    progressPercent: 25
+    iconColor: 'text-sky-500 dark:text-sky-400',
+    bgColor: 'bg-sky-500/10 dark:bg-sky-400/15',
+    borderColor: 'border-sky-500/25',
+    tagColor: 'text-sky-800 dark:text-sky-300 bg-sky-500/10 border-sky-500/20',
+    badgeGradient: 'bg-gradient-to-br from-sky-500 to-blue-600 text-white shadow-sky-500/20'
   },
   {
     step: '02',
@@ -35,7 +43,11 @@ const STEPS: Step[] = [
     desc: 'We analyze top-rated policies across IRDAI-approved partners (Tata AIA, HDFC Life, Star Health) with zero commission bias.',
     icon: FaBalanceScale,
     tag: 'Comparison',
-    progressPercent: 50
+    iconColor: 'text-blue-500 dark:text-blue-400',
+    bgColor: 'bg-blue-500/10 dark:bg-blue-400/15',
+    borderColor: 'border-blue-500/25',
+    tagColor: 'text-blue-800 dark:text-blue-300 bg-blue-500/10 border-blue-500/20',
+    badgeGradient: 'bg-gradient-to-br from-blue-500 to-indigo-500 text-white shadow-blue-500/20'
   },
   {
     step: '03',
@@ -43,7 +55,11 @@ const STEPS: Step[] = [
     desc: 'Select the optimal plan with transparent terms, clear exclusions, and 100% paperless digital onboarding.',
     icon: FaShieldAlt,
     tag: 'Selection',
-    progressPercent: 75
+    iconColor: 'text-emerald-500 dark:text-emerald-400',
+    bgColor: 'bg-emerald-500/10 dark:bg-emerald-400/15',
+    borderColor: 'border-emerald-500/25',
+    tagColor: 'text-emerald-800 dark:text-emerald-300 bg-emerald-500/10 border-emerald-500/20',
+    badgeGradient: 'bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-emerald-500/20'
   },
   {
     step: '04',
@@ -51,13 +67,18 @@ const STEPS: Step[] = [
     desc: 'Enjoy lifetime dedicated claim assistance, cashless hospital coordination, annual portfolio reviews, and renewal support.',
     icon: FaHeadset,
     tag: 'Lifetime Care',
-    progressPercent: 100
+    iconColor: 'text-purple-500 dark:text-purple-400',
+    bgColor: 'bg-purple-500/10 dark:bg-purple-400/15',
+    borderColor: 'border-purple-500/25',
+    tagColor: 'text-purple-800 dark:text-purple-300 bg-purple-500/10 border-purple-500/20',
+    badgeGradient: 'bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-purple-500/20'
   }
 ];
 
 export const HowItWorks = () => {
   const containerRef = useRef<HTMLElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.15 });
+  const [activeStep, setActiveStep] = useState<number | null>(null);
 
   return (
     <section 
@@ -65,17 +86,17 @@ export const HowItWorks = () => {
       className="relative w-full min-h-screen lg:h-screen flex flex-col justify-center snap-start py-6 sm:py-8 lg:py-6 border-t border-black/5 dark:border-white/5 bg-slate-50 dark:bg-neutral-950 transition-colors duration-300 overflow-hidden font-sans"
     >
       {/* Subtle Background Glows */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-brand-accent/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex flex-col justify-center">
         
         {/* ── Section Header ── */}
-        <div className="w-full max-w-3xl mx-auto mb-4 sm:mb-6 text-center">
+        <div className="w-full mb-6 sm:mb-8 text-center overflow-hidden">
           <motion.h2
             initial={{ opacity: 0, y: 12 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-neutral-950 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif]"
+            className="text-[32px] sm:text-[50px] md:text-[62px] lg:text-[76px] xl:text-[86px] font-bold tracking-[0.12em] sm:tracking-[0.18em] lg:tracking-[0.24em] text-neutral-950 dark:text-white uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] w-full block text-center"
           >
             HOW IT WORKS
           </motion.h2>
@@ -84,18 +105,20 @@ export const HowItWorks = () => {
         {/* ── 4-Step Process Flow Grid ── */}
         <div className="relative">
           
-          {/* Desktop Connecting Line behind cards */}
-          <div className="hidden lg:block absolute top-8 left-10 right-10 h-0.5 bg-slate-200 dark:bg-neutral-800 z-0 rounded-full" />
-          <motion.div 
-            initial={{ scaleX: 0 }}
-            animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-            transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="hidden lg:block absolute top-8 left-10 right-10 h-0.5 bg-gradient-to-r from-amber-400 via-brand-accent to-amber-500 z-0 origin-left rounded-full shadow-[0_0_10px_rgba(255,218,10,0.5)]" 
-          />
+          {/* Desktop Animated Connector Line */}
+          <div className="hidden lg:block absolute top-8 left-10 right-10 h-0.5 bg-slate-200 dark:bg-neutral-800 z-0 rounded-full overflow-hidden">
+            <motion.div 
+              initial={{ x: '-100%' }}
+              animate={isInView ? { x: '100%' } : { x: '-100%' }}
+              transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
+              className="w-1/3 h-full bg-gradient-to-r from-transparent via-blue-500/50 to-transparent shadow-[0_0_10px_rgba(59,130,246,0.4)]"
+            />
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-4 relative z-10">
             {STEPS.map((item, idx) => {
               const Icon = item.icon;
+              const isHovered = activeStep === idx;
 
               return (
                 <motion.div
@@ -103,34 +126,38 @@ export const HowItWorks = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   transition={{ duration: 0.5, delay: 0.08 * idx, ease: [0.16, 1, 0.3, 1] }}
-                  whileHover={{ y: -4 }}
-                  className="relative rounded-2xl p-4 sm:p-5 bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_24px_rgba(0,0,0,0.25)] flex flex-col justify-between group hover:border-brand-accent/50 dark:group-hover:border-brand-accent/40 hover:shadow-[0_12px_30px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)] transition-all duration-300 overflow-hidden cursor-default min-h-[200px] lg:min-h-[220px]"
+                  onMouseEnter={() => setActiveStep(idx)}
+                  onMouseLeave={() => setActiveStep(null)}
+                  whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                  className={`relative rounded-2xl p-4 sm:p-5 bg-white dark:bg-neutral-900 border transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-default min-h-[200px] lg:min-h-[220px] group ${
+                    isHovered
+                      ? 'border-neutral-400/80 dark:border-white/30 shadow-[0_12px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.4)] scale-[1.015]'
+                      : 'border-slate-200/80 dark:border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_24px_rgba(0,0,0,0.25)]'
+                  }`}
                 >
-                  {/* Top Ambient Hover Accent Line */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-brand-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
                   <div className="flex flex-col h-full justify-between">
                     {/* Top Row: Number Node Badge & Tag */}
                     <div className="flex items-center justify-between mb-3">
                       <div className="relative">
-                        <div className="absolute inset-0 rounded-full bg-brand-accent/40 blur-md opacity-0 group-hover:opacity-100 group-hover:scale-125 transition-all duration-500" />
-                        <div className="relative w-8 h-8 rounded-xl bg-gradient-to-br from-brand-accent to-amber-400 text-neutral-950 font-black text-xs flex items-center justify-center shadow-xs border border-white dark:border-neutral-900 group-hover:scale-110 transition-transform duration-300 font-['Plus_Jakarta_Sans',sans-serif]">
+                        <div className={`relative w-8 h-8 rounded-xl font-black text-xs flex items-center justify-center shadow-xs border transition-all duration-300 font-['Plus_Jakarta_Sans',sans-serif] ${item.badgeGradient} ${
+                          isHovered ? 'scale-110' : ''
+                        }`}>
                           {item.step}
                         </div>
                       </div>
 
-                      <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.14em] text-amber-800 dark:text-brand-accent px-2.5 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-400/10 border border-amber-500/20 font-['Plus_Jakarta_Sans',sans-serif]">
+                      <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.14em] px-2.5 py-0.5 rounded-full border transition-all duration-300 font-['Plus_Jakarta_Sans',sans-serif] ${item.tagColor}`}>
                         {item.tag}
                       </span>
                     </div>
 
                     {/* Icon & Content */}
                     <div className="space-y-2 flex-1">
-                      <div className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-neutral-800 text-neutral-900 dark:text-brand-accent text-base flex items-center justify-center shadow-2xs group-hover:scale-105 group-hover:bg-brand-accent group-hover:text-neutral-950 transition-all duration-300">
+                      <div className={`w-9 h-9 rounded-xl ${item.bgColor} border ${item.borderColor} flex items-center justify-center text-base ${item.iconColor} shadow-2xs transition-all duration-300 group-hover:scale-110`}>
                         <Icon />
                       </div>
 
-                      <h3 className="text-sm sm:text-base font-extrabold text-neutral-950 dark:text-white tracking-tight leading-snug font-['Plus_Jakarta_Sans',sans-serif] group-hover:text-amber-800 dark:group-hover:text-brand-accent transition-colors duration-200">
+                      <h3 className="text-sm sm:text-base font-extrabold text-neutral-950 dark:text-white tracking-tight leading-snug font-['Plus_Jakarta_Sans',sans-serif] transition-colors duration-200">
                         {item.title}
                       </h3>
 
@@ -183,4 +210,3 @@ export const HowItWorks = () => {
 };
 
 export default HowItWorks;
-

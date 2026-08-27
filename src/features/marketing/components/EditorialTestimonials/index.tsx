@@ -149,7 +149,7 @@ export const EditorialTestimonials: React.FC<EditorialTestimonialsProps> = ({ te
                 // VOICES OF TRUST
               </span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-[900] tracking-[-1px] text-black leading-tight uppercase mt-2">
+            <h2 className="text-[26px] sm:text-[40px] md:text-[50px] lg:text-[60px] xl:text-[68px] font-bold tracking-tight text-black dark:text-white leading-none uppercase mt-2 font-['Plus_Jakarta_Sans',sans-serif]">
               WHAT OUR CLIENTS SAY
             </h2>
           </div>

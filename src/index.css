@@ -5,8 +5,10 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: 'Poppins', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Playfair Display', 'Cinzel', serif;
+  --font-sans: 'Plus Jakarta Sans', 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-jakarta: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-inter: 'Inter', system-ui, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', 'Poppins', sans-serif;
   --font-royal: 'Playfair Display', 'Cinzel', serif;
   
   /* Lumina Brand Primitives */
@@ -41,7 +43,7 @@
 }
 
 :root {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Poppins', sans-serif;
   /* Additional Lumina tokens for standard elements */
   --bg-level-1: var(--color-neutral-0);
   --bg-level-2: var(--color-neutral-50);
@@ -58,7 +60,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, h5, h6, .font-heading, .font-royal {
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', 'Poppins', sans-serif;
+}
+
+.font-heading-serif, .font-royal {
   font-family: 'Playfair Display', 'Cinzel', Georgia, serif;
 }
 
@@ -245,5 +251,25 @@ video::-webkit-media-controls-panel {
 .animate-marquee:hover,
 .group:hover .animate-marquee {
   animation-play-state: paused !important;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 24s linear infinite;
+}
+
+/* Hide hero carousel navigation arrows and pagination dots */
+.swiper-button-prev, .swiper-button-next, .elementor-swiper-button, .swiper-pagination, .swiper-pagination-bullets, .carousel-dots { 
+  display: none !important; 
+  opacity: 0 !important; 
+  pointer-events: none !important; 
 }
 

@@ -8,20 +8,44 @@ export const Footer = () => {
   const { t } = useTranslation();
 
   return (
-    <footer className="relative bg-slate-950 dark:bg-black text-white pt-20 pb-10 overflow-hidden border-t border-white/10 dark:border-white/5 transition-colors duration-300">
-
-
+    <footer className="relative bg-slate-950 dark:bg-black text-white pt-10 pb-6 overflow-hidden border-t border-white/10 dark:border-white/5 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
-          
-          {/* Brand Panel */}
-          <div className="space-y-6">
-            <Link to="/" className="inline-block relative group">
-              <div className="absolute inset-0 bg-brand-accent/20 blur-[30px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              <Logo showTagline={false} imageClassName="!h-[80px] sm:!h-[88px] md:!h-[92px] !max-w-[320px]" />
-            </Link>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 mb-8">
 
-            <div className="flex flex-wrap gap-3 pt-2">
+          {/* Brand Panel (5 cols) */}
+          <div className="lg:col-span-5 space-y-6">
+            <Link to="/" className="inline-flex items-center gap-3.5 group">
+              <img
+                src="/logo.png"
+                alt="SK Smart Investments Logo"
+                className="h-14 sm:h-16 md:h-[68px] w-auto object-contain shrink-0"
+              />
+              <div className="flex flex-col text-left justify-center leading-none">
+                <svg viewBox="0 0 240 28" className="h-9 sm:h-10 md:h-11 w-auto select-none" aria-label="SK Smart Investments - Insurance and Investments Specialist">
+                  <text 
+                    x="0" 
+                    y="13" 
+                    className="fill-[#ef233c]" 
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '14.5px', fontWeight: 900 }}
+                    textLength="240" 
+                    lengthAdjust="spacing"
+                  >
+                    SK SMART INVESTMENTS
+                  </text>
+                  <text 
+                    x="0" 
+                    y="26" 
+                    className="fill-neutral-300" 
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '8.8px', fontWeight: 800 }}
+                    textLength="240" 
+                    lengthAdjust="spacing"
+                  >
+                    INSURANCE AND INVESTMENTS SPECIALIST
+                  </text>
+                </svg>
+              </div>
+            </Link>
+            <div className="flex flex-wrap gap-3 pt-1">
               {
                 [
                   { icon: FaFacebook, url: "https://www.facebook.com/profile.php?id=61592452371528", color: "text-blue-600 border-blue-600/50 bg-blue-600/10" },
@@ -44,13 +68,13 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
+          {/* Quick Links (2 cols) */}
+          <div className="lg:col-span-2">
             <h4 className="text-xs font-[900] text-white uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
               {t('footer_insurance')}
             </h4>
-            <ul className="space-y-4">
+            <ul className="space-y-3.5">
               {[
                 { name: "Health Insurance", path: "/plans?category=Health" },
                 { name: "Life Insurance", path: "/plans?category=Life" },
@@ -69,13 +93,13 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Company Links */}
-          <div>
+          {/* Company Links (2 cols) */}
+          <div className="lg:col-span-2">
             <h4 className="text-xs font-[900] text-white uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
               {t('footer_company')}
             </h4>
-            <ul className="space-y-4">
+            <ul className="space-y-3.5">
               {[
                 { name: t('about'), path: "/about" },
                 { name: "Careers", path: "/careers" },
@@ -85,11 +109,10 @@ export const Footer = () => {
                 <li key={idx}>
                   <Link
                     to={link.path}
-                    className={`group flex items-center gap-2 text-sm font-medium transition-colors ${
-                      link.highlight
-                        ? 'text-brand-accent hover:text-brand-accent/80 drop-shadow-[0_0_10px_rgba(255,179,0,0.3)]'
-                        : 'text-neutral-400 hover:text-white'
-                    }`}
+                    className={`group flex items-center gap-2 text-sm font-medium transition-colors ${link.highlight
+                      ? 'text-brand-accent hover:text-brand-accent/80 drop-shadow-[0_0_10px_rgba(255,179,0,0.3)]'
+                      : 'text-neutral-400 hover:text-white'
+                      }`}
                   >
                     {!link.noArrow ? (
                       <span className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 text-brand-accent transition-all duration-300">
@@ -105,15 +128,15 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact Details */}
-          <div>
+          {/* Contact Details (3 cols) */}
+          <div className="lg:col-span-3">
             <h4 className="text-xs font-[900] text-white uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
               <span>Contact Us</span>
             </h4>
 
-            <div className="space-y-5">
-              
+            <div className="space-y-4">
+
               {/* Corporate Office & Map */}
               <div className="space-y-2.5">
                 <div className="flex items-center gap-2 text-white">
@@ -135,7 +158,7 @@ export const Footer = () => {
                     title="SK Smart Investments Office Location"
                     className="w-full h-full grayscale-[15%] contrast-125 opacity-90 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300"
                   />
-                  <a 
+                  <a
                     href="https://maps.google.com/?q=104+MD+Plaza+West+Raja+Street+Kanchipuram+631502"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -146,41 +169,28 @@ export const Footer = () => {
                 </div>
               </div>
 
-              {/* Email Communications */}
-              <a 
-                href="mailto:skinvestments2025@gmail.com" 
-                className="flex items-center gap-3.5 p-2 -mx-2 rounded-xl hover:bg-white/5 transition-colors group cursor-pointer"
-              >
-                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brand-accent/15 group-hover:border-brand-accent/40 transition-all shadow-sm">
-                  <FaEnvelope className="text-neutral-400 group-hover:text-brand-accent text-sm transition-colors" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="font-[900] text-neutral-400 text-[10px] uppercase tracking-wider mb-0.5 group-hover:text-brand-accent transition-colors font-['Plus_Jakarta_Sans',sans-serif]">
-                    Email Communications
-                  </p>
-                  <p className="text-xs sm:text-sm text-neutral-200 font-semibold group-hover:text-white transition-colors truncate font-sans">
-                    skinvestments2025@gmail.com
-                  </p>
-                </div>
-              </a>
+              {/* Action Icons Directly Below Map */}
+              <div className="flex items-center gap-3 pt-1">
+                <a
+                  href="mailto:skinvestments2025@gmail.com"
+                  title="Send Email: skinvestments2025@gmail.com"
+                  aria-label="Send Email"
+                  className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-white/5 border border-white/10 hover:bg-brand-accent/15 hover:border-brand-accent/40 text-neutral-300 hover:text-brand-accent transition-all duration-300 group shadow-sm"
+                >
+                  <FaEnvelope className="text-sm text-neutral-400 group-hover:text-brand-accent transition-colors" />
+                  <span className="text-[11px] font-bold uppercase tracking-wider font-['Plus_Jakarta_Sans',sans-serif]">Email</span>
+                </a>
 
-              {/* Phone Hotline */}
-              <a 
-                href="tel:+919994451300" 
-                className="flex items-center gap-3.5 p-2 -mx-2 rounded-xl hover:bg-white/5 transition-colors group cursor-pointer"
-              >
-                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brand-accent/15 group-hover:border-brand-accent/40 transition-all shadow-sm">
-                  <FaPhoneAlt className="text-neutral-400 group-hover:text-brand-accent text-sm transition-colors" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="font-[900] text-neutral-400 text-[10px] uppercase tracking-wider mb-0.5 group-hover:text-brand-accent transition-colors font-['Plus_Jakarta_Sans',sans-serif]">
-                    Phone Hotline
-                  </p>
-                  <p className="text-xs sm:text-sm text-neutral-200 font-semibold group-hover:text-white transition-colors truncate font-sans">
-                    +91 99944 51300
-                  </p>
-                </div>
-              </a>
+                <a
+                  href="tel:+919994451300"
+                  title="Call Hotline: +91 99944 51300"
+                  aria-label="Call Hotline"
+                  className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-white/5 border border-white/10 hover:bg-brand-accent/15 hover:border-brand-accent/40 text-neutral-300 hover:text-brand-accent transition-all duration-300 group shadow-sm"
+                >
+                  <FaPhoneAlt className="text-xs text-neutral-400 group-hover:text-brand-accent transition-colors" />
+                  <span className="text-[11px] font-bold uppercase tracking-wider font-['Plus_Jakarta_Sans',sans-serif]">Call</span>
+                </a>
+              </div>
 
             </div>
           </div>
@@ -188,8 +198,8 @@ export const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-          <p className="text-xs text-neutral-500 font-medium tracking-wide">
+        <div className="border-t border-white/10 pt-6 text-center">
+          <p className="text-xs text-neutral-400 font-medium tracking-wide">
             {t('footer_rights')}
           </p>
         </div>

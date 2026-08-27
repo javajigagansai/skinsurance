@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useMotionValue, useTransform, useScroll } from 'framer-motion';
 import { useTranslation } from '../../context/LanguageContext';
 import { Button } from '../../components/ui/Button';
-import { FaShieldAlt, FaHeartbeat, FaCar, FaUserShield, FaHandshake, FaAward, FaStar, FaTrophy, FaChevronDown, FaUsers, FaPhoneAlt, FaArrowRight, FaCheckCircle } from 'react-icons/fa';
+import { FaShieldAlt, FaHeartbeat, FaCar, FaUserShield, FaHandshake, FaAward, FaStar, FaTrophy, FaChevronDown, FaUsers, FaPhoneAlt, FaArrowRight, FaCheckCircle, FaCopy, FaWhatsapp, FaCalendarAlt, FaTimes } from 'react-icons/fa';
 import { subscribeToCollection } from '../../services/firebaseService';
 
 import { useRef } from 'react';
@@ -25,6 +25,23 @@ export const Home = () => {
   const [years, setYears] = useState(10);
   const [partnerFilter, setPartnerFilter] = useState('ALL');
   const [plans, setPlans] = useState([]);
+  const [showCallModal, setShowCallModal] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleBookCall = () => {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (typeof window !== 'undefined' && window.innerWidth < 768);
+    if (isMobile) {
+      window.location.href = 'tel:+919840723956';
+    } else {
+      setShowCallModal(true);
+    }
+  };
+
+  const handleCopyNumber = () => {
+    navigator.clipboard.writeText('+91 98407 23956');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
 
   useEffect(() => {
     // Listen to plans in real-time and sort by displayOrder
@@ -286,44 +303,39 @@ export const Home = () => {
   return (
     <div className="relative">
       {/* Modern 2-Column Hero Section */}
-      <section className="relative w-full min-h-screen flex flex-col justify-center snap-start pt-20 pb-8 sm:pt-24 sm:pb-12 bg-slate-50 dark:bg-neutral-950 overflow-hidden border-b border-black/5 dark:border-white/5 transition-colors duration-300">
+      <section className="relative w-full min-h-screen flex flex-col justify-center snap-start pt-20 pb-8 sm:pt-24 sm:pb-12 bg-white dark:bg-neutral-950 overflow-hidden border-b border-black/5 dark:border-white/5 transition-colors duration-300">
         
-        {/* Ambient background glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-brand-accent/5 dark:bg-brand-accent/10 blur-[140px] rounded-full pointer-events-none" />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <div className="relative z-10 w-full pl-4 sm:pl-6 lg:pl-10 xl:pl-16 pr-0 max-w-[1920px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 xl:gap-8 items-center">
             
-            {/* Left Side: Interactive Pinterest-Style Stacked Card Carousel */}
+            {/* Left Side: Interactive Pinterest-Style Stacked Card Carousel (5 cols) */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
-              className="lg:col-span-6 space-y-6 text-left"
+              className="lg:col-span-5 space-y-4 text-center max-w-xl mx-auto lg:max-w-none w-full pr-4 sm:pr-6 lg:pr-0"
             >
               {/* Pinterest-Style Stacked Card Carousel */}
               <PinterestCardCarousel />
 
-              {/* Actions Bar - Positioned Lower with Increased Size */}
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-4 sm:pt-6">
+              {/* Actions Bar - Placed Centered Directly Under Middle of Cards */}
+              <div className="flex items-center justify-center w-full pt-2 sm:pt-4">
                 <button
-                  onClick={() => navigate('/appointment')}
-                  className="px-10 py-4.5 rounded-2xl bg-brand-accent text-neutral-950 text-sm sm:text-base font-black uppercase tracking-wider hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-neutral-950 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1 active:scale-95 flex items-center gap-3 cursor-pointer"
+                  onClick={handleBookCall}
+                  className="px-6 py-3 sm:px-7 sm:py-3.5 rounded-xl sm:rounded-2xl bg-brand-accent text-neutral-950 text-xs sm:text-sm font-extrabold uppercase tracking-wider hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-neutral-950 transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:scale-95 flex items-center gap-2.5 cursor-pointer"
                 >
-                  <FaPhoneAlt className="text-sm" />
+                  <FaPhoneAlt className="text-xs sm:text-sm" />
                   <span>Book a Free Call</span>
                 </button>
               </div>
-
-
             </motion.div>
 
-            {/* Right Side: Dynamic Insurance Flyers Carousel */}
+            {/* Right Side: Larger, Immersive Term Insurance Hero Frame (7 cols extended to right edge) */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-              className="lg:col-span-6 w-full"
+              className="lg:col-span-7 w-full flex items-center justify-end pr-0 overflow-visible"
             >
               <HeroFlyerCarousel />
             </motion.div>
@@ -355,9 +367,109 @@ export const Home = () => {
         <Calculator isEmbedded={true} />
       </section>
 
-
-
       </div>
+
+      {/* ── Desktop Call Popup Modal ── */}
+      <AnimatePresence>
+        {showCallModal && (
+          <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-6 select-none">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowCallModal(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-md cursor-pointer"
+            />
+
+            {/* Modal Box */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-md bg-white dark:bg-neutral-900 border border-black/10 dark:border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 text-center overflow-hidden"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setShowCallModal(false)}
+                className="absolute top-4 right-4 w-9 h-9 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:text-black dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Close modal"
+              >
+                <FaTimes className="text-sm" />
+              </button>
+
+              {/* Icon */}
+              <div className="w-16 h-16 rounded-2xl bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-brand-accent flex items-center justify-center text-2xl mx-auto mb-4 shadow-sm">
+                <FaPhoneAlt />
+              </div>
+
+              {/* Title & Subtitle */}
+              <h3 className="text-xl sm:text-2xl font-black text-neutral-950 dark:text-white uppercase tracking-tight font-['Plus_Jakarta_Sans',sans-serif] mb-1.5">
+                Direct Call Consultation
+              </h3>
+              <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-medium mb-6">
+                Connect instantly with our certified senior insurance advisor.
+              </p>
+
+              {/* Phone Number Display Box */}
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-neutral-800/80 border border-slate-200 dark:border-neutral-700/80 mb-6 flex flex-col items-center justify-center gap-1">
+                <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 dark:text-neutral-400">
+                  Senior Advisor Hotline
+                </span>
+                <span className="text-2xl sm:text-3xl font-black text-neutral-950 dark:text-white tracking-wide font-['Plus_Jakarta_Sans',sans-serif]">
+                  +91 98407 23956
+                </span>
+                <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1 mt-0.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  Available Now for Instant Consultation
+                </span>
+              </div>
+
+              {/* Actions */}
+              <div className="flex flex-col gap-2.5">
+                <div className="grid grid-cols-2 gap-2.5">
+                  <a
+                    href="tel:+919840723956"
+                    className="py-3 px-4 rounded-xl bg-brand-accent text-neutral-950 font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-sm"
+                  >
+                    <FaPhoneAlt className="text-xs" />
+                    <span>Call Now</span>
+                  </a>
+                  <button
+                    onClick={handleCopyNumber}
+                    className="py-3 px-4 rounded-xl bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-900 dark:text-white font-bold text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <FaCopy className="text-xs" />
+                    <span>{copied ? 'Copied!' : 'Copy'}</span>
+                  </button>
+                </div>
+
+                <a
+                  href="https://wa.me/919840723956?text=Hi%2C%20I%20would%20like%20to%20book%20a%20free%20consultation%20call%20with%20SK%20Smart%20Investments."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <FaWhatsapp className="text-sm" />
+                  <span>Chat on WhatsApp</span>
+                </a>
+
+                <button
+                  onClick={() => {
+                    setShowCallModal(false);
+                    navigate('/appointment');
+                  }}
+                  className="py-2.5 px-4 text-xs font-semibold text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors flex items-center justify-center gap-1.5 cursor-pointer mt-1"
+                >
+                  <FaCalendarAlt className="text-[11px]" />
+                  <span>Or schedule a detailed 1-on-1 meeting</span>
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

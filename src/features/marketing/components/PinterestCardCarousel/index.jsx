@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
-  FaChevronLeft, FaChevronRight, FaShieldAlt, FaCheckCircle, 
-  FaStar, FaArrowRight, FaAward, FaRegClock, FaHandHoldingHeart 
+  FaShieldAlt, FaCheckCircle, FaStar, FaAward, FaRegClock, FaHandHoldingHeart 
 } from 'react-icons/fa';
 
 export const INSURER_CARDS = [
@@ -87,12 +86,14 @@ export const INSURER_CARDS = [
   }
 ];
 
-export const PinterestCardCarousel = ({ cards = INSURER_CARDS, autoPlayInterval = 4500 }) => {
+export const PinterestCardCarousel = ({ cards = INSURER_CARDS, autoPlayInterval = 4200 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [mouseTilt, setMouseTilt] = useState({ x: 0, y: 0 });
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
   const containerRef = useRef(null);
+  const lastHoverTime = useRef(0);
   const navigate = useNavigate();
 
   const totalCards = cards.length;
@@ -133,6 +134,28 @@ export const PinterestCardCarousel = ({ cards = INSURER_CARDS, autoPlayInterval 
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleNext, handlePrev]);
 
+  // Fast & Sensitive 3D Cursor Placement Response
+  const handleCardMouseMove = (e, isActive) => {
+    if (!isActive) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 12; // -6deg to +6deg
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -12;
+    setMouseTilt({ x, y });
+  };
+
+  const handleCardMouseLeave = () => {
+    setMouseTilt({ x: 0, y: 0 });
+  };
+
+  // Cursor-Sensitive Hover Shift across stage
+  const handleCardHover = (index) => {
+    const now = Date.now();
+    if (now - lastHoverTime.current > 200) {
+      lastHoverTime.current = now;
+      setActiveIndex(index);
+    }
+  };
+
   // Touch Swipe Handlers
   const minSwipeDistance = 40;
 
@@ -163,14 +186,14 @@ export const PinterestCardCarousel = ({ cards = INSURER_CARDS, autoPlayInterval 
     setIsPaused(false);
   };
 
-  // Stacking calculation for each card
+  // High-Clarity Stacking Calculation: No blurs, high opacities, prominent side exposure
   const getCardStyle = (index) => {
     let diff = (index - activeIndex + totalCards) % totalCards;
     if (diff > totalCards / 2) {
       diff -= totalCards;
     }
 
-    // Active Card (diff === 0)
+    // Active Card (diff === 0): Full focus & clarity
     if (diff === 0) {
       return {
         zIndex: 30,
@@ -179,36 +202,33 @@ export const PinterestCardCarousel = ({ cards = INSURER_CARDS, autoPlayInterval 
         opacity: 1,
         rotateY: 0,
         pointerEvents: 'auto',
-        filter: 'blur(0px)',
-        boxShadow: '0 22px 50px -12px rgba(0, 0, 0, 0.2), 0 0 0 1.5px rgba(255, 179, 0, 0.45)'
+        boxShadow: '0 24px 50px -12px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08)'
       };
     }
 
-    // Direct Neighbor: Right (+1)
+    // Direct Neighbor: Right (+1) - High visibility & clear logo
     if (diff === 1) {
       return {
         zIndex: 20,
-        x: '48%',
-        scale: 0.88,
-        opacity: 0.8,
-        rotateY: -5,
+        x: '34%',
+        scale: 0.92,
+        opacity: 0.96,
+        rotateY: -4,
         pointerEvents: 'auto',
-        filter: 'blur(0.4px)',
-        boxShadow: '0 12px 30px -10px rgba(0, 0, 0, 0.15)'
+        boxShadow: '0 12px 28px -8px rgba(0, 0, 0, 0.12)'
       };
     }
 
-    // Direct Neighbor: Left (-1)
+    // Direct Neighbor: Left (-1) - High visibility & clear logo
     if (diff === -1) {
       return {
         zIndex: 20,
-        x: '-48%',
-        scale: 0.88,
-        opacity: 0.8,
-        rotateY: 5,
+        x: '-34%',
+        scale: 0.92,
+        opacity: 0.96,
+        rotateY: 4,
         pointerEvents: 'auto',
-        filter: 'blur(0.4px)',
-        boxShadow: '0 12px 30px -10px rgba(0, 0, 0, 0.15)'
+        boxShadow: '0 12px 28px -8px rgba(0, 0, 0, 0.12)'
       };
     }
 
@@ -216,13 +236,12 @@ export const PinterestCardCarousel = ({ cards = INSURER_CARDS, autoPlayInterval 
     if (diff === 2) {
       return {
         zIndex: 10,
-        x: '84%',
-        scale: 0.76,
-        opacity: 0.4,
-        rotateY: -9,
+        x: '62%',
+        scale: 0.84,
+        opacity: 0.80,
+        rotateY: -7,
         pointerEvents: 'auto',
-        filter: 'blur(1.2px)',
-        boxShadow: '0 6px 18px -6px rgba(0, 0, 0, 0.1)'
+        boxShadow: '0 6px 18px -4px rgba(0, 0, 0, 0.08)'
       };
     }
 
@@ -230,25 +249,23 @@ export const PinterestCardCarousel = ({ cards = INSURER_CARDS, autoPlayInterval 
     if (diff === -2) {
       return {
         zIndex: 10,
-        x: '-84%',
-        scale: 0.76,
-        opacity: 0.4,
-        rotateY: 9,
+        x: '-62%',
+        scale: 0.84,
+        opacity: 0.80,
+        rotateY: 7,
         pointerEvents: 'auto',
-        filter: 'blur(1.2px)',
-        boxShadow: '0 6px 18px -6px rgba(0, 0, 0, 0.1)'
+        boxShadow: '0 6px 18px -4px rgba(0, 0, 0, 0.08)'
       };
     }
 
     // Hidden behind cards
     return {
       zIndex: 5,
-      x: diff > 0 ? '115%' : '-115%',
-      scale: 0.65,
+      x: diff > 0 ? '88%' : '-88%',
+      scale: 0.75,
       opacity: 0,
-      rotateY: diff > 0 ? -12 : 12,
+      rotateY: diff > 0 ? -10 : 10,
       pointerEvents: 'none',
-      filter: 'blur(2px)',
       boxShadow: 'none'
     };
   };
@@ -260,22 +277,12 @@ export const PinterestCardCarousel = ({ cards = INSURER_CARDS, autoPlayInterval 
       role="region"
       aria-label="Certified Insurance Partners Card Stack Carousel"
       className="relative w-full select-none focus:outline-none"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
-      {/* ── Section Title Bar ── */}
-      <div className="flex items-center gap-2 mb-3 px-1">
-        <span className="w-2 h-2 rounded-full bg-brand-accent animate-pulse" />
-        <span className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-neutral-600 dark:text-neutral-400">
-          Certified Insurers & Portfolio Plans
-        </span>
-      </div>
-
-      {/* ── 3D Card Stack Stage ── */}
-      <div className="relative w-full h-[255px] sm:h-[275px] flex items-center justify-center overflow-hidden [perspective:1200px] py-1">
+      {/* ── 3D Card Stack Stage: Proportionally Fitted to Logos ── */}
+      <div className="relative w-full h-[205px] sm:h-[220px] lg:h-[235px] flex items-center justify-center overflow-visible [perspective:1200px] py-1">
         {cards.map((card, index) => {
           const style = getCardStyle(index);
           const isActive = index === activeIndex;
@@ -288,43 +295,51 @@ export const PinterestCardCarousel = ({ cards = INSURER_CARDS, autoPlayInterval 
                 x: style.x,
                 scale: style.scale,
                 opacity: style.opacity,
-                rotateY: style.rotateY,
-                zIndex: style.zIndex,
-                filter: style.filter
+                rotateY: isActive ? style.rotateY + mouseTilt.x : style.rotateY,
+                rotateX: isActive ? mouseTilt.y : 0,
+                zIndex: style.zIndex
               }}
               transition={{
-                duration: 0.5,
-                ease: [0.25, 1, 0.5, 1] // Custom smooth cubic-bezier
+                duration: 0.38, // Smooth and gently paced transition
+                ease: [0.22, 1, 0.36, 1]
               }}
               style={{
                 boxShadow: style.boxShadow,
                 transformStyle: 'preserve-3d'
               }}
-              onClick={() => {
-                if (!isActive) {
-                  setActiveIndex(index);
+              onClick={(e) => {
+                e.stopPropagation();
+                if (isActive) {
+                  handleNext();
                 } else {
-                  navigate(card.link);
+                  setActiveIndex(index);
                 }
               }}
-              className={`absolute w-[90%] sm:w-[350px] md:w-[370px] h-[235px] sm:h-[255px] rounded-3xl cursor-pointer overflow-hidden flex items-center justify-center p-4 sm:p-5 border transition-colors duration-300 ${
+              onMouseEnter={() => {
+                if (!isActive) {
+                  handleCardHover(index);
+                }
+              }}
+              onMouseMove={(e) => handleCardMouseMove(e, isActive)}
+              onMouseLeave={handleCardMouseLeave}
+              className={`absolute w-[80%] sm:w-[280px] md:w-[300px] lg:w-[310px] h-[155px] sm:h-[170px] lg:h-[180px] rounded-2xl cursor-pointer overflow-hidden flex items-center justify-center p-4 sm:p-6 border transition-colors duration-200 ${
                 isActive
-                  ? 'bg-white dark:bg-[#151518] border-amber-400/80 dark:border-amber-400/50 shadow-xl'
-                  : 'bg-white dark:bg-[#18181c] border-slate-200 dark:border-white/10 hover:border-brand-accent/40 shadow-sm'
+                  ? 'bg-white dark:bg-[#151518] border-slate-300 dark:border-white/25 shadow-xl hover:border-brand-accent/60'
+                  : 'bg-white/95 dark:bg-[#18181c] border-slate-200 dark:border-white/15 hover:border-slate-400 dark:hover:border-white/30 shadow-md hover:scale-[0.94]'
               }`}
             >
               {/* Card Ambient Glow */}
               <div 
-                className="absolute top-0 right-0 w-36 h-36 rounded-full blur-2xl pointer-events-none opacity-20"
+                className="absolute top-0 right-0 w-32 h-32 rounded-full blur-xl pointer-events-none opacity-15"
                 style={{ backgroundColor: card.accentColor }}
               />
 
-              {/* ── Large Logo Container (Enhanced Size & Clarity) ── */}
-              <div className="relative z-10 w-full h-full p-4 sm:p-6 rounded-2xl bg-white border border-slate-200/90 dark:border-white/20 flex items-center justify-center shadow-xs">
+              {/* ── Proportionally Fitted Logo Display ── */}
+              <div className="relative z-10 w-full h-full flex items-center justify-center pointer-events-none p-2">
                 <img
                   src={card.logo}
                   alt={card.name}
-                  className="w-auto h-full max-h-32 sm:max-h-36 max-w-[92%] object-contain transition-all duration-300"
+                  className="w-auto h-auto max-h-16 sm:max-h-20 md:max-h-22 max-w-[80%] sm:max-w-[82%] object-contain transition-transform duration-200 drop-shadow-sm select-none"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                   }}
@@ -333,44 +348,6 @@ export const PinterestCardCarousel = ({ cards = INSURER_CARDS, autoPlayInterval 
             </motion.div>
           );
         })}
-      </div>
-
-      {/* ── Bottom Controls: Navigation Arrows & Dots ── */}
-      <div className="flex items-center justify-between mt-2 px-2">
-        {/* Left Arrow */}
-        <button
-          onClick={handlePrev}
-          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white dark:bg-neutral-900 border border-slate-200 dark:border-white/10 text-neutral-800 dark:text-white hover:bg-brand-accent hover:text-black dark:hover:bg-brand-accent dark:hover:text-black flex items-center justify-center transition-all shadow-sm active:scale-95 cursor-pointer"
-          aria-label="Previous insurance plan"
-        >
-          <FaChevronLeft className="text-[11px]" />
-        </button>
-
-        {/* Pagination Dots */}
-        <div className="flex items-center gap-1.5">
-          {cards.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setActiveIndex(idx)}
-              className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                idx === activeIndex
-                  ? 'w-6 bg-brand-accent'
-                  : 'w-1.5 bg-neutral-300 dark:bg-neutral-700 hover:bg-neutral-400 dark:hover:bg-neutral-500'
-              }`}
-              aria-label={`Go to card ${idx + 1}`}
-              aria-current={idx === activeIndex ? 'true' : 'false'}
-            />
-          ))}
-        </div>
-
-        {/* Right Arrow */}
-        <button
-          onClick={handleNext}
-          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white dark:bg-neutral-900 border border-slate-200 dark:border-white/10 text-neutral-800 dark:text-white hover:bg-brand-accent hover:text-black dark:hover:bg-brand-accent dark:hover:text-black flex items-center justify-center transition-all shadow-sm active:scale-95 cursor-pointer"
-          aria-label="Next insurance plan"
-        >
-          <FaChevronRight className="text-[11px]" />
-        </button>
       </div>
     </div>
   );

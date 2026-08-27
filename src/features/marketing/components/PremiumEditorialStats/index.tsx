@@ -110,14 +110,12 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
     <section ref={sectionRef} className="w-full min-h-screen flex flex-col justify-center snap-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 border-b border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300">
       
       {/* Header Section */}
-      <div className="w-full max-w-4xl mx-auto mb-8 sm:mb-10 text-center space-y-2.5">
-
-        
+      <div className="w-full mb-8 sm:mb-10 text-center overflow-hidden">
         <motion.h2
           initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight"
+          className="text-[26px] sm:text-[40px] md:text-[50px] lg:text-[62px] xl:text-[70px] font-bold tracking-tight text-neutral-900 dark:text-white uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] w-full block text-center"
         >
           A LEGACY MEASURED IN TRUST
         </motion.h2>

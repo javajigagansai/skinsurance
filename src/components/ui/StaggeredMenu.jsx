@@ -451,7 +451,7 @@ export const StaggeredMenu = ({
                     return (
                       <li className="sm-panel-itemWrap relative overflow-hidden leading-none" key={it.label + idx}>
                         <Link
-                          className={`sm-panel-item relative font-[800] text-2xl sm:text-3xl cursor-pointer leading-none tracking-tight uppercase transition-colors duration-200 inline-block no-underline py-2.5 pr-[1.4em] ${
+                          className={`sm-panel-item relative font-[800] text-lg xs:text-xl sm:text-2xl cursor-pointer leading-none tracking-tight uppercase transition-colors duration-200 inline-block no-underline py-2 pr-[1.4em] ${
                             isActive ? 'text-brand-accent font-black' : 'text-neutral-900 dark:text-white hover:text-brand-accent dark:hover:text-brand-accent'
                           }`}
                           to={it.link}

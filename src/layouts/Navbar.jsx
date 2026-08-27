@@ -66,31 +66,46 @@ export const Navbar = () => {
       name: 'All Plans', 
       path: '/plans', 
       icon: FaLayerGroup,
-      desc: 'Explore complete portfolio'
+      desc: 'Explore complete portfolio',
+      iconColor: 'text-amber-500 dark:text-amber-400',
+      bgColor: 'bg-amber-500/10 dark:bg-amber-400/10',
+      borderColor: 'border-amber-500/20'
     },
     { 
       name: 'Life Insurance', 
       path: '/plans?category=life', 
       icon: FaUserShield,
-      desc: 'Term, savings & pensions'
+      desc: 'Term, savings & pensions',
+      iconColor: 'text-blue-500 dark:text-blue-400',
+      bgColor: 'bg-blue-500/10 dark:bg-blue-400/10',
+      borderColor: 'border-blue-500/20'
     },
     { 
       name: 'General Insurance', 
       path: '/plans?category=general', 
       icon: FaBriefcase,
-      desc: 'Business, asset & fire protection'
+      desc: 'Business, asset & fire protection',
+      iconColor: 'text-purple-500 dark:text-purple-400',
+      bgColor: 'bg-purple-500/10 dark:bg-purple-400/10',
+      borderColor: 'border-purple-500/20'
     },
     { 
       name: 'Health Insurance', 
       path: '/plans?category=health', 
       icon: FaHeartbeat,
-      desc: 'Cashless hospital & critical care'
+      desc: 'Cashless hospital & critical care',
+      iconColor: 'text-rose-500 dark:text-rose-400',
+      bgColor: 'bg-rose-500/10 dark:bg-rose-400/10',
+      borderColor: 'border-rose-500/20'
     },
     { 
       name: 'Motor Insurance', 
       path: '/plans?category=motor', 
       icon: FaCar,
-      desc: 'Car, bike & EV comprehensive'
+      desc: 'Car, bike & EV comprehensive',
+      iconColor: 'text-emerald-500 dark:text-emerald-400',
+      bgColor: 'bg-emerald-500/10 dark:bg-emerald-400/10',
+      borderColor: 'border-emerald-500/20'
     }
   ];
 
@@ -135,7 +150,7 @@ export const Navbar = () => {
       >
         <div className="w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between min-h-[52px] sm:min-h-[56px]">
           
-          {/* ── Left: Logo & Company Name (Responsive Mobile Scaling) ── */}
+          {/* ── Left: Logo & Company Name (Company Name remains prominent) ── */}
           <Link to="/" className="flex items-center gap-2 sm:gap-3 transition-opacity hover:opacity-90 shrink min-w-0 py-0.5">
             <img
               src="/logo.png"
@@ -143,17 +158,33 @@ export const Navbar = () => {
               className="h-9 sm:h-11 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105 shrink-0"
             />
             <div className="flex flex-col text-left justify-center min-w-0">
-              <span className="font-black tracking-tight text-[#d62828] dark:text-[#ef233c] uppercase font-['Plus_Jakarta_Sans',sans-serif] text-[11.5px] xs:text-[13px] sm:text-[15px] md:text-base leading-none truncate">
-                SK SMART INVESTMENTS
-              </span>
-              <span className="text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] md:text-[10px] font-extrabold text-neutral-900 dark:text-neutral-100 tracking-wider uppercase leading-tight mt-0.5 sm:mt-1 font-['Plus_Jakarta_Sans',sans-serif] truncate">
-                INSURANCE AND INVESTMENTS SPECIALIST
-              </span>
+              <svg viewBox="0 0 240 28" className="h-7 sm:h-8 md:h-9 w-auto select-none" aria-label="SK Smart Investments - Insurance and Investments Specialist">
+                <text 
+                  x="0" 
+                  y="13" 
+                  className="fill-[#d62828] dark:fill-[#ef233c]" 
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '14.5px', fontWeight: 900 }}
+                  textLength="240" 
+                  lengthAdjust="spacing"
+                >
+                  SK SMART INVESTMENTS
+                </text>
+                <text 
+                  x="0" 
+                  y="26" 
+                  className="fill-neutral-900 dark:fill-white" 
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '8.8px', fontWeight: 800 }}
+                  textLength="240" 
+                  lengthAdjust="spacing"
+                >
+                  INSURANCE AND INVESTMENTS SPECIALIST
+                </text>
+              </svg>
             </div>
           </Link>
 
-          {/* ── Center: Compact Main Nav Links (Reduced Text Size) ── */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5">
+          {/* ── Center: Main Nav Links (Compact on Tablet, Standard on Desktop) ── */}
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
             {navLinks.map((link) => {
               const active = isActive(link.path);
 
@@ -168,14 +199,14 @@ export const Navbar = () => {
                     <Link
                       to={link.path}
                       onClick={(e) => handleNavClick(e, link.path)}
-                      className={`relative px-2 py-1 text-[11px] xl:text-xs font-bold whitespace-nowrap transition-colors duration-200 rounded-lg flex items-center gap-1 group cursor-pointer ${
+                      className={`relative px-2 py-1 xl:px-3 xl:py-1.5 text-[11px] xl:text-sm font-bold whitespace-nowrap transition-colors duration-200 rounded-xl flex items-center gap-1 xl:gap-1.5 group cursor-pointer ${
                         active 
                           ? 'text-neutral-950 dark:text-brand-accent font-black' 
                           : 'text-neutral-700 dark:text-neutral-200 hover:text-amber-600 dark:hover:text-brand-accent hover:bg-black/5 dark:hover:bg-white/5'
                       }`}
                     >
                       <span>{link.name}</span>
-                      <FaChevronDown className={`text-[8px] transition-transform duration-200 ${showPlansDropdown ? 'rotate-180 text-brand-accent' : ''}`} />
+                      <FaChevronDown className={`text-[8px] xl:text-[10px] transition-transform duration-200 ${showPlansDropdown ? 'rotate-180 text-brand-accent' : ''}`} />
                       {active && (
                         <motion.div
                           layoutId="activeNavIndicator"
@@ -193,10 +224,10 @@ export const Navbar = () => {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 8, scale: 0.98 }}
                           transition={{ duration: 0.18, ease: "easeOut" }}
-                          className="absolute top-full left-0 mt-1 w-60 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl z-50 p-1.5 space-y-0.5 text-left"
+                          className="absolute top-full left-0 mt-1 w-60 xl:w-64 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl z-50 p-1.5 xl:p-2 space-y-0.5 xl:space-y-1 text-left"
                         >
                           <div className="px-2.5 py-1 border-b border-slate-100 dark:border-white/5 mb-0.5">
-                            <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 font-['Plus_Jakarta_Sans',sans-serif]">
+                            <span className="text-[9px] xl:text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-neutral-500 font-['Plus_Jakarta_Sans',sans-serif]">
                               Insurance Portfolio
                             </span>
                           </div>
@@ -208,16 +239,16 @@ export const Navbar = () => {
                                 key={cat.name}
                                 to={cat.path}
                                 onClick={() => setShowPlansDropdown(false)}
-                                className="flex items-center gap-2.5 p-1.5 rounded-xl transition-all duration-200 hover:bg-amber-50 dark:hover:bg-neutral-800/80 group/item cursor-pointer"
+                                className="flex items-center gap-2.5 xl:gap-3 p-1.5 xl:p-2 rounded-xl transition-all duration-200 hover:bg-slate-100/80 dark:hover:bg-neutral-800/80 group/item cursor-pointer"
                               >
-                                <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-neutral-800 flex items-center justify-center text-[11px] text-neutral-800 dark:text-brand-accent shrink-0 group-hover/item:bg-brand-accent group-hover/item:text-neutral-950 transition-colors">
+                                <div className={`w-7 h-7 xl:w-8 xl:h-8 rounded-xl ${cat.bgColor} border ${cat.borderColor} flex items-center justify-center text-xs xl:text-sm ${cat.iconColor} shrink-0 group-hover/item:scale-110 transition-all duration-200 shadow-2xs`}>
                                   <CatIcon />
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-[11px] font-bold text-neutral-900 dark:text-white group-hover/item:text-amber-800 dark:group-hover/item:text-brand-accent transition-colors truncate">
+                                  <p className="text-[11px] xl:text-xs font-bold text-neutral-900 dark:text-white group-hover/item:text-amber-800 dark:group-hover/item:text-brand-accent transition-colors truncate">
                                     {cat.name}
                                   </p>
-                                  <p className="text-[9px] text-slate-500 dark:text-neutral-400 truncate">
+                                  <p className="text-[9px] xl:text-[10px] text-slate-500 dark:text-neutral-400 truncate">
                                     {cat.desc}
                                   </p>
                                 </div>
@@ -236,7 +267,7 @@ export const Navbar = () => {
                   key={link.name}
                   to={link.path}
                   onClick={(e) => handleNavClick(e, link.path)}
-                  className={`relative px-2 py-1 text-[11px] xl:text-xs font-bold whitespace-nowrap transition-colors duration-200 rounded-lg group ${
+                  className={`relative px-2 py-1 xl:px-3 xl:py-1.5 text-[11px] xl:text-sm font-bold whitespace-nowrap transition-colors duration-200 rounded-xl group ${
                     active 
                       ? 'text-neutral-950 dark:text-brand-accent font-black' 
                       : 'text-neutral-700 dark:text-neutral-200 hover:text-amber-600 dark:hover:text-brand-accent hover:bg-black/5 dark:hover:bg-white/5'
@@ -255,19 +286,19 @@ export const Navbar = () => {
             })}
           </nav>
 
-          {/* ── Right: Language & Get Started (Reduced Text Size) ── */}
-          <div className="hidden lg:flex items-center gap-2 xl:gap-3">
+          {/* ── Right: Language & Get Started ── */}
+          <div className="hidden lg:flex items-center gap-2 xl:gap-3.5">
             
             {/* Language Selector */}
             <div className="relative" ref={langDropdownRef}>
               <button
                 onClick={() => setShowLangDropdown(!showLangDropdown)}
-                className="flex items-center gap-1 text-[10.5px] xl:text-xs font-bold transition-colors cursor-pointer px-2 py-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-neutral-800 dark:text-neutral-200 hover:text-brand-accent"
+                className="flex items-center gap-1 xl:gap-1.5 text-[10.5px] xl:text-sm font-bold transition-colors cursor-pointer px-2 py-1 xl:px-2.5 xl:py-1.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 text-neutral-800 dark:text-neutral-200 hover:text-brand-accent"
                 aria-label="Select Language"
               >
-                <FaGlobe className="text-[10px] text-brand-accent" />
+                <FaGlobe className="text-[10px] xl:text-xs text-brand-accent" />
                 <span>{languages.find(l => l.code === currentLang)?.label || 'EN'}</span>
-                <FaChevronDown className={`text-[7px] transition-transform duration-200 ${showLangDropdown ? 'rotate-180' : ''}`} />
+                <FaChevronDown className={`text-[7px] xl:text-[8px] transition-transform duration-200 ${showLangDropdown ? 'rotate-180' : ''}`} />
               </button>
 
               <AnimatePresence>
@@ -277,7 +308,7 @@ export const Navbar = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.98 }}
                     transition={{ duration: 0.18 }}
-                    className="absolute right-0 mt-2 w-32 bg-white dark:bg-neutral-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-xl z-50 overflow-hidden text-left p-1"
+                    className="absolute right-0 mt-2 w-32 xl:w-36 bg-white dark:bg-neutral-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-xl z-50 overflow-hidden text-left p-1"
                   >
                     {languages.map((lang) => (
                       <button
@@ -286,7 +317,7 @@ export const Navbar = () => {
                           setCurrentLang(lang.code);
                           setShowLangDropdown(false);
                         }}
-                        className={`w-full px-2.5 py-1.5 text-[11px] rounded-lg transition-colors text-left font-bold cursor-pointer ${
+                        className={`w-full px-2.5 py-1.5 xl:px-3 xl:py-2 text-[11px] xl:text-xs rounded-xl transition-colors text-left font-bold cursor-pointer ${
                           currentLang === lang.code 
                             ? 'text-neutral-950 bg-brand-accent font-black' 
                             : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-white/5'
@@ -300,19 +331,19 @@ export const Navbar = () => {
               </AnimatePresence>
             </div>
 
-            {/* Get Started / Dashboard Action Button */}
+            {/* Get Started / Dashboard Action Button (Vibrant Green) */}
             <div className="flex items-center">
               {isManager ? (
                 <button
                   onClick={() => navigate('/dashboard')}
-                  className="px-4 py-1.5 rounded-lg bg-brand-accent hover:bg-brand-hover text-neutral-950 font-black text-[10px] uppercase tracking-wider shadow-xs cursor-pointer transition-all hover:scale-105 active:scale-95"
+                  className="px-3.5 py-1.5 xl:px-5 xl:py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-[10px] xl:text-xs uppercase tracking-wider shadow-md shadow-emerald-500/20 cursor-pointer transition-all hover:scale-105 active:scale-95"
                 >
                   Dashboard
                 </button>
               ) : (
                 <button
                   onClick={() => navigate('/appointment')}
-                  className="px-4 py-1.5 rounded-lg bg-brand-accent hover:bg-neutral-950 hover:text-white dark:hover:bg-white dark:hover:text-neutral-950 text-neutral-950 font-black text-[10px] uppercase tracking-wider cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
+                  className="px-3.5 py-1.5 xl:px-5 xl:py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-[10px] xl:text-xs uppercase tracking-wider cursor-pointer transition-all duration-300 shadow-md shadow-emerald-500/20 hover:shadow-lg hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
                 >
                   Get Started
                 </button>
@@ -348,17 +379,17 @@ export const Navbar = () => {
               onMenuOpen={() => setIsOpen(true)}
               onMenuClose={() => setIsOpen(false)}
               bottomContent={(closeMenu) => (
-                <div className="flex flex-col space-y-5">
+                <div className="flex flex-col space-y-4">
                   {/* Mobile Language */}
-                  <div className="flex items-center justify-center space-x-6 mb-4">
+                  <div className="flex items-center justify-center space-x-4 mb-2">
                     <div className="relative flex justify-center">
                       <button
                         onClick={() => setShowLangDropdown(!showLangDropdown)}
-                        className="flex items-center space-x-2 text-sm font-bold transition-colors cursor-pointer text-black dark:text-white hover:text-brand-accent dark:hover:text-brand-accent"
+                        className="flex items-center space-x-1.5 text-xs font-bold transition-colors cursor-pointer text-black dark:text-white hover:text-brand-accent dark:hover:text-brand-accent"
                       >
-                        <FaGlobe className="text-base text-brand-accent" />
+                        <FaGlobe className="text-xs text-brand-accent" />
                         <span>{languages.find(l => l.code === currentLang)?.name || 'English'}</span>
-                        <FaChevronDown className={`text-xs transition-transform ${showLangDropdown ? 'rotate-180' : ''}`} />
+                        <FaChevronDown className={`text-[9px] transition-transform ${showLangDropdown ? 'rotate-180' : ''}`} />
                       </button>
 
                       <AnimatePresence>
@@ -368,7 +399,7 @@ export const Navbar = () => {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute top-full mt-3 w-40 bg-white dark:bg-[#0A0A0A] border border-black/10 dark:border-white/10 rounded-2xl shadow-xl z-50 overflow-hidden text-center p-1"
+                            className="absolute top-full mt-2 w-36 bg-white dark:bg-[#0A0A0A] border border-black/10 dark:border-white/10 rounded-2xl shadow-xl z-50 overflow-hidden text-center p-1"
                           >
                             {languages.map((lang) => (
                               <button
@@ -377,7 +408,7 @@ export const Navbar = () => {
                                   setCurrentLang(lang.code);
                                   setShowLangDropdown(false);
                                 }}
-                                className={`w-full px-3 py-2 text-xs transition-colors text-center font-bold rounded-xl cursor-pointer ${
+                                className={`w-full px-2.5 py-1.5 text-[11px] transition-colors text-center font-bold rounded-xl cursor-pointer ${
                                   currentLang === lang.code 
                                     ? 'text-neutral-950 bg-brand-accent' 
                                     : 'text-black dark:text-white hover:bg-neutral-100 dark:hover:bg-white/5'
@@ -395,7 +426,7 @@ export const Navbar = () => {
                   {/* Mobile CTA */}
                   <button
                     onClick={() => { closeMenu(); setIsOpen(false); navigate('/appointment'); }}
-                    className="w-full py-3.5 rounded-xl bg-brand-accent hover:bg-[#E6A100] text-neutral-950 font-black text-sm uppercase tracking-wider cursor-pointer transition-all duration-300 shadow-md active:scale-95"
+                    className="w-full py-3 rounded-xl bg-brand-accent hover:bg-[#E6A100] text-neutral-950 font-black text-xs uppercase tracking-wider cursor-pointer transition-all duration-300 shadow-md active:scale-95"
                   >
                     Get Started
                   </button>

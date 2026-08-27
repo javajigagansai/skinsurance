@@ -5,7 +5,7 @@ import { useTranslation } from '../../context/LanguageContext';
 import { Modal } from '../../components/ui/Modal';
 import { subscribeToCollection } from '../../services/firebaseService';
 import { getPlans } from '../../features/plans/services/planService';
-import { FaCheck, FaShieldAlt, FaUserShield, FaBriefcase, FaFileSignature, FaHeartbeat, FaCar, FaSearch, FaArrowRight, FaTimes, FaCheckCircle } from 'react-icons/fa';
+import { FaCheck, FaShieldAlt, FaSearch, FaArrowRight, FaTimes } from 'react-icons/fa';
 import { cn } from '../../utils/cn';
 
 // Clean Professional Company Logo Component
@@ -110,12 +110,9 @@ export const Plans = () => {
   const [activeSubFilter, setActiveSubFilter] = useState('General');
   const [activeCompanyFilter, setActiveCompanyFilter] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedPlan, setSelectedPlan] = useState(null);
-  const [showApplyModal, setShowApplyModal] = useState(false);
-  const [wizardStep, setWizardStep] = useState(1);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
+
 
   // New Pricing specific state
   const [isMonthly, setIsMonthly] = useState(true);
@@ -298,19 +295,52 @@ export const Plans = () => {
   });
 
   const handleApply = (plan) => {
-    setSelectedPlan(plan);
-    setWizardStep(1);
-    setShowApplyModal(true);
+    // Read user details saved by the LeadWelcomeModal on site entry
+    let userName = '';
+    let userPhone = '';
+    let userEmail = '';
+
+    try {
+      const saved = localStorage.getItem('sk_lead_submitted');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        userName = parsed.fullName || '';
+        userPhone = parsed.phone || '';
+        userEmail = parsed.email || '';
+      }
+    } catch (_) {}
+
+    const planName = plan.name || plan.title || 'Insurance Plan';
+    const planCompany = plan.company || '';
+    const planCategory = plan.categoryTag || plan.category || '';
+    const planPremium = parseInt(plan.premiumMonthly || plan.premiumAmount || 0).toLocaleString('en-IN');
+    const planCoverage = plan.coverageAmount || '';
+
+    const message = [
+      `👋 Hello SK Smart Investments,`,
+      ``,
+      `I am interested in the following insurance plan:`,
+      ``,
+      `📋 *Plan Details*`,
+      `• Plan Name: ${planName}`,
+      planCompany ? `• Insurer: ${planCompany}` : '',
+      planCategory ? `• Category: ${planCategory}` : '',
+      planPremium ? `• Monthly Premium: ₹${planPremium}` : '',
+      planCoverage ? `• Coverage: ${planCoverage}` : '',
+      ``,
+      `👤 *My Details*`,
+      userName ? `• Name: ${userName}` : '',
+      userPhone ? `• Mobile: +91 ${userPhone}` : '',
+      userEmail ? `• Email: ${userEmail}` : '',
+      ``,
+      `Please get in touch with me at your earliest convenience. Thank you!`
+    ].filter(line => line !== '').join('\n');
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/919994451300?text=${encodedMessage}`;
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
 
-  const handleWizardSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setWizardStep(2);
-    }, 2000);
-  };
 
   return (
     <div className="w-full bg-[#F7F7F5] dark:bg-black min-h-screen text-black dark:text-white pb-32 transition-colors duration-300">
@@ -600,7 +630,7 @@ export const Plans = () => {
                   </div>
 
                   {/* Actions */}
-                  <div className="grid grid-cols-2 gap-3 mb-4 mt-auto">
+                  <div className="grid grid-cols-2 gap-3 mt-auto">
                     <button 
                       onClick={() => setPlanDetailsModal(plan)}
                       className="w-full py-3 rounded-lg border border-black/20 dark:border-white/20 text-black dark:text-white font-bold text-xs uppercase tracking-wider hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
@@ -614,11 +644,6 @@ export const Plans = () => {
                       Apply Now
                     </button>
                   </div>
-
-                  {/* Short Description */}
-                  <p className="text-xs text-black/40 dark:text-white/40 line-clamp-2 leading-relaxed">
-                    {plan.description}
-                  </p>
                   </div>
                 </motion.div>
               );
@@ -860,89 +885,6 @@ export const Plans = () => {
             
           </div>
         )}
-      </Modal>
-
-      {/* Apply Wizard Modal (Preserved as requested) */}
-      <Modal
-        isOpen={showApplyModal}
-        onClose={() => setShowApplyModal(false)}
-        title={selectedPlan ? `Policy Application: ${selectedPlan.name || selectedPlan.title}` : ''}
-        size="md"
-      >
-        <div className="bg-white dark:bg-[#0A0A0A] text-black dark:text-white rounded-2xl p-2 -m-6 sm:-m-8 transition-colors">
-          {wizardStep === 1 ? (
-            <form onSubmit={handleWizardSubmit} className="space-y-6 p-6 sm:p-8">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-[900] uppercase tracking-tight text-black dark:text-white mb-2">Secure Your Plan</h3>
-                <p className="text-sm text-black/60 dark:text-white/60 font-medium">Please provide details below to configure and request policy underwriting approval.</p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-[10px] font-bold text-black/60 dark:text-white/60 uppercase tracking-wider mb-2">Full Legal Name</label>
-                  <input required type="text" className="w-full px-4 py-3 text-sm bg-black/[0.02] dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-lg text-black dark:text-white focus:border-brand-accent outline-none transition-all" />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-black/60 dark:text-white/60 uppercase tracking-wider mb-2">Email Address</label>
-                  <input required type="email" className="w-full px-4 py-3 text-sm bg-black/[0.02] dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-lg text-black dark:text-white focus:border-brand-accent outline-none transition-all" />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-[10px] font-bold text-black/60 dark:text-white/60 uppercase tracking-wider mb-2">Mobile Phone</label>
-                  <input required type="tel" className="w-full px-4 py-3 text-sm bg-black/[0.02] dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-lg text-black dark:text-white focus:border-brand-accent outline-none transition-all" />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-black/60 dark:text-white/60 uppercase tracking-wider mb-2">Date of Birth</label>
-                  <input required type="date" className="w-full px-4 py-3 text-sm bg-black/[0.02] dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-lg text-black dark:text-white focus:border-brand-accent outline-none transition-all dark:[&::-webkit-calendar-picker-indicator]:filter-[invert(1)]" />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-bold text-black/60 dark:text-white/60 uppercase tracking-wider mb-2">Upload ID Copy</label>
-                <div className="p-8 border border-dashed border-black/20 dark:border-white/20 rounded-lg text-center cursor-pointer hover:bg-black/[0.02] dark:hover:bg-white/5 hover:border-black/40 dark:hover:border-white/40 transition-all group">
-                  <span className="text-xs font-bold text-black/40 dark:text-white/40 uppercase tracking-widest group-hover:text-black dark:group-hover:text-white transition-colors">Click to upload document (PDF/JPEG)</span>
-                </div>
-              </div>
-
-              <div className="p-6 bg-black/[0.02] dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-lg">
-                <p className="font-bold text-black/80 dark:text-white/80 text-sm mb-4">Premium Quote Outline</p>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-black/60 dark:text-white/60 font-medium text-xs uppercase tracking-wider">Monthly Premium:</span>
-                  <span className="font-black text-xl">₹{parseInt(selectedPlan?.premiumMonthly || selectedPlan?.premiumAmount || 0).toLocaleString('en-IN')}/mo</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-black/60 dark:text-white/60 font-medium text-xs uppercase tracking-wider">Standard Sum Assured:</span>
-                  <span className="font-black text-xl">{selectedPlan?.coverageAmount}</span>
-                </div>
-              </div>
-
-              <div className="pt-4 flex flex-col sm:flex-row justify-end gap-4">
-                <button type="button" onClick={() => setShowApplyModal(false)} disabled={isSubmitting} className="px-6 py-3 rounded-lg border border-black/20 dark:border-white/20 text-black dark:text-white font-bold uppercase tracking-wider text-xs hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
-                  Cancel
-                </button>
-                <button type="submit" disabled={isSubmitting} className="px-6 py-3 rounded-lg bg-brand-accent text-black font-bold uppercase tracking-wider text-xs hover:bg-[#E6A100] transition-colors flex items-center justify-center gap-3">
-                  {isSubmitting ? 'Processing...' : 'Submit Application'}
-                  {!isSubmitting && <FaArrowRight />}
-                </button>
-              </div>
-            </form>
-          ) : (
-            <div className="text-center py-20 px-8">
-              <div className="inline-flex p-6 rounded-full bg-brand-accent/20 text-brand-accent text-5xl mb-8">
-                <FaCheckCircle />
-              </div>
-              <h3 className="text-2xl font-bold text-black dark:text-white mb-4">Application Received!</h3>
-              <p className="text-sm text-black/60 dark:text-white/60 leading-relaxed mb-10 max-w-sm mx-auto">
-                Your application has been logged in our system. A verification case has been assigned to our team. We will contact you shortly.
-              </p>
-              <button onClick={() => setShowApplyModal(false)} className="px-8 py-3 rounded-lg bg-black dark:bg-white text-white dark:text-black font-bold uppercase tracking-wider text-xs hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors">
-                Close
-              </button>
-            </div>
-          )}
-        </div>
       </Modal>
 
     </div>

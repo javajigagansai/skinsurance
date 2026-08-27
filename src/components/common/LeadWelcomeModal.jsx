@@ -3,18 +3,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { 
   FaUser, 
-  FaPhone, 
   FaEnvelope, 
-  FaShieldAlt, 
   FaCheckCircle, 
   FaArrowRight, 
   FaSpinner, 
   FaLock,
-  FaStar,
-  FaCheck,
-  FaCalculator,
-  FaCalendarAlt,
-  FaHandHoldingHeart
+  FaCheck
 } from 'react-icons/fa';
 import { saveLead } from '../../services/api';
 
@@ -22,33 +16,6 @@ const GENDER_OPTIONS = [
   { id: 'Male', label: 'Male' },
   { id: 'Female', label: 'Female' },
   { id: 'Other', label: 'Other' },
-];
-
-const PREVIEW_PAGES = [
-  {
-    icon: FaShieldAlt,
-    title: 'Comprehensive Insurance Plans',
-    desc: 'Compare top-rated Term Life, Health, Motor & Retirement plans from LIC, Tata AIA & HDFC Life.',
-    tag: 'Plans'
-  },
-  {
-    icon: FaCalculator,
-    title: 'Smart Premium & SIP Calculator',
-    desc: 'Instant premium calculations and tax deduction estimates under Section 80C & 80D.',
-    tag: 'Calculator'
-  },
-  {
-    icon: FaCalendarAlt,
-    title: '1-on-1 Advisory Consultations',
-    desc: 'Personalized advisory sessions with Certified Financial Planner Prakash Gajendiran.',
-    tag: 'Advisory'
-  },
-  {
-    icon: FaHandHoldingHeart,
-    title: 'Priority Cashless Claims Support',
-    desc: 'Fast, dedicated claim settlement guidance and policy document assistance.',
-    tag: '24/7 Support'
-  }
 ];
 
 export const LeadWelcomeModal = () => {
@@ -173,43 +140,42 @@ export const LeadWelcomeModal = () => {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[999999] h-screen w-full bg-slate-50/60 text-slate-900 overflow-hidden flex items-center justify-center p-3 sm:p-6 lg:p-8 selection:bg-amber-300 selection:text-slate-950">
+      <div className="fixed inset-0 z-[999999] h-screen w-full overflow-hidden flex items-center justify-center p-3 sm:p-6 lg:p-8 selection:bg-amber-300 selection:text-slate-950">
         
-        {/* Soft Ambient Light Glows on White Canvas */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 bg-white">
-          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-amber-100/40 rounded-full blur-[140px]" />
-          <div className="absolute bottom-0 right-1/4 w-[650px] h-[650px] bg-slate-100/80 rounded-full blur-[150px]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-50/30 rounded-full blur-[160px]" />
+        {/* Soft Ambient Light Glows */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 bg-black/40 backdrop-blur-md">
+          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-amber-400/20 rounded-full blur-[140px]" />
+          <div className="absolute bottom-0 right-1/4 w-[650px] h-[650px] bg-slate-800/40 rounded-full blur-[150px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-300/10 rounded-full blur-[160px]" />
         </div>
 
-        {/* MAIN CONTAINER: Full Viewport 2-Column Clean Card */}
+        {/* Centered Form Card */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.35, ease: "easeOut" }}
-          className="relative z-10 max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center max-h-full"
+          className="relative z-10 max-w-lg w-full"
         >
-          
-          {/* LEFT COLUMN: Clean White Lead Capture Form Card */}
-          <div className="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl sm:rounded-[2rem] p-5 sm:p-7 shadow-[0_15px_45px_rgba(0,0,0,0.06)] space-y-4">
+          <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl sm:rounded-[2rem] p-5 sm:p-8 shadow-[0_15px_45px_rgba(0,0,0,0.25)] space-y-4">
+            
+            {/* Header */}
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-bold mb-1.5 shadow-2xs">
+              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/20 border border-white/30 text-white text-[11px] font-bold mb-1.5">
                 <span>Welcome to SK Smart Investments</span>
               </div>
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                Let's Personalize Your <span className="bg-gradient-to-r from-amber-600 to-amber-500 bg-clip-text text-transparent">Experience</span>
+              <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight leading-tight whitespace-nowrap">
+                Let's Personalize Your Experience
               </h1>
-              <p className="text-xs text-slate-600 mt-1 leading-normal">
-                Enter your details to unlock customized insurance plans, tax calculators, and advisory.
-              </p>
+
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-3.5">
-              {/* 1. Full Name */}
+              
+              {/* Full Name */}
               <div className="space-y-1">
-                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider ml-1">
-                  Full Name <span className="text-amber-600">*</span>
+                <label className="block text-[11px] font-bold text-white/80 uppercase tracking-wider ml-1">
+                  Full Name <span className="text-amber-400">*</span>
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-amber-600 transition-colors">
@@ -222,22 +188,20 @@ export const LeadWelcomeModal = () => {
                     value={formData.fullName}
                     onChange={handleChange}
                     disabled={isSubmitting || isSuccess}
-                    className={`w-full pl-10 pr-3 py-2.5 sm:py-2.5 bg-slate-50/80 border ${
-                      errors.fullName ? 'border-rose-500 ring-2 ring-rose-400/20' : 'border-slate-200 focus:border-amber-500 focus:ring-3 focus:ring-amber-400/15'
-                    } rounded-xl text-xs sm:text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none transition-all shadow-inner`}
+                    className={`w-full pl-10 pr-3 py-2.5 bg-white/10 backdrop-blur-sm border ${
+                      errors.fullName ? 'border-rose-400 ring-2 ring-rose-400/20' : 'border-white/20 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20'
+                    } rounded-xl text-xs sm:text-sm font-medium text-white placeholder:text-white/50 focus:outline-none transition-all`}
                   />
                 </div>
                 {errors.fullName && (
-                  <p className="text-[11px] text-rose-600 font-medium pl-1">
-                    {errors.fullName}
-                  </p>
+                  <p className="text-[11px] text-rose-600 font-medium pl-1">{errors.fullName}</p>
                 )}
               </div>
 
-              {/* 2. Gender Selection */}
+              {/* Gender */}
               <div className="space-y-1">
-                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider ml-1">
-                  Gender <span className="text-amber-600">*</span>
+                <label className="block text-[11px] font-bold text-white/80 uppercase tracking-wider ml-1">
+                  Gender <span className="text-amber-400">*</span>
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {GENDER_OPTIONS.map((g) => {
@@ -251,7 +215,7 @@ export const LeadWelcomeModal = () => {
                         className={`py-2 px-2.5 rounded-xl border flex items-center justify-center space-x-1.5 text-xs font-bold transition-all cursor-pointer ${
                           isSelected
                             ? 'bg-amber-500 text-white border-amber-500 shadow-sm shadow-amber-500/30 scale-[1.02]'
-                            : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300'
+                            : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
                         }`}
                       >
                         <span>{g.label}</span>
@@ -265,15 +229,15 @@ export const LeadWelcomeModal = () => {
                 )}
               </div>
 
-              {/* 3. Phone Number with +91 Badge */}
+              {/* Phone */}
               <div className="space-y-1">
-                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider ml-1">
-                  Mobile / WhatsApp Number <span className="text-amber-600">*</span>
+                <label className="block text-[11px] font-bold text-white/80 uppercase tracking-wider ml-1">
+                  Mobile / WhatsApp Number <span className="text-amber-400">*</span>
                 </label>
                 <div className="relative group flex items-center">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none space-x-1 text-slate-800 text-[11px] font-bold">
-                    <span className="text-slate-600 font-extrabold">+91</span>
-                    <div className="w-[1px] h-3.5 bg-slate-300 ml-1" />
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none space-x-1 text-white/80 text-[11px] font-bold">
+                    <span className="text-white/90 font-extrabold">+91</span>
+                    <div className="w-[1px] h-3.5 bg-white/30 ml-1" />
                   </div>
                   <input
                     type="tel"
@@ -282,22 +246,20 @@ export const LeadWelcomeModal = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     disabled={isSubmitting || isSuccess}
-                    className={`w-full pl-14 pr-3 py-2.5 sm:py-2.5 bg-slate-50/80 border ${
-                      errors.phone ? 'border-rose-500 ring-2 ring-rose-400/20' : 'border-slate-200 focus:border-amber-500 focus:ring-3 focus:ring-amber-400/15'
-                    } rounded-xl text-xs sm:text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none transition-all shadow-inner`}
+                    className={`w-full pl-14 pr-3 py-2.5 bg-white/10 backdrop-blur-sm border ${
+                      errors.phone ? 'border-rose-400 ring-2 ring-rose-400/20' : 'border-white/20 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20'
+                    } rounded-xl text-xs sm:text-sm font-medium text-white placeholder:text-white/50 focus:outline-none transition-all`}
                   />
                 </div>
                 {errors.phone && (
-                  <p className="text-[11px] text-rose-600 font-medium pl-1">
-                    {errors.phone}
-                  </p>
+                  <p className="text-[11px] text-rose-600 font-medium pl-1">{errors.phone}</p>
                 )}
               </div>
 
-              {/* 4. Email Address */}
+              {/* Email */}
               <div className="space-y-1">
-                <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider ml-1">
-                  Email Address <span className="text-amber-600">*</span>
+                <label className="block text-[11px] font-bold text-white/80 uppercase tracking-wider ml-1">
+                  Email Address <span className="text-amber-400">*</span>
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-amber-600 transition-colors">
@@ -310,19 +272,17 @@ export const LeadWelcomeModal = () => {
                     value={formData.email}
                     onChange={handleChange}
                     disabled={isSubmitting || isSuccess}
-                    className={`w-full pl-10 pr-3 py-2.5 sm:py-2.5 bg-slate-50/80 border ${
-                      errors.email ? 'border-rose-500 ring-2 ring-rose-400/20' : 'border-slate-200 focus:border-amber-500 focus:ring-3 focus:ring-amber-400/15'
-                    } rounded-xl text-xs sm:text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none transition-all shadow-inner`}
+                    className={`w-full pl-10 pr-3 py-2.5 bg-white/10 backdrop-blur-sm border ${
+                      errors.email ? 'border-rose-400 ring-2 ring-rose-400/20' : 'border-white/20 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20'
+                    } rounded-xl text-xs sm:text-sm font-medium text-white placeholder:text-white/50 focus:outline-none transition-all`}
                   />
                 </div>
                 {errors.email && (
-                  <p className="text-[11px] text-rose-600 font-medium pl-1">
-                    {errors.email}
-                  </p>
+                  <p className="text-[11px] text-rose-600 font-medium pl-1">{errors.email}</p>
                 )}
               </div>
 
-              {/* Submit CTA Button */}
+              {/* Submit Button */}
               <div className="pt-1">
                 <motion.button
                   whileHover={{ scale: isSubmitting || isSuccess ? 1 : 1.015 }}
@@ -345,74 +305,20 @@ export const LeadWelcomeModal = () => {
                     </span>
                   ) : (
                     <span className="flex items-center space-x-2">
-                      <span>Unlock Website & Explore Plans</span>
+                      <span>Get Started</span>
                       <FaArrowRight className="text-xs group-hover:translate-x-1 transition-transform" />
                     </span>
                   )}
                 </motion.button>
               </div>
 
-              {/* Assurance Text */}
-              <div className="text-center flex items-center justify-center space-x-1.5 text-[10px] text-slate-500 font-medium pt-0.5">
+              {/* Assurance */}
+              <div className="text-center flex items-center justify-center space-x-1.5 text-[10px] text-white/50 font-medium pt-0.5">
                 <FaLock className="text-amber-600 text-[10px]" />
                 <span>100% Privacy Protected • IRDAI Licensed Advisors • Zero Spam</span>
               </div>
             </form>
           </div>
-
-          {/* RIGHT COLUMN: Pages Showcase on Clean Canvas */}
-          <div className="lg:col-span-6 space-y-3.5 flex flex-col justify-center">
-            {/* Header / Intro */}
-            <div className="space-y-1">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-slate-800 text-[11px] font-extrabold">
-                <FaStar className="text-amber-500 text-[9px]" />
-                <span>Explore What Awaits You Inside</span>
-              </div>
-              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                Trusted by <span className="text-amber-600">2,500+ Families</span> in Tamil Nadu
-              </h2>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Here is a preview of the dedicated financial services and tools you can freely access on our website:
-              </p>
-            </div>
-
-            {/* List of Key Pages & Features */}
-            <div className="space-y-2 sm:space-y-2.5">
-              {PREVIEW_PAGES.map((page, idx) => {
-                const Icon = page.icon;
-                return (
-                  <div
-                    key={idx}
-                    className="p-3 sm:p-3.5 rounded-2xl bg-white border border-slate-200/90 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-amber-300 transition-all flex items-start space-x-3 group"
-                  >
-                    <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-700 flex items-center justify-center text-sm shrink-0 group-hover:bg-amber-500 group-hover:text-white transition-colors">
-                      <Icon />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2">
-                        <h4 className="text-xs sm:text-sm font-bold text-slate-900 truncate group-hover:text-amber-800 transition-colors">
-                          {page.title}
-                        </h4>
-                        <span className="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 shrink-0">
-                          {page.tag}
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 leading-normal mt-0.5 line-clamp-2">
-                        {page.desc}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Trust Footer note */}
-            <div className="p-3 rounded-2xl bg-slate-100/90 border border-slate-200 text-slate-800 text-[11px] flex items-center justify-between shadow-2xs">
-              <span className="font-semibold">Official Insurance Partners: LIC • Tata AIA • HDFC Life • Star Health</span>
-              <span className="font-extrabold text-amber-700 hidden sm:inline">15+ Years Trust</span>
-            </div>
-          </div>
-
         </motion.div>
       </div>
     </AnimatePresence>

@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { FaQuoteLeft } from 'react-icons/fa';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
+import { FaQuoteLeft, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const defaultTestimonials = [
   {
@@ -36,120 +36,123 @@ const defaultTestimonials = [
 ];
 
 export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
-  const containerRef = useRef(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
 
-  // Mouse cursor position driven translation
-  const cursorX = useMotionValue(0);
-  const smoothCursorX = useSpring(cursorX, { 
-    damping: 45, 
-    stiffness: 50,
-    mass: 0.8,
-    restDelta: 0.001
-  });
+  const checkScrollability = useCallback(() => {
+    if (!scrollRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+    setCanScrollLeft(scrollLeft > 10);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', checkScrollability);
+    checkScrollability();
+    return () => el.removeEventListener('scroll', checkScrollability);
+  }, [checkScrollability]);
+
+  const scroll = (direction) => {
+    if (!scrollRef.current) return;
+    const cardWidth = window.innerWidth < 640 ? 300 : 380;
+    const gap = 24;
+    const scrollAmount = cardWidth + gap;
+    
+    if (direction === 'left') {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      if (scrollLeft <= 10) {
+        scrollRef.current.scrollTo({ left: scrollWidth - clientWidth, behavior: 'smooth' });
+      } else {
+        scrollRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      }
+    } else {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      if (scrollLeft + clientWidth >= scrollWidth - 20) {
+        scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    }
+  };
+
+  // Autoplay functionality with smooth pause on hover
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      scroll('right');
+    }, 4500);
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
   if (!testimonials || testimonials.length === 0) return null;
-
-  // Triplicate testimonials array to create a 100% seamless infinite loop
-  const displayItems = [...testimonials, ...testimonials, ...testimonials];
-
-  const handleMouseMove = (e) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const relativeX = e.clientX - rect.left;
-    const percentage = Math.max(0, Math.min(1, relativeX / rect.width)); // 0 to 1
-    // Moving cursor LEFT shifts track LEFT (-), moving cursor RIGHT shifts track RIGHT (+)
-    const targetOffset = (percentage - 0.5) * 350;
-    cursorX.set(targetOffset);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    cursorX.set(0);
-  };
 
   return (
     <section className="relative w-full min-h-screen flex flex-col justify-center snap-start py-12 sm:py-16 lg:py-20 border-t border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300 overflow-hidden select-none">
       
-      {/* 60FPS Continuous Hardware-Accelerated Infinite Rotation Keyframes */}
-      <style>{`
-        @keyframes skInfiniteRotate {
-          0% {
-            transform: translate3d(0, 0, 0);
-          }
-          100% {
-            transform: translate3d(-33.33333%, 0, 0);
-          }
-        }
-        .sk-infinite-rotate-track {
-          display: flex !important;
-          width: max-content !important;
-          animation: skInfiniteRotate 38s linear infinite !important;
-          will-change: transform;
-        }
-        .sk-infinite-rotate-track:hover {
-          animation-play-state: paused !important;
-        }
-      `}</style>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12 text-center space-y-3">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-black dark:text-black uppercase leading-tight">
+      {/* ── Section Header with Title ── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-10 w-full text-center overflow-hidden">
+        <h2 className="text-[26px] sm:text-[38px] md:text-[48px] lg:text-[58px] xl:text-[66px] font-bold tracking-normal [word-spacing:0.35em] sm:[word-spacing:0.45em] text-neutral-950 dark:text-white uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] block w-full text-center">
           WHAT OUR CLIENTS SAY
         </h2>
       </div>
 
-      {/* Interactive Container responding to Cursor Position */}
+      {/* ── Interactive Horizontal Scroll Carousel Track ── */}
       <div 
-        ref={containerRef}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        className="relative w-full flex overflow-hidden py-4 cursor-pointer"
+        className="relative w-full overflow-hidden py-4"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
       >
         {/* Soft Edge Gradient Fades */}
-        <div className="absolute top-0 left-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-white dark:from-neutral-1000 to-transparent z-20 pointer-events-none" />
-        <div className="absolute top-0 right-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-white dark:from-neutral-1000 to-transparent z-20 pointer-events-none" />
+        <div className="absolute top-0 left-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-slate-50 dark:from-neutral-950 to-transparent z-20 pointer-events-none" />
+        <div className="absolute top-0 right-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-slate-50 dark:from-neutral-950 to-transparent z-20 pointer-events-none" />
 
-        {/* Cursor Shift Motion Layer */}
-        <motion.div 
-          style={{ x: smoothCursorX }}
-          className="w-full flex justify-center shrink-0"
+        <div
+          ref={scrollRef}
+          className="flex items-stretch gap-6 overflow-x-auto scroll-smooth px-4 sm:px-8 lg:px-12 no-scrollbar py-2"
+          style={{
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }}
         >
-          {/* Seamless Infinite Marquee Track */}
-          <div className="sk-infinite-rotate-track">
-            {displayItems.map((testimonial, index) => (
-              <div 
-                key={index}
-                className="shrink-0 w-[300px] sm:w-[380px] p-7 sm:p-8 mr-6 rounded-3xl bg-white dark:bg-neutral-900/90 border border-slate-200/80 dark:border-white/10 flex flex-col justify-between hover:border-brand-accent/60 hover:-translate-y-1.5 transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] pointer-events-auto"
-              >
-                <div>
-                  <FaQuoteLeft className="text-brand-accent text-xl mb-4 opacity-90" />
-                  <p className="text-neutral-800 dark:text-neutral-200 text-sm sm:text-[15px] font-medium leading-relaxed mb-6">
-                    "{testimonial.testimonial}"
+          {testimonials.map((testimonial, index) => (
+            <div 
+              key={index}
+              className="shrink-0 w-[290px] sm:w-[370px] md:w-[390px] p-6 sm:p-7 rounded-3xl bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 flex flex-col justify-between hover:border-brand-accent/60 hover:-translate-y-1.5 transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] select-none"
+            >
+              <div>
+                <FaQuoteLeft className="text-brand-accent text-xl mb-3 opacity-90" />
+                <p className="text-neutral-800 dark:text-neutral-200 text-sm sm:text-[14.5px] font-medium leading-relaxed mb-5">
+                  "{testimonial.testimonial}"
+                </p>
+              </div>
+              
+              <div className="flex items-center gap-3 pt-4 border-t border-slate-100 dark:border-white/5">
+                {testimonial.imgSrc && (
+                  <img
+                    src={testimonial.imgSrc}
+                    alt={testimonial.by}
+                    className="w-10 h-10 rounded-full object-cover border border-slate-200 dark:border-white/10"
+                    onError={(e) => {
+                      e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.by)}&background=random`;
+                    }}
+                  />
+                )}
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold text-neutral-900 dark:text-white leading-tight truncate">
+                    {testimonial.by.split(',')[0]}
+                  </p>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5 leading-tight truncate">
+                    {testimonial.by.split(',').slice(1).join(',').trim() || 'Verified Client'}
                   </p>
                 </div>
-                
-                <div className="flex items-center gap-3.5 pt-4 border-t border-slate-100 dark:border-white/5">
-                  {testimonial.imgSrc && (
-                    <img
-                      src={testimonial.imgSrc}
-                      alt={testimonial.by}
-                      className="w-11 h-11 rounded-full object-cover border border-slate-200 dark:border-white/10"
-                    />
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-neutral-900 dark:text-white leading-tight truncate">
-                      {testimonial.by.split(',')[0]}
-                    </p>
-                    <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5 leading-tight truncate">
-                      {testimonial.by.split(',').slice(1).join(',').trim()}
-                    </p>
-                  </div>
-                </div>
               </div>
-            ))}
-          </div>
-        </motion.div>
+            </div>
+          ))}
+        </div>
       </div>
 
     </section>
@@ -157,3 +160,4 @@ export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
 };
 
 export default StaggerTestimonials;
+

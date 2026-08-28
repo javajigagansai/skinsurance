@@ -13,7 +13,7 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 mb-8">
 
           {/* Brand Panel (5 cols) */}
-          <div className="lg:col-span-5 space-y-4">
+          <div className="lg:col-span-5 flex flex-col justify-start items-start gap-4">
             <Link to="/" className="inline-flex items-center gap-3.5 group">
               <img
                 src="/logo.png"
@@ -46,11 +46,7 @@ export const Footer = () => {
               </div>
             </Link>
 
-            <p className="text-xs sm:text-[13px] text-neutral-400 font-normal leading-relaxed max-w-md pt-1 font-['Inter',sans-serif]">
-              Empowering families and businesses with goal-based wealth planning, unbiased insurance advisory, and dedicated lifetime claims support.
-            </p>
-
-            <div className="flex items-center flex-wrap gap-2.5 pt-2">
+            <div className="flex items-center flex-wrap gap-2.5">
               {[
                 { name: "Facebook", icon: FaFacebook, url: "https://www.facebook.com/profile.php?id=61592452371528", color: "text-blue-500 hover:text-white border-blue-500/30 bg-blue-500/10 hover:bg-blue-600" },
                 { name: "Instagram", icon: FaInstagram, url: "https://www.instagram.com/sk_smartinvestments/", color: "text-pink-500 hover:text-white border-pink-500/30 bg-pink-500/10 hover:bg-pink-600" },

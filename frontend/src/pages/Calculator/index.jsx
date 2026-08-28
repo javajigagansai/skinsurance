@@ -340,7 +340,7 @@ export const Calculator = ({ isEmbedded = false }) => {
         {/* ── Section Header ── */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
           <div className="text-left">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-neutral-950 dark:text-white leading-tight font-['Plus_Jakarta_Sans',sans-serif] [word-spacing:0.35em] sm:[word-spacing:0.45em]">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-neutral-950 dark:text-white leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
               PLAN YOUR FINANCIAL FUTURE
             </h2>
           </div>
@@ -738,7 +738,7 @@ export const Calculator = ({ isEmbedded = false }) => {
                     </div>
                     <div className="flex justify-between py-2 px-3.5 rounded-xl bg-white/5 border border-white/5">
                       <span className="text-slate-400">Estimated Wealth Gain</span>
-                      <strong className="text-emerald-400 font-bold">+₹{sipResults.gain.toLocaleString('en-IN')}</strong>
+                      <strong className="text-white font-bold">+₹{sipResults.gain.toLocaleString('en-IN')}</strong>
                     </div>
                   </>
                 ) : suiteTab === 'investment' ? (
@@ -749,7 +749,7 @@ export const Calculator = ({ isEmbedded = false }) => {
                     </div>
                     <div className="flex justify-between py-2 px-3.5 rounded-xl bg-white/5 border border-white/5">
                       <span className="text-slate-400">Compound Profit Gain</span>
-                      <strong className="text-emerald-400 font-bold">+₹{investmentResults.gain.toLocaleString('en-IN')}</strong>
+                      <strong className="text-white font-bold">+₹{investmentResults.gain.toLocaleString('en-IN')}</strong>
                     </div>
                   </>
                 ) : premiumCategory === 'health' ? (

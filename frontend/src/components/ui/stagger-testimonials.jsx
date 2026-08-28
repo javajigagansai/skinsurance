@@ -95,7 +95,7 @@ export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
       
       {/* ── Section Header with Title ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-10 w-full text-center overflow-hidden">
-        <h2 className="text-[26px] sm:text-[38px] md:text-[48px] lg:text-[58px] xl:text-[66px] font-bold tracking-normal [word-spacing:0.35em] sm:[word-spacing:0.45em] text-neutral-950 dark:text-white uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] block w-full text-center">
+        <h2 className="text-[26px] sm:text-[38px] md:text-[48px] lg:text-[58px] xl:text-[66px] font-bold tracking-tight text-neutral-950 dark:text-white uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] block w-full text-center">
           WHAT OUR CLIENTS SAY
         </h2>
       </div>

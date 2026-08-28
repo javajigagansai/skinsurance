@@ -548,29 +548,140 @@ export const About = () => {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════
-          3. WHERE WE'RE HEADED (Vision Statement)
+          3. OUR VISION & FUTURE HORIZON (Vision, Mission & Pillars)
       ═══════════════════════════════════════════════════════════ */}
-      <section className="py-20 sm:py-24 lg:py-32 bg-slate-50 dark:bg-neutral-950 border-b border-black/5 dark:border-white/5 transition-colors">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-20 sm:py-24 lg:py-28 bg-slate-50/70 dark:bg-neutral-950/70 border-b border-black/5 dark:border-white/5 transition-colors relative overflow-hidden">
+        
+        {/* Subtle Background Ambience */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-brand-accent/5 blur-[140px] rounded-full pointer-events-none" />
 
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+            <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-accent/10 border border-brand-accent/30 text-amber-900 dark:text-brand-accent text-xs font-black uppercase tracking-[0.2em] mb-4">
+              <FaShieldAlt className="text-xs" />
+              <span>Vision & Strategic Commitment</span>
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-extrabold text-neutral-950 dark:text-white uppercase leading-none tracking-normal [word-spacing:0.22em] sm:[word-spacing:0.32em] font-['Plus_Jakarta_Sans',sans-serif]">
+              OUR VISION & FUTURE HORIZON
+            </h2>
+            <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-300 mt-4 leading-relaxed font-['Inter',sans-serif]">
+              Pioneering transparent, ethical, and goal-aligned protection architectures for every family and enterprise across India.
+            </p>
+          </div>
+
+          {/* Centerpiece Vision Manifesto Card */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            className="relative p-8 sm:p-12 lg:p-14 rounded-3xl bg-gradient-to-br from-white via-white to-amber-50/30 dark:from-neutral-900 dark:via-neutral-900 dark:to-neutral-950 border border-slate-200/90 dark:border-white/10 shadow-2xl shadow-black/5 mb-10 overflow-hidden text-center"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-900 dark:text-white uppercase tracking-tight mb-8 font-['Plus_Jakarta_Sans',sans-serif]">
-              WHERE WE'RE HEADED
-            </h2>
-
-            <div className="relative p-8 sm:p-12 lg:p-14 rounded-3xl bg-white dark:bg-neutral-900 border border-slate-200/90 dark:border-white/10 shadow-xl shadow-black/5">
-              <div className="text-4xl sm:text-5xl font-serif text-brand-accent mb-3 leading-none">“</div>
-              <p className="text-lg sm:text-2xl md:text-3xl text-neutral-800 dark:text-neutral-100 font-bold leading-relaxed tracking-tight max-w-3xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
-                Making financial protection simpler, more transparent, and reliably accessible for every family and enterprise across India.
-              </p>
-              <div className="w-16 h-1 bg-brand-accent mx-auto mt-6 rounded-full" />
-            </div>
+            <div className="text-4xl sm:text-5xl font-serif text-brand-accent mb-3 leading-none select-none">“</div>
+            <p className="text-xl sm:text-2xl md:text-3xl lg:text-3xl text-neutral-900 dark:text-neutral-50 font-black leading-snug tracking-tight max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
+              To build India's most trusted and empathetic insurance advisory ecosystem—empowering every family with generational wealth security and every business with resilient risk defense.
+            </p>
+            <div className="w-20 h-1 bg-brand-accent mx-auto mt-6 rounded-full" />
           </motion.div>
+
+          {/* 3 Strategic Pillars Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch mb-10">
+            
+            {/* Pillar 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 shadow-lg shadow-black/5 flex flex-col justify-between group hover:-translate-y-1.5 transition-all duration-300"
+            >
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                  <FaShieldAlt />
+                </div>
+                <div className="space-y-1.5">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-blue-600 dark:text-blue-400">Pillar 01</span>
+                  <h3 className="text-lg sm:text-xl font-black text-neutral-950 dark:text-white font-['Plus_Jakarta_Sans',sans-serif]">
+                    100% Unbiased Advisory
+                  </h3>
+                </div>
+                <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-['Inter',sans-serif]">
+                  Objective policy comparisons across top IRDAI insurers with zero product bias, transparent disclosures, and data-backed fitment.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Pillar 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 shadow-lg shadow-black/5 flex flex-col justify-between group hover:-translate-y-1.5 transition-all duration-300"
+            >
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                  <FaChartLine />
+                </div>
+                <div className="space-y-1.5">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Pillar 02</span>
+                  <h3 className="text-lg sm:text-xl font-black text-neutral-950 dark:text-white font-['Plus_Jakarta_Sans',sans-serif]">
+                    Seamless Digital Onboarding
+                  </h3>
+                </div>
+                <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-['Inter',sans-serif]">
+                  Frictionless paperless issuance, automated policy portfolio health reviews, and instant digital renewals anytime, anywhere.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Pillar 3 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 shadow-lg shadow-black/5 flex flex-col justify-between group hover:-translate-y-1.5 transition-all duration-300"
+            >
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-brand-accent/30 text-amber-600 dark:text-brand-accent flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                  <FaHandshake />
+                </div>
+                <div className="space-y-1.5">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-amber-600 dark:text-brand-accent">Pillar 03</span>
+                  <h3 className="text-lg sm:text-xl font-black text-neutral-950 dark:text-white font-['Plus_Jakarta_Sans',sans-serif]">
+                    Lifetime Claim Concierge
+                  </h3>
+                </div>
+                <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-['Inter',sans-serif]">
+                  We stand by your family 24/7 with on-ground claim representation, direct cashless hospital desks, and swift settlement escalation.
+                </p>
+              </div>
+            </motion.div>
+
+          </div>
+
+          {/* Bottom Commitment Badges */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 shadow-md flex flex-wrap items-center justify-around gap-4 text-xs sm:text-sm font-bold text-neutral-800 dark:text-neutral-200">
+            <span className="flex items-center gap-2">
+              <FaCheckCircle className="text-emerald-500 text-base" />
+              <span>100% Paperless Process</span>
+            </span>
+            <span className="flex items-center gap-2">
+              <FaCheckCircle className="text-emerald-500 text-base" />
+              <span>IRDAI Compliant Partners</span>
+            </span>
+            <span className="flex items-center gap-2">
+              <FaCheckCircle className="text-emerald-500 text-base" />
+              <span>Zero Commission Bias</span>
+            </span>
+            <span className="flex items-center gap-2">
+              <FaCheckCircle className="text-emerald-500 text-base" />
+              <span>24/7 Claim Concierge</span>
+            </span>
+          </div>
 
         </div>
       </section>

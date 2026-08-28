@@ -96,7 +96,7 @@ export const HowItWorks = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-[32px] sm:text-[46px] md:text-[56px] lg:text-[68px] xl:text-[76px] font-extrabold tracking-normal [word-spacing:0.22em] sm:[word-spacing:0.32em] text-neutral-950 dark:text-white uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] w-full block text-center"
+            className="text-[32px] sm:text-[46px] md:text-[56px] lg:text-[68px] xl:text-[76px] font-extrabold tracking-normal text-neutral-950 dark:text-white uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] w-full block text-center"
           >
             HOW IT WORKS
           </motion.h2>
@@ -172,12 +172,12 @@ export const HowItWorks = () => {
           </div>
         </div>
 
-        {/* ── Bottom Reassurance CTA Strip: Zero Hidden Charges • IRDAI Compliant ── */}
+        {/* ── Bottom Reassurance CTA Strip: Transparent Black / Grey Glass ── */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
           transition={{ duration: 0.5, delay: 0.45 }}
-          className="mt-4 sm:mt-5 p-4 sm:p-5 rounded-2xl bg-black/85 backdrop-blur-xl text-white border border-white/15 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-4 relative overflow-hidden"
+          className="mt-4 sm:mt-5 p-4 sm:p-5 rounded-2xl bg-neutral-900/60 dark:bg-black/60 backdrop-blur-2xl text-white border border-neutral-700/40 dark:border-white/10 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-3xl pointer-events-none" />
 

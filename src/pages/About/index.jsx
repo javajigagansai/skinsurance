@@ -13,6 +13,8 @@ import { useTranslation } from '../../context/LanguageContext';
 import { getAwards, DEFAULT_AWARDS_DATA } from '../../services/api';
 import { subscribeToCollection } from '../../services/firebaseService';
 import { WhatDrivesUs } from '../../features/marketing/components/WhatDrivesUs';
+import lionsClubLogo from '../../assets/lions_club_logo.png';
+import bniBadgeLogo from '../../assets/bni_badge.jpg';
 
 /* ─── Smooth Animated Stat Number ─── */
 const AnimatedStat = ({ value, suffix = "", prefix = "" }) => {
@@ -208,8 +210,8 @@ export const About = () => {
       role: "Founder & Managing Director",
       bio: "Certified Financial Consultant, Proud BNI Member, Lions Club Member, and Senior Business Associate Leader with over 22 years of seasoned expertise, guiding thousands of families toward robust financial security and disciplined wealth creation.",
       image: "/prakash_gajendiran.jpg",
-      bniBadge: "/images.jpg",
-      lionsBadge: "/lions_club_logo.png",
+      bniBadge: bniBadgeLogo,
+      lionsBadge: lionsClubLogo,
       stats: [
         { val: 22, suffix: "+", label: "Years Experience" },
         { val: 5000, suffix: "+", label: "Families Guided" },
@@ -310,28 +312,28 @@ export const About = () => {
               >
                 {/* Top-Right Badges (BNI & Lions Club International) */}
                 {(leader.bniBadge || leader.lionsBadge) && (
-                  <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8 z-20 flex items-center gap-2.5 sm:gap-3">
+                  <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8 z-20 flex items-center gap-3 sm:gap-4">
                     {leader.bniBadge && (
                       <div 
-                        className="w-11 h-11 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full overflow-hidden shadow-md border-2 border-red-600/30 bg-white hover:scale-105 transition-transform duration-300 flex items-center justify-center p-0.5"
+                        className="w-14 h-14 sm:w-18 sm:h-18 lg:w-22 lg:h-22 rounded-full overflow-hidden shadow-lg border-2 border-red-600/30 bg-white hover:scale-105 transition-all duration-300 flex items-center justify-center p-1 sm:p-1.5 group cursor-pointer"
                         title="Proud BNI Member"
                       >
                         <img
                           src={leader.bniBadge}
                           alt="Proud BNI Member"
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                         />
                       </div>
                     )}
                     {leader.lionsBadge && (
                       <div 
-                        className="w-11 h-11 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full overflow-hidden shadow-md border-2 border-amber-500/40 bg-white hover:scale-105 transition-transform duration-300 flex items-center justify-center p-0.5"
+                        className="w-14 h-14 sm:w-18 sm:h-18 lg:w-22 lg:h-22 rounded-full overflow-hidden shadow-lg border-2 border-amber-500/40 bg-white hover:scale-105 transition-all duration-300 flex items-center justify-center p-1 sm:p-1.5 group cursor-pointer"
                         title="Lions Club International Member"
                       >
                         <img
                           src={leader.lionsBadge}
                           alt="Lions Club International"
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                         />
                       </div>
                     )}
@@ -351,7 +353,7 @@ export const About = () => {
 
                 {/* Leader Narrative & Credentials */}
                 <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-left">
-                  <div className="space-y-2 pr-12 sm:pr-0">
+                  <div className="space-y-2 pr-32 sm:pr-44 lg:pr-52">
                     <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
                       <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-800 dark:text-brand-accent text-xs font-bold uppercase tracking-wide font-['Plus_Jakarta_Sans',sans-serif]">
                         <FaAward className="text-xs shrink-0" />

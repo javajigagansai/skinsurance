@@ -782,7 +782,7 @@ export const About = () => {
                     <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.14em] text-amber-800 dark:text-brand-accent block mb-1 font-['Plus_Jakarta_Sans',sans-serif]">
                       {m.tag}
                     </span>
-                    <h4 className="text-sm sm:text-[15px] font-extrabold text-neutral-950 dark:text-white tracking-tight leading-snug mb-2 font-['Plus_Jakarta_Sans',sans-serif] group-hover:text-amber-800 dark:group-hover:text-brand-accent transition-colors duration-200">
+                    <h4 className="text-sm sm:text-[15px] font-extrabold text-neutral-950 dark:text-white tracking-tight leading-snug mb-2 font-['Plus_Jakarta_Sans',sans-serif]">
                       {m.title}
                     </h4>
                     <p className="text-xs text-neutral-600 dark:text-neutral-300 font-normal leading-[1.6] font-['Inter',sans-serif]">
@@ -827,7 +827,7 @@ export const About = () => {
                       {m.tag}
                     </span>
                   </div>
-                  <h4 className="text-base font-extrabold text-neutral-950 dark:text-white tracking-tight pt-1 font-['Plus_Jakarta_Sans',sans-serif] group-hover:text-amber-800 dark:group-hover:text-brand-accent transition-colors">
+                  <h4 className="text-base font-extrabold text-neutral-950 dark:text-white tracking-tight pt-1 font-['Plus_Jakarta_Sans',sans-serif]">
                     {m.title}
                   </h4>
                   <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 font-normal leading-relaxed font-['Inter',sans-serif]">

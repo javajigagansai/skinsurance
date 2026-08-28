@@ -338,14 +338,11 @@ export const Calculator = ({ isEmbedded = false }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* ── Section Header ── */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-3 sm:gap-4 mb-3 sm:mb-4">
-          <div className="space-y-0.5 sm:space-y-1 max-w-xl text-left">
-            <h2 className="text-2xl sm:text-3xl lg:text-3xl font-black uppercase tracking-tight text-neutral-950 dark:text-white leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
+          <div className="text-left">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-neutral-950 dark:text-white leading-tight font-['Plus_Jakarta_Sans',sans-serif] [word-spacing:0.35em] sm:[word-spacing:0.45em]">
               PLAN YOUR FINANCIAL FUTURE
             </h2>
-            <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 font-medium font-['Inter',sans-serif]">
-              Estimate your insurance premium and wealth accumulation requirements in seconds.
-            </p>
           </div>
 
           {/* Main Suite Tabs (Premium / SIP / Investment) */}

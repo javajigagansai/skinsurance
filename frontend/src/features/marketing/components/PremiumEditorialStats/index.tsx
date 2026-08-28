@@ -138,9 +138,13 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
           initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-normal text-red-600 dark:text-red-500 uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full text-center"
+          className="text-2xl sm:text-3xl lg:text-4xl font-black text-red-600 dark:text-red-500 uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-3 sm:gap-x-4 md:gap-x-5 text-center"
         >
-          A LEGACY MEASURED IN TRUST
+          <span className="inline-block">A</span>
+          <span className="inline-block">LEGACY</span>
+          <span className="inline-block">MEASURED</span>
+          <span className="inline-block">IN</span>
+          <span className="inline-block">TRUST</span>
         </motion.h2>
       </div>
 

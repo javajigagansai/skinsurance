@@ -85,8 +85,8 @@ export const StickyStackedCards = () => {
     <section className="relative w-full min-h-screen flex flex-col justify-center snap-start py-12 sm:py-16 lg:py-20 border-t border-black/5 dark:border-white/5 bg-slate-50/50 dark:bg-neutral-950/40 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="w-full text-center mb-8 sm:mb-12 overflow-hidden">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-neutral-950 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-3 sm:gap-x-4 md:gap-x-5 text-center">
+        <div className="w-full text-center mb-6 sm:mb-8 overflow-hidden">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-950 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center">
             {(t('what_is_ins_title') || 'MASTERING WEALTH & PROTECTION').split(' ').map((word: string, i: number) => (
               <span key={i} className="inline-block">{word}</span>
             ))}

@@ -133,12 +133,12 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
     <section ref={sectionRef} className="w-full min-h-screen flex flex-col justify-center snap-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 border-b border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300">
       
       {/* Header Section with Equal Word Spacing */}
-      <div className="w-full mb-8 sm:mb-10 text-center overflow-hidden">
+      <div className="w-full mb-6 sm:mb-8 text-center overflow-hidden">
         <motion.h2
           initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-2xl sm:text-3xl lg:text-4xl font-black text-red-600 dark:text-red-500 uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-3 sm:gap-x-4 md:gap-x-5 text-center"
+          className="text-xl sm:text-2xl md:text-3xl font-extrabold text-red-600 dark:text-red-500 uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center"
         >
           <span className="inline-block">A</span>
           <span className="inline-block">LEGACY</span>

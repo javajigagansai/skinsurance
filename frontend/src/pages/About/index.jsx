@@ -294,9 +294,10 @@ export const About = () => {
       ═══════════════════════════════════════════════════════════ */}
       <section id="leadership" className="py-20 sm:py-24 lg:py-32 bg-white dark:bg-neutral-900/50 border-b border-black/5 dark:border-white/5 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-normal text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full text-center">
-              VISIONARY LEADERSHIP
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center">
+              <span className="inline-block">VISIONARY</span>
+              <span className="inline-block">LEADERSHIP</span>
             </h2>
           </div>
 
@@ -453,8 +454,12 @@ export const About = () => {
               transition={{ duration: 0.6 }}
               className="lg:col-span-6 space-y-6 text-left"
             >
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-normal text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
-                THE FOUNDATION OF OUR LEGACY
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] flex flex-wrap items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-left">
+                <span className="inline-block">THE</span>
+                <span className="inline-block">FOUNDATION</span>
+                <span className="inline-block">OF</span>
+                <span className="inline-block">OUR</span>
+                <span className="inline-block">LEGACY</span>
               </h2>
 
               <div className="space-y-4 text-base sm:text-lg text-neutral-600 dark:text-neutral-300 font-normal leading-relaxed font-['Inter',sans-serif]">
@@ -563,8 +568,12 @@ export const About = () => {
               <FaShieldAlt className="text-xs" />
               <span>Vision & Strategic Commitment</span>
             </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-normal text-neutral-950 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full text-center">
-              OUR VISION & FUTURE HORIZON
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-950 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center">
+              <span className="inline-block">OUR</span>
+              <span className="inline-block">VISION</span>
+              <span className="inline-block">&</span>
+              <span className="inline-block">FUTURE</span>
+              <span className="inline-block">HORIZON</span>
             </h2>
             <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-300 mt-4 leading-relaxed font-['Inter',sans-serif]">
               Pioneering transparent, ethical, and goal-aligned protection architectures for every family and enterprise across India.
@@ -696,9 +705,11 @@ export const About = () => {
       ═══════════════════════════════════════════════════════════ */}
       <section className="py-20 sm:py-24 lg:py-32 bg-slate-50 dark:bg-neutral-950 border-b border-black/5 dark:border-white/5 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-normal text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full text-center">
-              OUR GUIDING PRINCIPLES
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center">
+              <span className="inline-block">OUR</span>
+              <span className="inline-block">GUIDING</span>
+              <span className="inline-block">PRINCIPLES</span>
             </h2>
           </div>
 
@@ -737,9 +748,11 @@ export const About = () => {
       ═══════════════════════════════════════════════════════════ */}
       <section className="py-20 sm:py-24 lg:py-32 bg-white dark:bg-neutral-900/50 border-b border-black/5 dark:border-white/5 transition-colors overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-normal text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full text-center">
-              MILESTONES THAT MATTER
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center">
+              <span className="inline-block">MILESTONES</span>
+              <span className="inline-block">THAT</span>
+              <span className="inline-block">MATTER</span>
             </h2>
           </div>
 
@@ -847,9 +860,11 @@ export const About = () => {
       <section className="py-20 sm:py-24 lg:py-32 bg-slate-50 dark:bg-neutral-950 border-b border-black/5 dark:border-white/5 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-normal text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full text-center">
-              AWARDS & ACHIEVEMENTS
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center">
+              <span className="inline-block">AWARDS</span>
+              <span className="inline-block">&</span>
+              <span className="inline-block">ACHIEVEMENTS</span>
             </h2>
           </div>
 

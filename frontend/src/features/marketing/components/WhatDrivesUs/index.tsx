@@ -127,9 +127,11 @@ export const WhatDrivesUs: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-normal text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full text-center">
-            WHAT DRIVES US
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center">
+            <span className="inline-block">WHAT</span>
+            <span className="inline-block">DRIVES</span>
+            <span className="inline-block">US</span>
           </h2>
         </div>
 

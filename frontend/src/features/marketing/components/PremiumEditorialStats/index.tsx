@@ -108,37 +108,37 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
 
   const PASTEL_STYLES = [
     {
-      bg: 'bg-sky-50/90 dark:bg-sky-950/40 border-sky-200/80 dark:border-sky-800/50',
-      numColor: 'text-sky-950 dark:text-sky-200',
-      labelColor: 'text-sky-800 dark:text-sky-300'
+      bg: 'bg-sky-100/90 dark:bg-sky-950/60 border-sky-300/90 dark:border-sky-700/60 shadow-sky-500/10',
+      numColor: 'text-sky-950 dark:text-sky-100',
+      labelColor: 'text-sky-900 dark:text-sky-200'
     },
     {
-      bg: 'bg-emerald-50/90 dark:bg-emerald-950/40 border-emerald-200/80 dark:border-emerald-800/50',
-      numColor: 'text-emerald-950 dark:text-emerald-200',
-      labelColor: 'text-emerald-800 dark:text-emerald-300'
+      bg: 'bg-emerald-100/90 dark:bg-emerald-950/60 border-emerald-300/90 dark:border-emerald-700/60 shadow-emerald-500/10',
+      numColor: 'text-emerald-950 dark:text-emerald-100',
+      labelColor: 'text-emerald-900 dark:text-emerald-200'
     },
     {
-      bg: 'bg-purple-50/90 dark:bg-purple-950/40 border-purple-200/80 dark:border-purple-800/50',
-      numColor: 'text-purple-950 dark:text-purple-200',
-      labelColor: 'text-purple-800 dark:text-purple-300'
+      bg: 'bg-purple-100/90 dark:bg-purple-950/60 border-purple-300/90 dark:border-purple-700/60 shadow-purple-500/10',
+      numColor: 'text-purple-950 dark:text-purple-100',
+      labelColor: 'text-purple-900 dark:text-purple-200'
     },
     {
-      bg: 'bg-amber-50/90 dark:bg-amber-950/40 border-amber-200/80 dark:border-amber-800/50',
-      numColor: 'text-amber-950 dark:text-amber-200',
-      labelColor: 'text-amber-800 dark:text-amber-300'
+      bg: 'bg-amber-100/90 dark:bg-amber-950/60 border-amber-300/90 dark:border-amber-700/60 shadow-amber-500/10',
+      numColor: 'text-amber-950 dark:text-amber-100',
+      labelColor: 'text-amber-900 dark:text-amber-200'
     }
   ];
 
   return (
     <section ref={sectionRef} className="w-full min-h-screen flex flex-col justify-center snap-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 border-b border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300">
       
-      {/* Header Section */}
+      {/* Header Section with Equal Word Spacing */}
       <div className="w-full mb-8 sm:mb-10 text-center overflow-hidden">
         <motion.h2
           initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-[26px] sm:text-[40px] md:text-[50px] lg:text-[62px] xl:text-[70px] font-bold tracking-tight text-red-600 dark:text-red-500 uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] w-full block text-center"
+          className="text-[26px] sm:text-[40px] md:text-[50px] lg:text-[62px] xl:text-[70px] font-extrabold tracking-normal [word-spacing:0.25em] sm:[word-spacing:0.35em] text-red-600 dark:text-red-500 uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] w-full block text-center"
         >
           A LEGACY MEASURED IN TRUST
         </motion.h2>

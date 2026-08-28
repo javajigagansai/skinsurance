@@ -161,13 +161,9 @@ export const LeadWelcomeModal = () => {
             
             {/* Header */}
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/20 border border-white/30 text-white text-[11px] font-bold mb-1.5">
-                <span>Welcome to SK Smart Investments</span>
-              </div>
-              <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight leading-tight whitespace-nowrap">
-                Let's Personalize Your Experience
+              <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight leading-tight">
+                Welcome to SK Smart Investments
               </h1>
-
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-3.5">

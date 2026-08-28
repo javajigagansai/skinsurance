@@ -33,7 +33,7 @@ const PremiumSlider = ({ min, max, step, value, onChange, leftLabel, rightLabel,
       <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 font-['Plus_Jakarta_Sans',sans-serif]">
         {leftLabel || ''}
       </span>
-      <span className="text-base sm:text-lg font-black text-slate-950 dark:text-brand-accent font-['Plus_Jakarta_Sans',sans-serif]">
+      <span className="text-base sm:text-lg font-black text-emerald-600 dark:text-emerald-400 font-['Plus_Jakarta_Sans',sans-serif]">
         {displayValue}
       </span>
     </div>
@@ -43,13 +43,13 @@ const PremiumSlider = ({ min, max, step, value, onChange, leftLabel, rightLabel,
         onChange={(e) => onChange(Number(e.target.value))}
         className="w-full h-2 rounded-full appearance-none cursor-pointer bg-slate-200 dark:bg-neutral-800
         [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 
-        [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-brand-accent
+        [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-emerald-500
         [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-neutral-950
         [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 
-        [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-brand-accent
+        [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-emerald-500
         [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-neutral-950
-        [background:linear-gradient(to_right,#ffda0a_0%,#ffda0a_var(--fill),#E2E8F0_var(--fill),#E2E8F0_100%)]
-        dark:[background:linear-gradient(to_right,#ffda0a_0%,#ffda0a_var(--fill),#262626_var(--fill),#262626_100%)]"
+        [background:linear-gradient(to_right,#10B981_0%,#10B981_var(--fill),#E2E8F0_var(--fill),#E2E8F0_100%)]
+        dark:[background:linear-gradient(to_right,#10B981_0%,#10B981_var(--fill),#262626_var(--fill),#262626_100%)]"
         style={{ "--fill": `${((value - min) / (max - min)) * 100}%` }}
       />
     </div>
@@ -72,18 +72,18 @@ const GlassInput = ({ label, children }) => (
   </div>
 );
 
-const inputClasses = "w-full px-4 py-2.5 bg-slate-50 dark:bg-neutral-950 border border-slate-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-brand-accent text-sm font-bold text-slate-900 dark:text-white transition-all shadow-2xs";
+const inputClasses = "w-full px-4 py-2.5 bg-slate-50 dark:bg-neutral-950 border border-slate-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-emerald-500 text-sm font-bold text-slate-900 dark:text-white transition-all shadow-2xs";
 const selectClasses = inputClasses;
 
 /* ─── Form Toggle ─── */
 const GlassToggle = ({ label, sublabel, checked, onChange }) => (
   <label className={`flex items-center gap-3.5 p-3 sm:p-3.5 rounded-2xl border cursor-pointer transition-all ${
     checked 
-      ? 'bg-brand-accent/10 border-brand-accent/50 shadow-xs' 
-      : 'bg-slate-50 dark:bg-neutral-950 border-slate-200 dark:border-white/10 hover:border-brand-accent/30'
+      ? 'bg-emerald-500/10 border-emerald-500/50 shadow-xs' 
+      : 'bg-slate-50 dark:bg-neutral-950 border-slate-200 dark:border-white/10 hover:border-emerald-500/30'
   }`}>
     <input type="checkbox" className="hidden" checked={checked} onChange={(e) => onChange(e.target.checked)} />
-    <div className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${checked ? 'bg-brand-accent' : 'bg-slate-300 dark:bg-neutral-700'}`}>
+    <div className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${checked ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-neutral-700'}`}>
       <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white dark:bg-black transition ${checked ? 'translate-x-4.5' : 'translate-x-1'}`} />
     </div>
     <div className="min-w-0 flex-1">
@@ -100,8 +100,8 @@ const ConditionChip = ({ label, checked, onChange }) => (
     onClick={() => onChange(!checked)}
     className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold border transition-all cursor-pointer ${
       checked
-        ? 'bg-brand-accent/15 border-brand-accent text-amber-800 dark:text-brand-accent shadow-xs'
-        : 'bg-slate-50 dark:bg-neutral-950 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:border-brand-accent/40'
+        ? 'bg-emerald-500/15 border-emerald-500 text-emerald-800 dark:text-emerald-400 shadow-xs font-black'
+        : 'bg-slate-50 dark:bg-neutral-950 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:border-emerald-500/40'
     }`}
   >
     {checked && <span className="mr-1">✓</span>}
@@ -356,7 +356,7 @@ export const Calculator = ({ isEmbedded = false }) => {
                   onClick={() => setSuiteTab(tab.id)}
                   className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all whitespace-nowrap cursor-pointer ${
                     isActive 
-                      ? 'bg-brand-accent text-neutral-950 shadow-md font-black' 
+                      ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/25 font-black' 
                       : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-neutral-800'
                   }`}
                 >
@@ -386,7 +386,7 @@ export const Calculator = ({ isEmbedded = false }) => {
                       onClick={() => setPremiumCategory(type.id)}
                       className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg transition-all whitespace-nowrap cursor-pointer ${
                         isSelected 
-                          ? 'bg-white dark:bg-neutral-800 text-neutral-950 dark:text-brand-accent shadow-sm font-black' 
+                          ? 'bg-emerald-500 text-white dark:bg-emerald-500 dark:text-white shadow-sm font-black' 
                           : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
                       }`}
                     >
@@ -703,7 +703,7 @@ export const Calculator = ({ isEmbedded = false }) => {
                     ? 'Annual Estimated Premium' 
                     : 'Monthly Premium'}
                 </p>
-                <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-accent tracking-tight flex items-center justify-center gap-1 font-['Plus_Jakarta_Sans',sans-serif]">
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-emerald-400 tracking-tight flex items-center justify-center gap-1 font-['Plus_Jakarta_Sans',sans-serif]">
                   <span>₹</span>
                   {suiteTab === 'sip' ? (
                     <span>
@@ -723,7 +723,7 @@ export const Calculator = ({ isEmbedded = false }) => {
                     <AnimatedCounter value={premium} />
                   )}
                 </div>
-                <p className="text-xs text-neutral-300 font-medium pt-0.5">
+                <p className="text-xs text-emerald-300/90 font-bold pt-0.5">
                   {getOutputMeta().sub}
                 </p>
               </div>
@@ -760,7 +760,7 @@ export const Calculator = ({ isEmbedded = false }) => {
                     </div>
                     <div className="flex justify-between py-2 px-3.5 rounded-xl bg-white/5 border border-white/5">
                       <span className="text-slate-400">Estimated Monthly</span>
-                      <strong className="text-brand-accent font-bold">₹{healthBreakdown.monthlyPremium.toLocaleString('en-IN')} / mo</strong>
+                      <strong className="text-emerald-400 font-extrabold">₹{healthBreakdown.monthlyPremium.toLocaleString('en-IN')} / mo</strong>
                     </div>
                   </>
                 ) : (
@@ -788,7 +788,7 @@ export const Calculator = ({ isEmbedded = false }) => {
             <div className="pt-2 space-y-1.5 relative z-10">
               <button
                 onClick={() => navigate('/appointment')}
-                className="w-full py-3.5 rounded-2xl bg-brand-accent text-neutral-950 font-black text-xs sm:text-sm uppercase tracking-wider hover:bg-white hover:text-neutral-950 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shadow-xl hover:-translate-y-0.5 active:scale-95"
+                className="w-full py-3.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-black text-xs sm:text-sm uppercase tracking-wider hover:shadow-emerald-500/25 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shadow-xl hover:-translate-y-0.5 active:scale-95"
               >
                 <FaShieldAlt className="text-xs" />
                 <span>Lock In This Plan · Get Free Consultation</span>

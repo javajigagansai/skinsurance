@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { 
   FaUser, 
+  FaCalendarAlt,
   FaEnvelope, 
   FaCheckCircle, 
   FaArrowRight, 
@@ -12,18 +13,12 @@ import {
 } from 'react-icons/fa';
 import { saveLead } from '../../services/api';
 
-const GENDER_OPTIONS = [
-  { id: 'Male', label: 'Male' },
-  { id: 'Female', label: 'Female' },
-  { id: 'Other', label: 'Other' },
-];
-
 export const LeadWelcomeModal = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
-    gender: 'Male',
+    dob: '',
     phone: '',
     email: ''
   });
@@ -58,23 +53,43 @@ export const LeadWelcomeModal = () => {
   const validate = () => {
     const newErrors = {};
 
-    if (!formData.fullName.trim()) {
+    // 1. Full Name Verification
+    const nameTrimmed = formData.fullName.trim();
+    if (!nameTrimmed) {
       newErrors.fullName = 'Full name is required';
-    } else if (formData.fullName.trim().length < 2) {
+    } else if (nameTrimmed.length < 2) {
       newErrors.fullName = 'Name must be at least 2 characters';
+    } else if (!/^[a-zA-Z\s.'-]+$/.test(nameTrimmed)) {
+      newErrors.fullName = 'Please enter a valid full name';
     }
 
-    if (!formData.gender) {
-      newErrors.gender = 'Please select a gender';
+    // 2. Date of Birth (DOB) Verification
+    if (!formData.dob) {
+      newErrors.dob = 'Date of birth is required';
+    } else {
+      const birthDate = new Date(formData.dob);
+      const today = new Date();
+      if (isNaN(birthDate.getTime()) || birthDate >= today) {
+        newErrors.dob = 'Please enter a valid past birth date';
+      } else {
+        const age = today.getFullYear() - birthDate.getFullYear();
+        if (age < 0 || age > 115) {
+          newErrors.dob = 'Please enter a realistic date of birth';
+        }
+      }
     }
 
+    // 3. Mobile Number Verification (10 Digits)
     const cleanPhone = formData.phone.replace(/\D/g, '');
     if (!formData.phone.trim()) {
       newErrors.phone = 'Mobile number is required for quotes';
-    } else if (cleanPhone.length < 10) {
-      newErrors.phone = 'Valid 10-digit number required';
+    } else if (cleanPhone.length !== 10) {
+      newErrors.phone = 'Please enter a valid 10-digit mobile number';
+    } else if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
+      newErrors.phone = 'Please enter a valid mobile number starting with 6-9';
     }
 
+    // 4. Email Verification
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
       newErrors.email = 'Email address is required';
@@ -94,13 +109,6 @@ export const LeadWelcomeModal = () => {
     }
   };
 
-  const handleGenderSelect = (gender) => {
-    setFormData(prev => ({ ...prev, gender }));
-    if (errors.gender) {
-      setErrors(prev => ({ ...prev, gender: undefined }));
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
@@ -110,8 +118,8 @@ export const LeadWelcomeModal = () => {
     try {
       const payload = {
         fullName: formData.fullName.trim(),
-        gender: formData.gender,
-        phone: formData.phone.trim(),
+        dob: formData.dob,
+        phone: formData.phone.replace(/\D/g, ''),
         email: formData.email.trim(),
         submittedAt: new Date().toISOString()
       };
@@ -190,38 +198,33 @@ export const LeadWelcomeModal = () => {
                   />
                 </div>
                 {errors.fullName && (
-                  <p className="text-[11px] text-rose-600 font-medium pl-1">{errors.fullName}</p>
+                  <p className="text-[11px] text-rose-300 font-semibold pl-1">{errors.fullName}</p>
                 )}
               </div>
 
-              {/* Gender */}
+              {/* Date of Birth (DOB) */}
               <div className="space-y-1">
                 <label className="block text-[11px] font-bold text-white/80 uppercase tracking-wider ml-1">
-                  Gender <span className="text-amber-400">*</span>
+                  Date of Birth (DOB) <span className="text-amber-400">*</span>
                 </label>
-                <div className="grid grid-cols-3 gap-2">
-                  {GENDER_OPTIONS.map((g) => {
-                    const isSelected = formData.gender === g.id;
-                    return (
-                      <button
-                        key={g.id}
-                        type="button"
-                        disabled={isSubmitting || isSuccess}
-                        onClick={() => handleGenderSelect(g.id)}
-                        className={`py-2 px-2.5 rounded-xl border flex items-center justify-center space-x-1.5 text-xs font-bold transition-all cursor-pointer ${
-                          isSelected
-                            ? 'bg-amber-500 text-white border-amber-500 shadow-sm shadow-amber-500/30 scale-[1.02]'
-                            : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
-                        }`}
-                      >
-                        <span>{g.label}</span>
-                        {isSelected && <FaCheck className="text-[9px] text-white ml-0.5" />}
-                      </button>
-                    );
-                  })}
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-amber-600 transition-colors">
+                    <FaCalendarAlt className="text-xs" />
+                  </div>
+                  <input
+                    type="date"
+                    name="dob"
+                    max={new Date().toISOString().split('T')[0]}
+                    value={formData.dob}
+                    onChange={handleChange}
+                    disabled={isSubmitting || isSuccess}
+                    className={`w-full pl-10 pr-3 py-2.5 bg-white/10 backdrop-blur-sm border ${
+                      errors.dob ? 'border-rose-400 ring-2 ring-rose-400/20' : 'border-white/20 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20'
+                    } rounded-xl text-xs sm:text-sm font-medium text-white placeholder:text-white/50 focus:outline-none transition-all [color-scheme:dark]`}
+                  />
                 </div>
-                {errors.gender && (
-                  <p className="text-[11px] text-rose-600 font-medium pl-1">{errors.gender}</p>
+                {errors.dob && (
+                  <p className="text-[11px] text-rose-300 font-semibold pl-1">{errors.dob}</p>
                 )}
               </div>
 
@@ -248,7 +251,7 @@ export const LeadWelcomeModal = () => {
                   />
                 </div>
                 {errors.phone && (
-                  <p className="text-[11px] text-rose-600 font-medium pl-1">{errors.phone}</p>
+                  <p className="text-[11px] text-rose-300 font-semibold pl-1">{errors.phone}</p>
                 )}
               </div>
 
@@ -274,7 +277,7 @@ export const LeadWelcomeModal = () => {
                   />
                 </div>
                 {errors.email && (
-                  <p className="text-[11px] text-rose-600 font-medium pl-1">{errors.email}</p>
+                  <p className="text-[11px] text-rose-300 font-semibold pl-1">{errors.email}</p>
                 )}
               </div>
 

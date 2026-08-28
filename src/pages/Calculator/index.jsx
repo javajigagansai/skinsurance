@@ -791,7 +791,7 @@ export const Calculator = ({ isEmbedded = false }) => {
                 className="w-full py-3.5 rounded-2xl bg-brand-accent text-neutral-950 font-black text-xs sm:text-sm uppercase tracking-wider hover:bg-white hover:text-neutral-950 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shadow-xl hover:-translate-y-0.5 active:scale-95"
               >
                 <FaShieldAlt className="text-xs" />
-                <span>Lock In This Plan · Book Free Call</span>
+                <span>Lock In This Plan · Get Free Consultation</span>
               </button>
 
               <p className="text-[11px] text-center text-slate-400 font-medium">

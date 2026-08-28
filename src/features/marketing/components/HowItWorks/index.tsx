@@ -199,7 +199,7 @@ export const HowItWorks = () => {
             className="shrink-0 px-6 py-3 rounded-xl bg-brand-accent text-neutral-950 font-black text-xs uppercase tracking-wider hover:bg-white transition-all duration-300 shadow-lg hover:-translate-y-0.5 active:scale-95 flex items-center gap-2 cursor-pointer relative z-10"
           >
             <FaPhoneAlt className="text-xs" />
-            <span>Book a Free Call</span>
+            <span>Get a Free Consultation</span>
             <FaArrowRight className="text-[10px]" />
           </Link>
         </motion.div>

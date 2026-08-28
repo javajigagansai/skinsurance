@@ -96,9 +96,11 @@ export const HowItWorks = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-[32px] sm:text-[46px] md:text-[56px] lg:text-[68px] xl:text-[76px] font-extrabold tracking-normal [word-spacing:0.35em] sm:[word-spacing:0.45em] text-neutral-950 dark:text-white uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] w-full block text-center"
+            className="text-[32px] sm:text-[46px] md:text-[56px] lg:text-[68px] xl:text-[76px] font-extrabold text-neutral-950 dark:text-white uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-3 sm:gap-x-4 md:gap-x-5 text-center"
           >
-            HOW IT WORKS
+            <span className="inline-block">HOW</span>
+            <span className="inline-block">IT</span>
+            <span className="inline-block">WORKS</span>
           </motion.h2>
         </div>
 

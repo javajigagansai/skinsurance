@@ -168,13 +168,9 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
 
         <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-brand-accent text-xs font-black uppercase tracking-wider mb-6">
-              <span>Claims Support Desk</span>
-            </div>
-
             <h1 className="text-4xl sm:text-5xl lg:text-[70px] font-black text-black dark:text-white leading-[1.05] tracking-tight mb-6 uppercase font-['Plus_Jakarta_Sans',sans-serif]">
               We Help You <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-brand-accent to-amber-500">
+              <span className="text-[#FFB300] dark:text-brand-accent">
                 Through Every Claim.
               </span>
             </h1>
@@ -245,11 +241,8 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
             <span>Interactive Claim Assistant</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-950 dark:text-white uppercase tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
-            Filing a Claim is{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-brand-accent to-amber-500">
-              Now Made Easy
-            </span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight font-['Plus_Jakarta_Sans',sans-serif] text-[#FFB300] dark:text-brand-accent">
+            Filing a Claim is Now Made Easy
           </h2>
           <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 max-w-xl mx-auto">
             Choose your requirement below to start a new policy claim or receive immediate expert assistance for an ongoing claim.
@@ -271,15 +264,15 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
               {/* Option 1: File a New Claim */}
               <div 
                 onClick={() => handleSelectMode('new_claim')}
-                className="group relative rounded-3xl p-7 sm:p-9 bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 shadow-md hover:shadow-xl hover:border-amber-500/50 dark:hover:border-brand-accent/50 transition-all duration-300 flex flex-col justify-between cursor-pointer overflow-hidden"
+                className="group relative rounded-3xl p-7 sm:p-9 bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-white/10 shadow-md hover:shadow-xl hover:border-red-500/60 dark:hover:border-red-500/60 transition-all duration-300 flex flex-col justify-between cursor-pointer overflow-hidden"
               >
                 <div className="space-y-5">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 text-neutral-950 flex items-center justify-center text-2xl shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-600 to-rose-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-red-500/25 group-hover:scale-105 transition-transform">
                     <FaFileContract />
                   </div>
 
                   <div className="space-y-1.5">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-amber-600 dark:text-brand-accent">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-red-600 dark:text-red-400">
                       Option 01
                     </span>
                     <h3 className="text-xl sm:text-2xl font-black text-neutral-950 dark:text-white uppercase tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
@@ -292,7 +285,7 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
                 </div>
 
                 <div className="pt-6">
-                  <div className="w-full py-3.5 px-5 rounded-2xl bg-amber-500 group-hover:bg-amber-400 text-neutral-950 font-black text-xs uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2">
+                  <div className="w-full py-3.5 px-5 rounded-2xl bg-red-600 group-hover:bg-red-500 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2">
                     <span>Start New Claim</span>
                     <FaArrowRight className="text-xs group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -810,7 +803,7 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
             { step: '05', title: 'CLAIM SETTLEMENT', desc: 'We stay with you until the final settlement is paid into your account.' }
           ].map((item, i) => (
             <div key={i} className="flex flex-col">
-              <div className="text-3xl font-black text-[#FFB300] dark:text-brand-accent mb-4 font-serif italic border-b border-black/10 dark:border-white/10 pb-3">
+              <div className="text-3xl sm:text-4xl font-black text-[#FFB300] dark:text-brand-accent mb-4 font-['Plus_Jakarta_Sans',sans-serif] tracking-tight border-b border-black/10 dark:border-white/10 pb-3">
                 {item.step}
               </div>
               <h4 className="text-lg font-bold text-black dark:text-white mb-2">{item.title}</h4>
@@ -884,8 +877,8 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
                  { title: 'TPA & HOSPITAL DESK COORDINATION', desc: 'We directly interface with Third-Party Administrators for speedy cashless clearance.' },
                  { title: 'END-TO-END ADVOCACY', desc: 'From pre-audit of medical bills to dispute escalation, we stay by your side.' },
                ].map((item, i) => (
-                 <li key={i} className="border-l-4 border-brand-accent pl-5">
-                   <h4 className="text-lg font-bold text-black dark:text-white mb-1">{item.title}</h4>
+                 <li key={i} className="border-l-4 border-red-600 dark:border-red-500 pl-5">
+                   <h4 className="text-lg font-bold text-red-600 dark:text-red-500 mb-1 font-['Plus_Jakarta_Sans',sans-serif]">{item.title}</h4>
                    <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">{item.desc}</p>
                  </li>
                ))}

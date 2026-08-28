@@ -13,15 +13,15 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 mb-8">
 
           {/* Brand Panel (5 cols) */}
-          <div className="lg:col-span-5 flex flex-col justify-start items-start gap-4">
-            <Link to="/" className="inline-flex items-center gap-3.5 group">
+          <div className="lg:col-span-5 flex flex-col justify-start items-start gap-5">
+            <Link to="/" className="inline-flex items-center gap-4 sm:gap-5 group">
               <img
                 src="/logo.png"
                 alt="SK Smart Investments Logo"
-                className="h-14 sm:h-16 md:h-[64px] w-auto object-contain shrink-0"
+                className="h-20 sm:h-24 md:h-28 lg:h-32 w-auto object-contain shrink-0 drop-shadow-md"
               />
               <div className="flex flex-col text-left justify-center leading-none">
-                <svg viewBox="0 0 240 28" className="h-9 sm:h-10 md:h-11 w-auto select-none" aria-label="SK Smart Investments - Insurance and Investments Specialist">
+                <svg viewBox="0 0 240 28" className="h-12 sm:h-14 md:h-16 lg:h-[72px] w-auto select-none" aria-label="SK Smart Investments - Insurance and Investments Specialist">
                   <text 
                     x="0" 
                     y="13" 
@@ -46,7 +46,7 @@ export const Footer = () => {
               </div>
             </Link>
 
-            <div className="flex items-center flex-wrap gap-2.5">
+            <div className="flex items-center flex-wrap gap-3 pt-1">
               {[
                 { name: "Facebook", icon: FaFacebook, url: "https://www.facebook.com/profile.php?id=61592452371528", color: "text-blue-500 hover:text-white border-blue-500/30 bg-blue-500/10 hover:bg-blue-600" },
                 { name: "Instagram", icon: FaInstagram, url: "https://www.instagram.com/sk_smartinvestments/", color: "text-pink-500 hover:text-white border-pink-500/30 bg-pink-500/10 hover:bg-pink-600" },
@@ -60,9 +60,9 @@ export const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={item.name}
-                  className={`w-9 h-9 rounded-xl border flex items-center justify-center transition-all duration-300 ${item.color} shadow-sm hover:scale-105 active:scale-95`}
+                  className={`w-11 h-11 rounded-xl border flex items-center justify-center transition-all duration-300 ${item.color} shadow-sm hover:scale-110 active:scale-95`}
                 >
-                  <item.icon className="text-sm" />
+                  <item.icon className="text-base" />
                 </a>
               ))}
             </div>

@@ -703,7 +703,7 @@ export const Calculator = ({ isEmbedded = false }) => {
                     ? 'Annual Estimated Premium' 
                     : 'Monthly Premium'}
                 </p>
-                <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-emerald-400 tracking-tight flex items-center justify-center gap-1 font-['Plus_Jakarta_Sans',sans-serif]">
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight flex items-center justify-center gap-1 font-['Plus_Jakarta_Sans',sans-serif]">
                   <span>₹</span>
                   {suiteTab === 'sip' ? (
                     <span>
@@ -723,7 +723,7 @@ export const Calculator = ({ isEmbedded = false }) => {
                     <AnimatedCounter value={premium} />
                   )}
                 </div>
-                <p className="text-xs text-emerald-300/90 font-bold pt-0.5">
+                <p className="text-xs text-white/80 font-medium pt-0.5">
                   {getOutputMeta().sub}
                 </p>
               </div>
@@ -760,7 +760,7 @@ export const Calculator = ({ isEmbedded = false }) => {
                     </div>
                     <div className="flex justify-between py-2 px-3.5 rounded-xl bg-white/5 border border-white/5">
                       <span className="text-slate-400">Estimated Monthly</span>
-                      <strong className="text-emerald-400 font-extrabold">₹{healthBreakdown.monthlyPremium.toLocaleString('en-IN')} / mo</strong>
+                      <strong className="text-white font-extrabold">₹{healthBreakdown.monthlyPremium.toLocaleString('en-IN')} / mo</strong>
                     </div>
                   </>
                 ) : (

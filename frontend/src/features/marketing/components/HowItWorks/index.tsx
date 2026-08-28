@@ -96,7 +96,7 @@ export const HowItWorks = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-[32px] sm:text-[50px] md:text-[62px] lg:text-[76px] xl:text-[86px] font-bold tracking-[0.12em] sm:tracking-[0.18em] lg:tracking-[0.24em] text-neutral-950 dark:text-white uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] w-full block text-center"
+            className="text-[32px] sm:text-[46px] md:text-[56px] lg:text-[68px] xl:text-[76px] font-extrabold tracking-tight text-neutral-950 dark:text-white uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] w-full block text-center"
           >
             HOW IT WORKS
           </motion.h2>
@@ -177,7 +177,7 @@ export const HowItWorks = () => {
           initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
           transition={{ duration: 0.5, delay: 0.45 }}
-          className="mt-4 sm:mt-5 p-4 sm:p-5 rounded-2xl bg-neutral-950 text-white border border-white/10 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 relative overflow-hidden"
+          className="mt-4 sm:mt-5 p-4 sm:p-5 rounded-2xl bg-black/85 backdrop-blur-xl text-white border border-white/15 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-4 relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -189,19 +189,19 @@ export const HowItWorks = () => {
             <h4 className="text-sm sm:text-base font-black text-white tracking-tight">
               Get an Unbiased, Multi-Partner Comparison in Minutes
             </h4>
-            <p className="text-[11px] sm:text-xs text-neutral-400 font-medium">
+            <p className="text-[11px] sm:text-xs text-neutral-300 font-medium">
               Talk to certified advisors for transparent policy audits and tailored family protection blueprints.
             </p>
           </div>
 
-          <Link
-            to="/appointment"
+          <a
+            href="tel:+919840723956"
             className="shrink-0 px-6 py-3 rounded-xl bg-brand-accent text-neutral-950 font-black text-xs uppercase tracking-wider hover:bg-white transition-all duration-300 shadow-lg hover:-translate-y-0.5 active:scale-95 flex items-center gap-2 cursor-pointer relative z-10"
           >
             <FaPhoneAlt className="text-xs" />
-            <span>Get a Free Consultation</span>
+            <span>Call Us</span>
             <FaArrowRight className="text-[10px]" />
-          </Link>
+          </a>
         </motion.div>
 
       </div>

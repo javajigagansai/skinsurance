@@ -13,12 +13,12 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 mb-8">
 
           {/* Brand Panel (5 cols) */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-4">
             <Link to="/" className="inline-flex items-center gap-3.5 group">
               <img
                 src="/logo.png"
                 alt="SK Smart Investments Logo"
-                className="h-14 sm:h-16 md:h-[68px] w-auto object-contain shrink-0"
+                className="h-14 sm:h-16 md:h-[64px] w-auto object-contain shrink-0"
               />
               <div className="flex flex-col text-left justify-center leading-none">
                 <svg viewBox="0 0 240 28" className="h-9 sm:h-10 md:h-11 w-auto select-none" aria-label="SK Smart Investments - Insurance and Investments Specialist">
@@ -45,26 +45,30 @@ export const Footer = () => {
                 </svg>
               </div>
             </Link>
-            <div className="flex flex-wrap gap-3 pt-1">
-              {
-                [
-                  { icon: FaFacebook, url: "https://www.facebook.com/profile.php?id=61592452371528", color: "text-blue-600 border-blue-600/50 bg-blue-600/10" },
-                  { icon: FaInstagram, url: "https://www.instagram.com/sk_smartinvestments/", color: "text-pink-500 border-pink-500/50 bg-pink-500/10" },
-                  { icon: FaYoutube, url: "https://www.youtube.com/@Sksmartinvestments", color: "text-red-500 border-red-500/50 bg-red-500/10" },
-                  { icon: FaLinkedin, url: "https://www.linkedin.com/company/sksmartinvestments/", color: "text-blue-500 border-blue-500/50 bg-blue-500/10" },
-                  { icon: FaWhatsapp, url: "https://wa.me/919994451300?text=Hi", color: "text-emerald-500 border-emerald-500/50 bg-emerald-500/10" }
-                ].map((item, idx) => (
-                  <a
-                    key={idx}
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`w-10 h-10 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center transition-all duration-300 ${item.color} hover:scale-110`}
-                  >
-                    <item.icon className="text-base" />
-                  </a>
-                ))
-              }
+
+            <p className="text-xs sm:text-[13px] text-neutral-400 font-normal leading-relaxed max-w-md pt-1 font-['Inter',sans-serif]">
+              Empowering families and businesses with goal-based wealth planning, unbiased insurance advisory, and dedicated lifetime claims support.
+            </p>
+
+            <div className="flex items-center flex-wrap gap-2.5 pt-2">
+              {[
+                { name: "Facebook", icon: FaFacebook, url: "https://www.facebook.com/profile.php?id=61592452371528", color: "text-blue-500 hover:text-white border-blue-500/30 bg-blue-500/10 hover:bg-blue-600" },
+                { name: "Instagram", icon: FaInstagram, url: "https://www.instagram.com/sk_smartinvestments/", color: "text-pink-500 hover:text-white border-pink-500/30 bg-pink-500/10 hover:bg-pink-600" },
+                { name: "YouTube", icon: FaYoutube, url: "https://www.youtube.com/@Sksmartinvestments", color: "text-red-500 hover:text-white border-red-500/30 bg-red-500/10 hover:bg-red-600" },
+                { name: "LinkedIn", icon: FaLinkedin, url: "https://www.linkedin.com/company/sksmartinvestments/", color: "text-sky-500 hover:text-white border-sky-500/30 bg-sky-500/10 hover:bg-sky-600" },
+                { name: "WhatsApp", icon: FaWhatsapp, url: "https://wa.me/919994451300?text=Hi", color: "text-emerald-500 hover:text-white border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-600" }
+              ].map((item, idx) => (
+                <a
+                  key={idx}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={item.name}
+                  className={`w-9 h-9 rounded-xl border flex items-center justify-center transition-all duration-300 ${item.color} shadow-sm hover:scale-105 active:scale-95`}
+                >
+                  <item.icon className="text-sm" />
+                </a>
+              ))}
             </div>
           </div>
 

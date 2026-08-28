@@ -106,6 +106,29 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
 
   const displayStats = stats && stats.length > 0 ? stats : defaultStats;
 
+  const PASTEL_STYLES = [
+    {
+      bg: 'bg-sky-50/90 dark:bg-sky-950/40 border-sky-200/80 dark:border-sky-800/50',
+      numColor: 'text-sky-950 dark:text-sky-200',
+      labelColor: 'text-sky-800 dark:text-sky-300'
+    },
+    {
+      bg: 'bg-emerald-50/90 dark:bg-emerald-950/40 border-emerald-200/80 dark:border-emerald-800/50',
+      numColor: 'text-emerald-950 dark:text-emerald-200',
+      labelColor: 'text-emerald-800 dark:text-emerald-300'
+    },
+    {
+      bg: 'bg-purple-50/90 dark:bg-purple-950/40 border-purple-200/80 dark:border-purple-800/50',
+      numColor: 'text-purple-950 dark:text-purple-200',
+      labelColor: 'text-purple-800 dark:text-purple-300'
+    },
+    {
+      bg: 'bg-amber-50/90 dark:bg-amber-950/40 border-amber-200/80 dark:border-amber-800/50',
+      numColor: 'text-amber-950 dark:text-amber-200',
+      labelColor: 'text-amber-800 dark:text-amber-300'
+    }
+  ];
+
   return (
     <section ref={sectionRef} className="w-full min-h-screen flex flex-col justify-center snap-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 border-b border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300">
       
@@ -115,13 +138,13 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
           initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-[26px] sm:text-[40px] md:text-[50px] lg:text-[62px] xl:text-[70px] font-bold tracking-tight text-neutral-900 dark:text-white uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] w-full block text-center"
+          className="text-[26px] sm:text-[40px] md:text-[50px] lg:text-[62px] xl:text-[70px] font-bold tracking-tight text-red-600 dark:text-red-500 uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] w-full block text-center"
         >
           A LEGACY MEASURED IN TRUST
         </motion.h2>
       </div>
 
-      {/* Perfectly Aligned 4-Column Stats Grid */}
+      {/* Perfectly Aligned 4-Column Stats Grid in Pastel Colors */}
       <motion.div
         initial={{ opacity: 0, y: 25 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
@@ -129,13 +152,14 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
         className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 items-stretch"
       >
         {displayStats.map((item, index) => {
+          const pastel = PASTEL_STYLES[index % PASTEL_STYLES.length];
           return (
             <div
               key={index}
-              className="relative p-6 sm:p-8 min-h-[160px] sm:min-h-[175px] rounded-3xl bg-white dark:bg-neutral-900/90 border border-slate-200/80 dark:border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] flex flex-col items-center justify-center text-center group hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
+              className={`relative p-6 sm:p-8 min-h-[160px] sm:min-h-[175px] rounded-3xl border shadow-[0_10px_30px_rgba(0,0,0,0.04)] flex flex-col items-center justify-center text-center group hover:-translate-y-1.5 transition-all duration-300 overflow-hidden ${pastel.bg}`}
             >
               {/* Stat Number with Count-Up Animation on Viewport Entry */}
-              <div className="text-2xl xs:text-3xl sm:text-4xl lg:text-4xl xl:text-5xl font-black text-neutral-900 dark:text-brand-accent tracking-tight mb-2.5 tabular-nums whitespace-nowrap flex items-center justify-center">
+              <div className={`text-2xl xs:text-3xl sm:text-4xl lg:text-4xl xl:text-5xl font-black tracking-tight mb-2.5 tabular-nums whitespace-nowrap flex items-center justify-center ${pastel.numColor}`}>
                 <AnimatedStatNumber
                   rawString={item.number}
                   isInView={isInView}
@@ -144,7 +168,7 @@ export const PremiumEditorialStats = ({ stats }: { stats?: Stat[] }) => {
               </div>
 
               {/* Stat Label */}
-              <p className="text-xs sm:text-sm font-bold text-neutral-600 dark:text-neutral-300 uppercase tracking-wider leading-snug">
+              <p className={`text-xs sm:text-sm font-bold uppercase tracking-wider leading-snug ${pastel.labelColor}`}>
                 {item.label}
               </p>
             </div>

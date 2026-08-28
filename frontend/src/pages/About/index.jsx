@@ -295,8 +295,9 @@ export const About = () => {
       <section id="leadership" className="py-20 sm:py-24 lg:py-32 bg-white dark:bg-neutral-900/50 border-b border-black/5 dark:border-white/5 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
-              VISIONARY LEADERSHIP
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] flex flex-wrap justify-center items-center gap-x-3 sm:gap-x-4 md:gap-x-5 text-center">
+              <span className="inline-block">VISIONARY</span>
+              <span className="inline-block">LEADERSHIP</span>
             </h2>
           </div>
 
@@ -453,8 +454,12 @@ export const About = () => {
               transition={{ duration: 0.6 }}
               className="lg:col-span-6 space-y-6 text-left"
             >
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
-                THE FOUNDATION OF OUR LEGACY
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] flex flex-wrap items-center gap-x-2.5 sm:gap-x-3.5 md:gap-x-4 text-left">
+                <span className="inline-block">THE</span>
+                <span className="inline-block">FOUNDATION</span>
+                <span className="inline-block">OF</span>
+                <span className="inline-block">OUR</span>
+                <span className="inline-block">LEGACY</span>
               </h2>
 
               <div className="space-y-4 text-base sm:text-lg text-neutral-600 dark:text-neutral-300 font-normal leading-relaxed font-['Inter',sans-serif]">
@@ -563,8 +568,12 @@ export const About = () => {
               <FaShieldAlt className="text-xs" />
               <span>Vision & Strategic Commitment</span>
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-extrabold text-neutral-950 dark:text-white uppercase leading-none tracking-normal [word-spacing:0.22em] sm:[word-spacing:0.32em] font-['Plus_Jakarta_Sans',sans-serif]">
-              OUR VISION & FUTURE HORIZON
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-extrabold text-neutral-950 dark:text-white uppercase leading-none font-['Plus_Jakarta_Sans',sans-serif] flex flex-wrap justify-center items-center gap-x-2.5 sm:gap-x-4 md:gap-x-5 text-center">
+              <span className="inline-block">OUR</span>
+              <span className="inline-block">VISION</span>
+              <span className="inline-block">&</span>
+              <span className="inline-block">FUTURE</span>
+              <span className="inline-block">HORIZON</span>
             </h2>
             <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-300 mt-4 leading-relaxed font-['Inter',sans-serif]">
               Pioneering transparent, ethical, and goal-aligned protection architectures for every family and enterprise across India.
@@ -697,8 +706,10 @@ export const About = () => {
       <section className="py-20 sm:py-24 lg:py-32 bg-slate-50 dark:bg-neutral-950 border-b border-black/5 dark:border-white/5 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
-              OUR GUIDING PRINCIPLES
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] flex flex-wrap justify-center items-center gap-x-3 sm:gap-x-4 md:gap-x-5 text-center">
+              <span className="inline-block">OUR</span>
+              <span className="inline-block">GUIDING</span>
+              <span className="inline-block">PRINCIPLES</span>
             </h2>
           </div>
 
@@ -738,8 +749,10 @@ export const About = () => {
       <section className="py-20 sm:py-24 lg:py-32 bg-white dark:bg-neutral-900/50 border-b border-black/5 dark:border-white/5 transition-colors overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
-              MILESTONES THAT MATTER
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] flex flex-wrap justify-center items-center gap-x-3 sm:gap-x-4 md:gap-x-5 text-center">
+              <span className="inline-block">MILESTONES</span>
+              <span className="inline-block">THAT</span>
+              <span className="inline-block">MATTER</span>
             </h2>
           </div>
 
@@ -848,8 +861,10 @@ export const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
-              AWARDS & ACHIEVEMENTS
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] flex flex-wrap justify-center items-center gap-x-3 sm:gap-x-4 md:gap-x-5 text-center">
+              <span className="inline-block">AWARDS</span>
+              <span className="inline-block">&</span>
+              <span className="inline-block">ACHIEVEMENTS</span>
             </h2>
           </div>
 

@@ -407,7 +407,7 @@ export const AwardsManager = () => {
                       </span>
                     </div>
 
-                    <h4 className="text-xs sm:text-sm font-black text-neutral-950 dark:text-white line-clamp-2 leading-snug font-['Plus_Jakarta_Sans',sans-serif]">
+                    <h4 className="text-xs sm:text-sm font-black text-neutral-950 dark:text-white line-clamp-2 leading-snug uppercase tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
                       {award.title}
                     </h4>
 
@@ -567,7 +567,7 @@ export const AwardsManager = () => {
                     required
                     value={formData.title}
                     onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                    placeholder="e.g. Dream Agency Elite Aspirant Award"
+                    placeholder="e.g. DREAM AGENCY ELITE ASPIRANT AWARD"
                     className="w-full px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-neutral-800 border border-slate-200 dark:border-white/10 text-xs sm:text-sm font-bold text-neutral-900 dark:text-white placeholder-neutral-400 focus:ring-2 focus:ring-brand-accent"
                   />
                 </div>
@@ -747,7 +747,7 @@ export const AwardsManager = () => {
                   <span className="text-[10px] font-black uppercase tracking-wider text-brand-accent">
                     {lightboxAward.tag || lightboxAward.category} · {lightboxAward.year}
                   </span>
-                  <h3 className="text-base sm:text-lg font-black text-white font-['Plus_Jakarta_Sans',sans-serif]">
+                  <h3 className="text-base sm:text-lg font-black text-white uppercase font-['Plus_Jakarta_Sans',sans-serif]">
                     {lightboxAward.title}
                   </h3>
                 </div>

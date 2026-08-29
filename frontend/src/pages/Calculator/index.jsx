@@ -340,11 +340,8 @@ export const Calculator = ({ isEmbedded = false }) => {
         {/* ── Section Header ── */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
           <div className="text-left">
-            <h2 className="text-xl sm:text-2xl font-extrabold uppercase text-neutral-950 dark:text-white leading-tight font-['Plus_Jakarta_Sans',sans-serif] flex flex-wrap items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3">
-              <span className="inline-block">PLAN</span>
-              <span className="inline-block">YOUR</span>
-              <span className="inline-block">FINANCIAL</span>
-              <span className="inline-block">FUTURE</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase text-neutral-950 dark:text-white tracking-[-0.02em] [word-spacing:0.24em] leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
+              PLAN YOUR FINANCIAL FUTURE
             </h2>
           </div>
 

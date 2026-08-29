@@ -16,6 +16,7 @@ import { ApplicationsManager } from './ApplicationsManager';
 import { FlyersManager } from './FlyersManager';
 import { LeadsManager } from './LeadsManager';
 import { AwardsManager } from './AwardsManager';
+import { ProfileManager } from './ProfileManager';
 
 const DEFAULT_COMPANIES = [
   'SBI Life Insurance', 'LIC', 'Tata AIA', 'HDFC Life', 
@@ -77,23 +78,7 @@ const planSchema = z.object({
   slug: z.string().optional(),
 });
 
-export const ManagerDashboard = ({ tab }) => {
-  if (tab === 'awards') {
-    return <AwardsManager />;
-  }
-  if (tab === 'flyers') {
-    return <FlyersManager />;
-  }
-  if (tab === 'careers') {
-    return <CareersManager />;
-  }
-  if (tab === 'applications') {
-    return <ApplicationsManager />;
-  }
-  if (tab === 'leads' || tab === 'consultations') {
-    return <LeadsManager />;
-  }
-
+const PlansManager = () => {
   const [view, setView] = useState('list');
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -793,6 +778,16 @@ export const ManagerDashboard = ({ tab }) => {
       </div>
     </div>
   );
+};
+
+export const ManagerDashboard = ({ tab }) => {
+  if (tab === 'profile') return <ProfileManager />;
+  if (tab === 'awards') return <AwardsManager />;
+  if (tab === 'flyers') return <FlyersManager />;
+  if (tab === 'careers') return <CareersManager />;
+  if (tab === 'applications') return <ApplicationsManager />;
+  if (tab === 'leads' || tab === 'consultations') return <LeadsManager />;
+  return <PlansManager />;
 };
 
 export default ManagerDashboard;

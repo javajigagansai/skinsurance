@@ -60,7 +60,7 @@ const translations = {
 
     // Footer
     footer_desc: "Providing expert insurance and investment solutions built on trust and strategic planning.",
-    footer_rights: "© All Rights Reserved",
+    footer_rights: "© 2026 All Rights Reserved",
     footer_insurance: "Insurance",
     footer_company: "Company",
     footer_contact: "Contact Us",
@@ -178,7 +178,7 @@ const translations = {
 
     // Footer
     footer_desc: "நம்பிக்கை மற்றும் மூலோபாய திட்டமிடலின் அடிப்படையில் கட்டமைக்கப்பட்ட நிபுணத்துவ காப்பீடு மற்றும் முதலீட்டு தீர்வுகளை வழங்குதல்.",
-    footer_rights: "© All Rights Reserved",
+    footer_rights: "© 2026 All Rights Reserved",
     footer_insurance: "காப்பீடு",
     footer_company: "நிறுவனம்",
     footer_contact: "எங்களைத் தொடர்பு கொள்ளவும்",
@@ -296,7 +296,7 @@ const translations = {
 
     // Footer
     footer_desc: "నమ్మకం మరియు వ్యూహాత్మక ప్రణాళికపై నిర్మించబడిన నిపుణులైన బీమా మరియు పెట్టుబడి పరిష్కారాలను అందించడం.",
-    footer_rights: "© All Rights Reserved",
+    footer_rights: "© 2026 All Rights Reserved",
     footer_insurance: "బీమా",
     footer_company: "కంపెనీ",
     footer_contact: "మమ్మల్ని సంప్రదించండి",
@@ -414,7 +414,7 @@ const translations = {
 
     // Footer
     footer_desc: "വിശ്വാസത്തിലും തന്ത്രപരമായ ആസൂത്രണത്തിലും അധിഷ്ഠിതമായ വിദഗ്ദ്ധ ഇൻഷുറൻസ്, നിക്ഷേപ പരിഹാരങ്ങൾ നൽകുന്നു.",
-    footer_rights: "© All Rights Reserved",
+    footer_rights: "© 2026 All Rights Reserved",
     footer_insurance: "ഇൻഷുറൻസ്",
     footer_company: "കമ്പനി",
     footer_contact: "ഞങ്ങളെ ബന്ധപ്പെടുക",
@@ -532,7 +532,7 @@ const translations = {
 
     // Footer
     footer_desc: "भरोसे और रणनीतिक योजना पर निर्मित विशेषज्ञ बीमा और निवेश समाधान प्रदान करना।",
-    footer_rights: "© All Rights Reserved",
+    footer_rights: "© 2026 All Rights Reserved",
     footer_insurance: "बीमा",
     footer_company: "कंपनी",
     footer_contact: "संपर्क करें",
@@ -598,8 +598,49 @@ const translations = {
 export const LanguageProvider = ({ children }) => {
   const [locale, setLocale] = useState(() => localStorage.getItem('current_lang') || 'en');
 
+  const triggerGoogleTranslate = (langCode) => {
+    try {
+      const hostname = window.location.hostname;
+      const targetVal = langCode === 'en' ? '/en/en' : `/en/${langCode}`;
+
+      // Set cookie across root and domain
+      document.cookie = `googtrans=${targetVal}; path=/;`;
+      if (hostname && hostname !== 'localhost') {
+        document.cookie = `googtrans=${targetVal}; domain=${hostname}; path=/;`;
+        document.cookie = `googtrans=${targetVal}; domain=.${hostname}; path=/;`;
+      }
+
+      // Dispatch to Google Translate hidden selector if available
+      const selectElem = document.querySelector('.goog-te-combo');
+      if (selectElem) {
+        selectElem.value = langCode;
+        selectElem.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    } catch (e) {
+      console.warn('Google Translate sync:', e);
+    }
+  };
+
   useEffect(() => {
     localStorage.setItem('current_lang', locale);
+    triggerGoogleTranslate(locale);
+
+    // Re-trigger with interval to handle async script initialization
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      const selectElem = document.querySelector('.goog-te-combo');
+      if (selectElem) {
+        if (selectElem.value !== locale) {
+          selectElem.value = locale;
+          selectElem.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        clearInterval(interval);
+      }
+      if (attempts > 10) clearInterval(interval);
+    }, 400);
+
+    return () => clearInterval(interval);
   }, [locale]);
 
   const t = (key) => {

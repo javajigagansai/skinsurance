@@ -1,4 +1,4 @@
-"use client" 
+"use client"
 
 import * as React from "react"
 import { useMeasure } from "@uidotdev/usehooks"
@@ -188,42 +188,41 @@ export const ProcessTimeline = () => {
             Planning your financial <br /> and protection journey
           </h2>
           <p className="text-sm text-neutral-300 leading-relaxed font-normal tracking-wide">
+            We blend expert financial analysis with cutting-edge digital platforms to build tailored portfolios and insurance strategies.
+          </p>
+        </div>
+
         <div className="flex flex-col gap-6">
           {PROCESS_PHASES.map((phase, index) => (
             <motion.div
               key={phase.id}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              initial={{ opacity: 0, x: index % 2 === 0 ? 100 : -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} // smooth sliding out ease
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="flex border text-neutral-100 border-white/10 backdrop-blur-xl bg-neutral-900/60 shadow-xl shadow-black/40 rounded-3xl p-6 flex-col gap-4"
+            >
+              <div className="flex items-center gap-4">
+                <div className="rounded-full h-10 w-10 bg-white text-neutral-900 text-base font-bold flex justify-center items-center shadow-[0_0_15px_rgba(255,255,255,0.3)]">
                   {String(index + 1).padStart(2, "0")}
                 </div>
-              </ProcessCardTitle>
-              <ProcessCardBody className="flex flex-col gap-3 sm:gap-6 flex-1 justify-center">
-                <h3 className="text-xl sm:text-2xl font-[800] uppercase tracking-tight text-white">
+                <h3 className="text-lg font-[800] uppercase tracking-tight text-white">
                   {phase.title}
                 </h3>
-                <p className="opacity-80 text-sm sm:text-base text-neutral-300 leading-relaxed">
-                  {phase.description}
-                </p>
-              </ProcessCardBody>
+              </div>
+              <p className="opacity-80 text-sm text-neutral-300 leading-relaxed">
+                {phase.description}
+              </p>
             </motion.div>
           ))}
-      {/* Desktop Layout (Horizontal Sticky Scroll) */}
-      <div className="hidden md:block">
-        <ContainerScroll
-          className="container px-6 py-12 sm:py-24 h-[300vh] mx-auto border-t border-white/5"
-        >
-          <div className="mb-12 space-y-4 max-w-[800px] mx-auto text-center flex flex-col items-center">
-            <div className="mb-4">
+        </div>
+      </div>
+
       {/* Desktop Layout (Horizontal Sticky Scroll) */}
       <div className="hidden md:block">
         <ContainerScroll
           className="container px-0 h-[300vh] mx-auto border-t border-white/5"
+        >
           <ContainerSticky className="top-0 flex flex-col justify-center h-[100dvh] pt-[48px] pb-[48px]">
             <div className="flex flex-col items-start text-left max-w-[1400px] mx-auto w-full px-4 md:px-8 xl:px-16 mb-[40px]">
               <span className="mb-[16px] text-[11px] font-extrabold text-brand-accent tracking-[0.3em] uppercase">
@@ -238,6 +237,8 @@ export const ProcessTimeline = () => {
             </div>
 
             <div className="flex flex-nowrap gap-6 max-w-[1400px] mx-auto w-full px-4 md:px-8 xl:px-16">
+              {PROCESS_PHASES.map((phase, index) => (
+                <ProcessCard
                   key={phase.id}
                   itemsLength={PROCESS_PHASES.length}
                   index={index}
@@ -259,15 +260,6 @@ export const ProcessTimeline = () => {
                 </ProcessCard>
               ))}
             </div>
-          </ContainerSticky>
-        </ContainerScroll>
-      </div>
-                  <p className="opacity-80 text-neutral-300 leading-relaxed">
-                    {phase.description}
-                  </p>
-                </ProcessCardBody>
-              </ProcessCard>
-            ))}
           </ContainerSticky>
         </ContainerScroll>
       </div>

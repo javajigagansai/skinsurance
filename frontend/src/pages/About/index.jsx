@@ -136,7 +136,7 @@ export const About = () => {
   // Guiding Principles
   const principles = [
     {
-      title: 'Absolute Transparency',
+      title: 'ABSOLUTE TRANSPARENCY',
       desc: 'Zero hidden clauses, clear deductible guides, and upfront premium definitions for complete peace of mind.',
       icon: FaShieldAlt,
       colorClass: 'text-blue-600 dark:text-blue-400',
@@ -144,7 +144,7 @@ export const About = () => {
       hoverBg: 'hover:bg-blue-500/15 dark:hover:bg-blue-500/20 hover:border-blue-500/50 dark:hover:border-blue-400/50 hover:shadow-xl'
     },
     {
-      title: 'Actuarial Precision',
+      title: 'ACTUARIAL PRECISION',
       desc: 'Goal-based wealth planners and SIP models engineered using real-time market data and compounding indices.',
       icon: FaChartLine,
       colorClass: 'text-emerald-600 dark:text-emerald-400',
@@ -152,7 +152,7 @@ export const About = () => {
       hoverBg: 'hover:bg-emerald-500/15 dark:hover:bg-emerald-500/20 hover:border-emerald-500/50 dark:hover:border-emerald-400/50 hover:shadow-xl'
     },
     {
-      title: 'Community Advocacy',
+      title: 'COMMUNITY ADVOCACY',
       desc: 'Empowering Kanchipuram and wider Tamil Nadu families with accessible, localized, and fiduciary financial coaching.',
       icon: FaUsers,
       colorClass: 'text-purple-600 dark:text-purple-400',
@@ -160,7 +160,7 @@ export const About = () => {
       hoverBg: 'hover:bg-purple-500/15 dark:hover:bg-purple-500/20 hover:border-purple-500/50 dark:hover:border-purple-400/50 hover:shadow-xl'
     },
     {
-      title: 'Dedicated Claims Desk',
+      title: 'DEDICATED CLAIMS DESK',
       desc: 'Pre-sales clarity and lifetime post-sales assistance to secure top-tier cashless clearance and reimbursement speed.',
       icon: FaAward,
       colorClass: 'text-amber-600 dark:text-amber-400',
@@ -174,31 +174,31 @@ export const About = () => {
     {
       year: '2004',
       tag: 'INDEPENDENT ADVISORY',
-      title: 'Advisory Foundation',
+      title: 'ADVISORY FOUNDATION',
       desc: 'Founder and MD Prakash Gajendiran begins independent financial and insurance advisory in Kanchipuram, dedicated to family protection.'
     },
     {
       year: '2012',
       tag: 'INSTITUTIONAL EXPANSION',
-      title: 'Multi-Insurer Partnerships',
+      title: 'MULTI-INSURER PARTNERSHIPS',
       desc: 'Secures primary partnership certifications with India’s leading life and general insurers including Tata AIA, LIC, and HDFC Life.'
     },
     {
       year: '2018',
       tag: 'CLIENT REPUTATION',
-      title: '2,500+ Families Protected',
+      title: '2,500+ FAMILIES PROTECTED',
       desc: 'Crosses major community milestones, managing comprehensive long-term portfolios with consistent regional awards.'
     },
     {
       year: '2022',
       tag: 'FIDUCIARY BENCHMARK',
-      title: '5,000+ Families Secured',
+      title: '5,000+ FAMILIES SECURED',
       desc: 'Expands advisory reach across Tamil Nadu, launching a dedicated emergency cashless claims support desk.'
     },
     {
       year: '2025',
       tag: 'CORPORATE HEADQUARTERS',
-      title: 'MD Plaza HQ & Digital Suite',
+      title: 'MD PLAZA HQ & DIGITAL SUITE',
       desc: 'Inaugurates premier corporate headquarters at #104, West Raja Street, Kanchipuram, introducing digital planning suites.'
     }
   ];
@@ -256,7 +256,7 @@ export const About = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="w-full pt-4 sm:pt-8"
           >
-            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-neutral-950 dark:text-white w-full leading-[1.05] text-left font-['Plus_Jakarta_Sans',sans-serif]">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[88px] font-black uppercase tracking-[-0.03em] text-neutral-950 dark:text-white w-full leading-[1.02] text-left font-['Plus_Jakarta_Sans',sans-serif]">
               SECURING WEALTH, <br className="hidden sm:inline" />
               EMPOWERING FUTURES.
             </h1>
@@ -294,10 +294,9 @@ export const About = () => {
       ═══════════════════════════════════════════════════════════ */}
       <section id="leadership" className="py-20 sm:py-24 lg:py-32 bg-white dark:bg-neutral-900/50 border-b border-black/5 dark:border-white/5 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center">
-              <span className="inline-block">VISIONARY</span>
-              <span className="inline-block">LEADERSHIP</span>
+          <div className="text-center max-w-5xl mx-auto mb-10 sm:mb-14">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[62px] xl:text-[68px] font-black text-neutral-950 dark:text-white uppercase tracking-[-0.025em] [word-spacing:0.32em] leading-[1.08] font-['Plus_Jakarta_Sans',sans-serif]">
+              VISIONARY LEADERSHIP
             </h2>
           </div>
 
@@ -354,7 +353,7 @@ export const About = () => {
 
                 {/* Leader Narrative & Credentials */}
                 <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-left">
-                  <div className="space-y-2 pr-32 sm:pr-44 lg:pr-52">
+                  <div className={`space-y-2 ${(leader.bniBadge || leader.lionsBadge) ? 'pr-20 sm:pr-36 lg:pr-40' : ''}`}>
                     <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
                       <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-800 dark:text-brand-accent text-xs font-bold uppercase tracking-wide font-['Plus_Jakarta_Sans',sans-serif]">
                         <FaAward className="text-xs shrink-0" />
@@ -376,7 +375,7 @@ export const About = () => {
                       )}
                     </div>
 
-                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-neutral-950 dark:text-white tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
+                    <h3 className="text-2xl sm:text-3xl lg:text-[32px] xl:text-4xl font-extrabold text-neutral-950 dark:text-white tracking-tight whitespace-normal sm:whitespace-nowrap font-['Plus_Jakarta_Sans',sans-serif]">
                       {leader.name}
                     </h3>
                   </div>
@@ -424,7 +423,7 @@ export const About = () => {
                     <div className="pt-2">
                       <Link
                         to="/appointment"
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-accent text-neutral-950 text-xs sm:text-sm font-extrabold uppercase tracking-wider hover:bg-neutral-950 hover:text-white dark:hover:bg-white dark:hover:text-neutral-950 transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:scale-95 font-['Plus_Jakarta_Sans',sans-serif] cursor-pointer text-center"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-accent text-neutral-950 text-xs sm:text-sm font-extrabold uppercase tracking-wider hover:bg-brand-accent active:bg-brand-accent focus:bg-brand-accent shadow-md font-['Plus_Jakarta_Sans',sans-serif] cursor-pointer text-center"
                       >
                         <FaCalendarAlt className="text-xs" />
                         <span>Consult with {leader.name.replace(/^(Mr\.|Mrs\.|Dr\.)\s+/i, '').split(' ')[0]}</span>
@@ -454,12 +453,8 @@ export const About = () => {
               transition={{ duration: 0.6 }}
               className="lg:col-span-6 space-y-6 text-left"
             >
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] flex flex-wrap items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-left">
-                <span className="inline-block">THE</span>
-                <span className="inline-block">FOUNDATION</span>
-                <span className="inline-block">OF</span>
-                <span className="inline-block">OUR</span>
-                <span className="inline-block">LEGACY</span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-950 dark:text-white uppercase tracking-[-0.025em] [word-spacing:0.26em] leading-[1.15] font-['Plus_Jakarta_Sans',sans-serif] text-left">
+                THE FOUNDATION OF OUR LEGACY
               </h2>
 
               <div className="space-y-4 text-base sm:text-lg text-neutral-600 dark:text-neutral-300 font-normal leading-relaxed font-['Inter',sans-serif]">
@@ -563,17 +558,9 @@ export const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
           {/* Section Header */}
-          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-            <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-accent/10 border border-brand-accent/30 text-amber-900 dark:text-brand-accent text-xs font-black uppercase tracking-[0.2em] mb-4">
-              <FaShieldAlt className="text-xs" />
-              <span>Vision & Strategic Commitment</span>
-            </span>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-950 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center">
-              <span className="inline-block">OUR</span>
-              <span className="inline-block">VISION</span>
-              <span className="inline-block">&</span>
-              <span className="inline-block">FUTURE</span>
-              <span className="inline-block">HORIZON</span>
+          <div className="text-center max-w-5xl mx-auto mb-10 sm:mb-14">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[44px] xl:text-[48px] font-extrabold text-neutral-950 dark:text-white uppercase tracking-[-0.025em] [word-spacing:0.18em] leading-[1.15] whitespace-normal sm:whitespace-nowrap font-['Plus_Jakarta_Sans',sans-serif]">
+              OUR VISION & FUTURE HORIZON
             </h2>
             <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-300 mt-4 leading-relaxed font-['Inter',sans-serif]">
               Pioneering transparent, ethical, and goal-aligned protection architectures for every family and enterprise across India.
@@ -610,12 +597,9 @@ export const About = () => {
                 <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
                   <FaShieldAlt />
                 </div>
-                <div className="space-y-1.5">
-                  <span className="text-[11px] font-black uppercase tracking-wider text-blue-600 dark:text-blue-400">Pillar 01</span>
-                  <h3 className="text-lg sm:text-xl font-black text-neutral-950 dark:text-white font-['Plus_Jakarta_Sans',sans-serif]">
-                    100% Unbiased Advisory
-                  </h3>
-                </div>
+                <h3 className="text-lg sm:text-xl font-black text-neutral-950 dark:text-white uppercase tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
+                  100% UNBIASED ADVISORY
+                </h3>
                 <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-['Inter',sans-serif]">
                   Objective policy comparisons across top IRDAI insurers with zero product bias, transparent disclosures, and data-backed fitment.
                 </p>
@@ -634,12 +618,9 @@ export const About = () => {
                 <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
                   <FaChartLine />
                 </div>
-                <div className="space-y-1.5">
-                  <span className="text-[11px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Pillar 02</span>
-                  <h3 className="text-lg sm:text-xl font-black text-neutral-950 dark:text-white font-['Plus_Jakarta_Sans',sans-serif]">
-                    Seamless Digital Onboarding
-                  </h3>
-                </div>
+                <h3 className="text-lg sm:text-xl font-black text-neutral-950 dark:text-white uppercase tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
+                  SEAMLESS DIGITAL ONBOARDING
+                </h3>
                 <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-['Inter',sans-serif]">
                   Frictionless paperless issuance, automated policy portfolio health reviews, and instant digital renewals anytime, anywhere.
                 </p>
@@ -658,12 +639,9 @@ export const About = () => {
                 <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-brand-accent/30 text-amber-600 dark:text-brand-accent flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
                   <FaHandshake />
                 </div>
-                <div className="space-y-1.5">
-                  <span className="text-[11px] font-black uppercase tracking-wider text-amber-600 dark:text-brand-accent">Pillar 03</span>
-                  <h3 className="text-lg sm:text-xl font-black text-neutral-950 dark:text-white font-['Plus_Jakarta_Sans',sans-serif]">
-                    Lifetime Claim Concierge
-                  </h3>
-                </div>
+                <h3 className="text-lg sm:text-xl font-black text-neutral-950 dark:text-white uppercase tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
+                  LIFETIME CLAIM CONCIERGE
+                </h3>
                 <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-['Inter',sans-serif]">
                   We stand by your family 24/7 with on-ground claim representation, direct cashless hospital desks, and swift settlement escalation.
                 </p>
@@ -706,10 +684,8 @@ export const About = () => {
       <section className="py-20 sm:py-24 lg:py-32 bg-slate-50 dark:bg-neutral-950 border-b border-black/5 dark:border-white/5 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center">
-              <span className="inline-block">OUR</span>
-              <span className="inline-block">GUIDING</span>
-              <span className="inline-block">PRINCIPLES</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-950 dark:text-white uppercase tracking-[-0.025em] [word-spacing:0.26em] leading-[1.15] font-['Plus_Jakarta_Sans',sans-serif]">
+              OUR GUIDING PRINCIPLES
             </h2>
           </div>
 
@@ -729,7 +705,7 @@ export const About = () => {
                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl shrink-0 shadow-2xs transition-all duration-300 group-hover:scale-110 mb-5 ${principle.iconBg} ${principle.colorClass}`}>
                       <Icon />
                     </div>
-                    <h3 className="text-base sm:text-lg font-extrabold text-neutral-950 dark:text-white tracking-tight mb-2 font-['Plus_Jakarta_Sans',sans-serif]">
+                    <h3 className="text-base sm:text-lg font-extrabold text-neutral-950 dark:text-white tracking-tight mb-2 uppercase font-['Plus_Jakarta_Sans',sans-serif]">
                       {principle.title}
                     </h3>
                     <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 font-normal leading-relaxed font-['Inter',sans-serif]">
@@ -749,10 +725,8 @@ export const About = () => {
       <section className="py-20 sm:py-24 lg:py-32 bg-white dark:bg-neutral-900/50 border-b border-black/5 dark:border-white/5 transition-colors overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center">
-              <span className="inline-block">MILESTONES</span>
-              <span className="inline-block">THAT</span>
-              <span className="inline-block">MATTER</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-950 dark:text-white uppercase tracking-[-0.025em] [word-spacing:0.26em] leading-[1.15] font-['Plus_Jakarta_Sans',sans-serif]">
+              MILESTONES THAT MATTER
             </h2>
           </div>
 
@@ -795,7 +769,7 @@ export const About = () => {
                     <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.14em] text-amber-800 dark:text-brand-accent block mb-1 font-['Plus_Jakarta_Sans',sans-serif]">
                       {m.tag}
                     </span>
-                    <h4 className="text-sm sm:text-[15px] font-extrabold text-neutral-950 dark:text-white tracking-tight leading-snug mb-2 font-['Plus_Jakarta_Sans',sans-serif]">
+                    <h4 className="text-sm sm:text-[15px] font-extrabold text-neutral-950 dark:text-white tracking-tight leading-snug mb-2 uppercase font-['Plus_Jakarta_Sans',sans-serif]">
                       {m.title}
                     </h4>
                     <p className="text-xs text-neutral-600 dark:text-neutral-300 font-normal leading-[1.6] font-['Inter',sans-serif]">
@@ -840,7 +814,7 @@ export const About = () => {
                       {m.tag}
                     </span>
                   </div>
-                  <h4 className="text-base font-extrabold text-neutral-950 dark:text-white tracking-tight pt-1 font-['Plus_Jakarta_Sans',sans-serif]">
+                  <h4 className="text-base font-extrabold text-neutral-950 dark:text-white tracking-tight pt-1 uppercase font-['Plus_Jakarta_Sans',sans-serif]">
                     {m.title}
                   </h4>
                   <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 font-normal leading-relaxed font-['Inter',sans-serif]">
@@ -861,10 +835,8 @@ export const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center">
-              <span className="inline-block">AWARDS</span>
-              <span className="inline-block">&</span>
-              <span className="inline-block">ACHIEVEMENTS</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-950 dark:text-white uppercase tracking-[-0.025em] [word-spacing:0.26em] leading-[1.15] font-['Plus_Jakarta_Sans',sans-serif]">
+              AWARDS & ACHIEVEMENTS
             </h2>
           </div>
 
@@ -886,7 +858,7 @@ export const About = () => {
                   <FaAward className="text-xs" />
                   <span>FEATURED SPOTLIGHT RECOGNITION</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
+                <h3 className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tight uppercase font-['Plus_Jakarta_Sans',sans-serif]">
                   {awards[0].title}
                 </h3>
                 <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-300 font-normal leading-relaxed font-['Inter',sans-serif]">
@@ -933,7 +905,7 @@ export const About = () => {
                     <span className="text-[9px] font-black uppercase tracking-wider text-amber-800 dark:text-brand-accent block mb-1 font-['Plus_Jakarta_Sans',sans-serif]">
                       {award.tag || award.category}
                     </span>
-                    <h4 className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-white line-clamp-2 leading-snug font-['Plus_Jakarta_Sans',sans-serif]">
+                    <h4 className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-white line-clamp-2 leading-snug uppercase tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
                       {award.title}
                     </h4>
                   </div>
@@ -962,8 +934,8 @@ export const About = () => {
             <div className="absolute -top-32 -right-32 w-80 h-80 bg-brand-accent/20 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-brand-accent/15 rounded-full blur-3xl pointer-events-none" />
 
-            <div className="relative z-10 max-w-3xl mx-auto space-y-5">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white uppercase tracking-tight leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
+            <div className="relative z-10 max-w-5xl mx-auto space-y-5">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[44px] xl:text-[48px] font-extrabold text-white uppercase tracking-[-0.025em] [word-spacing:0.18em] leading-[1.15] whitespace-normal sm:whitespace-nowrap font-['Plus_Jakarta_Sans',sans-serif]">
                 READY TO SECURE YOUR FAMILY'S FUTURE?
               </h2>
 
@@ -971,7 +943,7 @@ export const About = () => {
               <div className="flex flex-wrap items-center justify-center gap-4 pt-3">
                 <Link
                   to="/appointment"
-                  className="px-8 py-4 rounded-2xl bg-brand-accent text-neutral-950 text-xs sm:text-sm font-black uppercase tracking-wider hover:bg-white transition-all duration-300 shadow-xl hover:-translate-y-0.5 active:scale-95 flex items-center gap-2 font-['Plus_Jakarta_Sans',sans-serif]"
+                  className="px-8 py-4 rounded-2xl bg-brand-accent text-neutral-950 text-xs sm:text-sm font-black uppercase tracking-wider hover:bg-brand-accent active:bg-brand-accent focus:bg-brand-accent shadow-xl flex items-center gap-2 font-['Plus_Jakarta_Sans',sans-serif]"
                 >
                   <FaPhoneAlt className="text-xs" />
                   <span>Book a Free Consultation</span>
@@ -1161,7 +1133,7 @@ export const About = () => {
                     Year {awards[selectedAwardIndex]?.year}
                   </span>
                 </div>
-                <h3 className="text-base sm:text-lg font-black text-white tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
+                <h3 className="text-base sm:text-lg font-black text-white tracking-tight uppercase font-['Plus_Jakarta_Sans',sans-serif]">
                   {awards[selectedAwardIndex]?.title}
                 </h3>
                 <p className="text-xs text-neutral-300 font-normal leading-relaxed font-['Inter',sans-serif] max-w-2xl">

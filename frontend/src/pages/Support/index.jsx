@@ -63,11 +63,11 @@ export const Support = () => {
           transition={{ duration: 0.5 }}
           className="relative z-10 max-w-3xl mx-auto space-y-4"
         >
-          <span className="inline-block text-xs font-black uppercase tracking-[0.25em] text-brand-accent font-['Plus_Jakarta_Sans',sans-serif]">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-brand-accent text-neutral-950 text-[11px] sm:text-xs font-black uppercase tracking-[0.20em] font-['Plus_Jakarta_Sans',sans-serif] shadow-xs">
             OFFICIAL ADVISORY & SUPPORT DESK
           </span>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl uppercase font-black text-neutral-950 dark:text-white tracking-tight leading-[1.08] font-['Plus_Jakarta_Sans',sans-serif]">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl uppercase font-black text-neutral-950 dark:text-white tracking-tight [word-spacing:0.22em] leading-[1.12] font-['Plus_Jakarta_Sans',sans-serif]">
             TALK TO A REAL<br />INSURANCE ADVISOR.
           </h1>
 
@@ -254,7 +254,7 @@ export const Support = () => {
                   </span>
                 </div>
 
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black uppercase tracking-tight text-white leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black uppercase tracking-tight [word-spacing:0.18em] text-white leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
                   PREFER A SCHEDULED 1-ON-1 CONSULTATION?
                 </h2>
 
@@ -266,9 +266,9 @@ export const Support = () => {
               <div className="relative z-10 pt-4 mt-4 border-t border-white/10">
                 <Link
                   to="/appointment"
-                  className="w-full sm:w-fit px-7 py-3.5 bg-brand-accent hover:bg-white text-neutral-950 font-black uppercase tracking-wider text-xs rounded-2xl transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2 font-['Plus_Jakarta_Sans',sans-serif]"
+                  className="w-full sm:w-fit px-7 py-3.5 bg-brand-accent text-neutral-950 font-black uppercase tracking-wider text-xs rounded-2xl shadow-md hover:bg-brand-accent active:bg-brand-accent focus:bg-brand-accent flex items-center justify-center gap-2 font-['Plus_Jakarta_Sans',sans-serif]"
                 >
-                  <span>Book Appointment</span>
+                  <span>BOOK A FREE APPOINTMENT</span>
                   <FaArrowRight className="text-xs" />
                 </Link>
               </div>

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from '../../context/LanguageContext';
 import { saveAppointment } from '../../services/api';
 import { Button } from '../../components/ui/Button';
+import { useAuth } from '../../features/auth/contexts/AuthContext';
 import {
   FaCalendarAlt,
   FaClock,
@@ -24,23 +25,143 @@ import {
   FaHeartbeat,
   FaPiggyBank,
   FaChartLine,
-  FaInfoCircle
+  FaInfoCircle,
+  FaBirthdayCake,
+  FaCity,
+  FaMapPin
 } from 'react-icons/fa';
 
 export const Appointment = () => {
   const { t } = useTranslation();
+  const { user } = useAuth();
 
-  // Form State
-  const [formData, setFormData] = useState({
-    fullName: '',
-    phone: '',
-    email: '',
-    service: 'Health & Medical Insurance',
-    date: new Date().toISOString().split('T')[0],
-    timeSlot: '11:00 AM',
-    mode: 'In-Person (Kanchipuram HQ)',
-    notes: ''
+  // Form State with autofill
+  const [formData, setFormData] = useState(() => {
+    const initial = {
+      fullName: '',
+      phone: '',
+      email: '',
+      dob: '',
+      city: '',
+      pincode: '',
+      service: 'Health & Medical Insurance',
+      date: new Date().toISOString().split('T')[0],
+      timeSlot: '11:00 AM',
+      mode: 'In-Person (Kanchipuram HQ)',
+      notes: ''
+    };
+    try {
+      const savedProfile = localStorage.getItem('sk_user_profile');
+      const savedAuth = localStorage.getItem('sk_auth_user') || sessionStorage.getItem('sk_auth_user');
+      const savedLead = localStorage.getItem('sk_lead_submitted') || sessionStorage.getItem('sk_lead_submitted');
+      let name = '';
+      let phone = '';
+      let email = '';
+      let dob = '';
+      let city = '';
+      let pincode = '';
+
+      if (savedProfile) {
+        const p = JSON.parse(savedProfile);
+        name = p.fullName || p.name || '';
+        phone = p.phone || p.mobile || '';
+        email = p.email || '';
+        dob = p.dob || '';
+        city = p.city || '';
+        pincode = p.pincode || '';
+      }
+      if (savedAuth) {
+        const u = JSON.parse(savedAuth);
+        if (!name) name = u.name || u.fullName || u.displayName || u.username || '';
+        if (!phone) phone = u.phone || u.mobile || u.phoneNumber || '';
+        if (!email) email = u.email || '';
+        if (!dob) dob = u.dob || '';
+        if (!city) city = u.city || '';
+        if (!pincode) pincode = u.pincode || '';
+      }
+      if (savedLead) {
+        const l = JSON.parse(savedLead);
+        if (!name) name = l.fullName || l.name || '';
+        if (!phone) phone = l.phone || l.mobile || '';
+        if (!email) email = l.email || '';
+        if (!dob) dob = l.dob || '';
+        if (!city) city = l.city || '';
+        if (!pincode) pincode = l.pincode || '';
+      }
+      if (name) initial.fullName = name;
+      if (phone) initial.phone = phone;
+      if (email) initial.email = email;
+      if (dob) initial.dob = dob;
+      if (city) initial.city = city;
+      if (pincode) initial.pincode = pincode;
+    } catch (e) {}
+    return initial;
   });
+
+  // Re-sync autofill if user logs in
+  useEffect(() => {
+    let name = user?.name || user?.fullName || user?.displayName || '';
+    let phone = user?.phone || user?.mobile || user?.phoneNumber || '';
+    let email = user?.email || '';
+    let dob = user?.dob || '';
+    let city = user?.city || '';
+    let pincode = user?.pincode || '';
+
+    try {
+      const savedProfile = localStorage.getItem('sk_user_profile');
+      if (savedProfile) {
+        const p = JSON.parse(savedProfile);
+        if (!name) name = p.fullName || p.name || '';
+        if (!phone) phone = p.phone || p.mobile || '';
+        if (!email) email = p.email || '';
+        if (!dob) dob = p.dob || '';
+        if (!city) city = p.city || '';
+        if (!pincode) pincode = p.pincode || '';
+      }
+    } catch (e) {}
+
+    if (!name || !phone || !email || !dob || !city || !pincode) {
+      try {
+        const savedAuth = localStorage.getItem('sk_auth_user') || sessionStorage.getItem('sk_auth_user');
+        if (savedAuth) {
+          const u = JSON.parse(savedAuth);
+          if (!name) name = u.name || u.fullName || u.displayName || u.username || '';
+          if (!phone) phone = u.phone || u.mobile || u.phoneNumber || '';
+          if (!email) email = u.email || '';
+          if (!dob) dob = u.dob || '';
+          if (!city) city = u.city || '';
+          if (!pincode) pincode = u.pincode || '';
+        }
+      } catch (e) {}
+    }
+
+    if (!name || !phone || !email || !dob || !city || !pincode) {
+      try {
+        const savedLead = localStorage.getItem('sk_lead_submitted') || sessionStorage.getItem('sk_lead_submitted');
+        if (savedLead) {
+          const l = JSON.parse(savedLead);
+          if (!name) name = l.fullName || l.name || '';
+          if (!phone) phone = l.phone || l.mobile || '';
+          if (!email) email = l.email || '';
+          if (!dob) dob = l.dob || '';
+          if (!city) city = l.city || '';
+          if (!pincode) pincode = l.pincode || '';
+        }
+      } catch (e) {}
+    }
+
+    if (name || phone || email || dob || city || pincode) {
+      setFormData(prev => ({
+        ...prev,
+        fullName: prev.fullName || name || '',
+        phone: prev.phone || phone || '',
+        email: prev.email || email || '',
+        dob: prev.dob || dob || '',
+        city: prev.city || city || '',
+        pincode: prev.pincode || pincode || ''
+      }));
+    }
+  }, [user]);
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -166,6 +287,8 @@ export const Appointment = () => {
 👤 *Client Name:* ${data.fullName}
 📞 *WhatsApp Number:* ${data.phone}
 📧 *Email:* ${data.email || 'Not provided'}
+🎂 *DOB:* ${data.dob || 'Not specified'}
+📍 *City:* ${data.city || 'Not specified'} (PIN: ${data.pincode || 'N/A'})
 💼 *Service Needed:* ${data.service}
 📆 *Preferred Date:* ${data.date}
 ⏰ *Preferred Time:* ${data.timeSlot}
@@ -353,16 +476,16 @@ Hi SK Smart Investments, please confirm my appointment slot. Thank you!`;
                             type="button"
                             key={item.id}
                             onClick={() => handleServiceSelect(item.name)}
-                            className={`p-3 sm:p-4 rounded-2xl text-left flex flex-row sm:flex-col items-center sm:justify-center sm:text-center space-x-4 sm:space-x-0 sm:space-y-3 transition-all duration-300 relative overflow-hidden ${
+                            className={`p-3 sm:p-4 rounded-2xl text-left flex flex-row sm:flex-col items-center sm:justify-center sm:text-center space-x-4 sm:space-x-0 sm:space-y-3 transition-all duration-300 relative overflow-hidden cursor-pointer ${
                               isSelected
-                                ? 'border-transparent shadow-lg shadow-brand-accent/20 bg-neutral-800 ring-2 ring-brand-accent'
-                                : 'border-white/10 bg-neutral-900/30 hover:bg-neutral-800 border'
+                                ? 'bg-white/10 dark:bg-white/15 backdrop-blur-md border-brand-accent ring-2 ring-brand-accent/80 shadow-[0_0_20px_rgba(255,218,10,0.2)]'
+                                : 'border-white/10 bg-neutral-900/40 hover:bg-neutral-800/80 border'
                             }`}
                           >
                             {isSelected && (
-                              <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-brand-accent/20 to-transparent rounded-bl-full pointer-events-none" />
+                              <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-brand-accent/15 to-transparent rounded-bl-full pointer-events-none" />
                             )}
-                            <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center text-xl sm:text-2xl shrink-0 ${isSelected ? 'bg-brand-accent text-white shadow-md' : item.bg + ' ' + item.color} transition-colors`}>
+                            <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center text-xl sm:text-2xl shrink-0 ${isSelected ? 'bg-brand-accent/20 text-brand-accent border border-brand-accent/40 shadow-inner' : item.bg + ' ' + item.color} transition-colors`}>
                               <Icon />
                             </div>
                             <div className="flex-1 sm:flex-none">
@@ -406,7 +529,7 @@ Hi SK Smart Investments, please confirm my appointment slot. Thank you!`;
                             min={minDateStr}
                             value={formData.date}
                             onChange={handleChange}
-                            className="w-full px-4 py-3 sm:px-5 sm:py-4 bg-neutral-900 border border-white/10 rounded-xl sm:rounded-2xl text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all shadow-sm cursor-pointer"
+                            className="w-full px-4 py-3 sm:px-5 sm:py-4 bg-neutral-900 border border-white/10 rounded-xl sm:rounded-2xl text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all shadow-sm cursor-pointer [color-scheme:dark]"
                           />
                           {errors.date && <p className="text-xs text-rose-500 font-semibold pl-2">{errors.date}</p>}
                         </div>
@@ -425,10 +548,10 @@ Hi SK Smart Investments, please confirm my appointment slot. Thank you!`;
                                   type="button"
                                   key={slot}
                                   onClick={() => handleTimeSelect(slot)}
-                                  className={`py-2.5 px-1 sm:py-3 sm:px-2 rounded-lg sm:rounded-xl text-[11px] sm:text-sm font-bold text-center transition-all duration-300 border ${
+                                  className={`py-2.5 px-1 sm:py-3 sm:px-2 rounded-lg sm:rounded-xl text-[11px] sm:text-sm font-bold text-center transition-all duration-300 border cursor-pointer ${
                                     isSelected
-                                      ? 'bg-gradient-to-r from-brand-accent to-brand-accent text-white border-transparent shadow-md shadow-brand-accent/30'
-                                      : 'bg-neutral-900 border-white/10 text-slate-300 hover:border-brand-accent hover:text-brand-accent hover:text-brand-accent'
+                                      ? 'bg-white/10 dark:bg-white/15 backdrop-blur-md border-brand-accent ring-2 ring-brand-accent/80 text-white font-black shadow-[0_0_15px_rgba(255,218,10,0.2)]'
+                                      : 'bg-neutral-900/60 border-white/10 text-slate-300 hover:border-white/20 hover:bg-neutral-800/80 hover:text-white'
                                   }`}
                                 >
                                   {slot}
@@ -456,14 +579,14 @@ Hi SK Smart Investments, please confirm my appointment slot. Thank you!`;
                                 type="button"
                                 key={modeItem.id}
                                 onClick={() => handleModeSelect(modeItem.name)}
-                                className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl flex items-center justify-between transition-all duration-300 border ${
+                                className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl flex items-center justify-between transition-all duration-300 border cursor-pointer ${
                                   isSelected
-                                    ? 'bg-neutral-800 border-brand-accent ring-1 ring-brand-accent shadow-md'
-                                    : 'bg-white/50 dark:bg-neutral-900/30 border-white/10 hover:bg-white dark:hover:bg-neutral-800'
+                                    ? 'bg-white/10 dark:bg-white/15 backdrop-blur-md border-brand-accent ring-2 ring-brand-accent/80 shadow-[0_0_15px_rgba(255,218,10,0.15)]'
+                                    : 'bg-neutral-900/50 border-white/10 hover:bg-neutral-800/80'
                                 }`}
                               >
                                 <div className="flex items-center space-x-3 sm:space-x-4">
-                                  <div className={`w-10 h-10 rounded-lg sm:rounded-xl flex items-center justify-center text-lg ${isSelected ? 'bg-brand-accent text-white shadow-inner' : 'bg-neutral-950 text-slate-400'}`}>
+                                  <div className={`w-10 h-10 rounded-lg sm:rounded-xl flex items-center justify-center text-lg ${isSelected ? 'bg-brand-accent/20 text-brand-accent border border-brand-accent/40' : 'bg-neutral-950 text-slate-400'}`}>
                                     <Icon />
                                   </div>
                                   <div className="text-left">
@@ -476,7 +599,7 @@ Hi SK Smart Investments, please confirm my appointment slot. Thank you!`;
                                   </div>
                                 </div>
                                 {isSelected && (
-                                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-brand-accent flex items-center justify-center text-white text-[8px] sm:text-[10px]">
+                                  <div className="w-5 h-5 rounded-full bg-brand-accent/20 border border-brand-accent/60 flex items-center justify-center text-brand-accent text-xs">
                                     <FaCheckCircle />
                                   </div>
                                 )}
@@ -498,9 +621,9 @@ Hi SK Smart Investments, please confirm my appointment slot. Thank you!`;
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
                     transition={{ duration: 0.3 }}
-                    className="space-y-6"
+                    className="space-y-5"
                   >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                       <div className="space-y-1.5">
                         <label className="block text-xs font-bold text-slate-300 ml-1">
                           Full Name <span className="text-rose-500">*</span>
@@ -515,7 +638,7 @@ Hi SK Smart Investments, please confirm my appointment slot. Thank you!`;
                             placeholder="e.g. Rahul Sharma"
                             value={formData.fullName}
                             onChange={handleChange}
-                            className="w-full pl-11 pr-4 py-3.5 bg-neutral-900 border border-white/10 rounded-2xl text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all shadow-sm"
+                            className="w-full pl-11 pr-4 py-3 bg-neutral-900 border border-white/10 rounded-2xl text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all shadow-sm"
                           />
                         </div>
                         {errors.fullName && <p className="text-xs text-rose-500 font-semibold pl-2">{errors.fullName}</p>}
@@ -535,7 +658,7 @@ Hi SK Smart Investments, please confirm my appointment slot. Thank you!`;
                             placeholder="+91 99944 51300"
                             value={formData.phone}
                             onChange={handleChange}
-                            className="w-full pl-11 pr-4 py-3.5 bg-neutral-900 border border-white/10 rounded-2xl text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all shadow-sm"
+                            className="w-full pl-11 pr-4 py-3 bg-neutral-900 border border-white/10 rounded-2xl text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all shadow-sm"
                           />
                         </div>
                         {errors.phone && <p className="text-xs text-rose-500 font-semibold pl-2">{errors.phone}</p>}
@@ -555,26 +678,86 @@ Hi SK Smart Investments, please confirm my appointment slot. Thank you!`;
                             placeholder="rahul@example.com"
                             value={formData.email}
                             onChange={handleChange}
-                            className="w-full pl-11 pr-4 py-3.5 bg-neutral-900 border border-white/10 rounded-2xl text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all shadow-sm"
+                            className="w-full pl-11 pr-4 py-3 bg-neutral-900 border border-white/10 rounded-2xl text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all shadow-sm"
                           />
+                        </div>
+                      </div>
+
+                      {/* DOB, City, and Pincode Row */}
+                      <div className="space-y-1.5">
+                        <label className="block text-xs font-bold text-slate-300 ml-1">
+                          Date of Birth <span className="text-slate-400 font-normal">(Optional)</span>
+                        </label>
+                        <div className="relative group">
+                          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-accent transition-colors">
+                            <FaBirthdayCake className="text-sm" />
+                          </div>
+                          <input
+                            type="date"
+                            name="dob"
+                            value={formData.dob || ''}
+                            onChange={handleChange}
+                            className="w-full pl-11 pr-4 py-3 bg-neutral-900 border border-white/10 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all shadow-sm [color-scheme:dark]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-1.5">
+                          <label className="block text-xs font-bold text-slate-300 ml-1">
+                            City <span className="text-slate-400 font-normal">(Optional)</span>
+                          </label>
+                          <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-accent transition-colors">
+                              <FaCity className="text-sm" />
+                            </div>
+                            <input
+                              type="text"
+                              name="city"
+                              placeholder="e.g. Kanchipuram"
+                              value={formData.city || ''}
+                              onChange={handleChange}
+                              className="w-full pl-11 pr-3 py-3 bg-neutral-900 border border-white/10 rounded-2xl text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all shadow-sm"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <label className="block text-xs font-bold text-slate-300 ml-1">
+                            Pincode <span className="text-slate-400 font-normal">(Optional)</span>
+                          </label>
+                          <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-accent transition-colors">
+                              <FaMapPin className="text-sm" />
+                            </div>
+                            <input
+                              type="text"
+                              name="pincode"
+                              placeholder="631502"
+                              maxLength={6}
+                              value={formData.pincode || ''}
+                              onChange={handleChange}
+                              className="w-full pl-11 pr-3 py-3 bg-neutral-900 border border-white/10 rounded-2xl text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all shadow-sm"
+                            />
+                          </div>
                         </div>
                       </div>
 
                       <div className="space-y-1.5 md:col-span-2">
                         <label className="block text-xs font-bold text-slate-300 ml-1">
-                          Additional Notes <span className="text-slate-400 font-normal">(Optional)</span>
+                          Specific Situation / Notes <span className="text-slate-400 font-normal">(Optional)</span>
                         </label>
                         <div className="relative group">
-                          <div className="absolute top-4 left-4 pointer-events-none text-slate-400 group-focus-within:text-brand-accent transition-colors">
+                          <div className="absolute top-3.5 left-4 pointer-events-none text-slate-400 group-focus-within:text-brand-accent transition-colors">
                             <FaCommentDots className="text-sm" />
                           </div>
                           <textarea
                             name="notes"
-                            rows={3}
-                            placeholder="Describe any specific goals or questions..."
+                            rows={2}
+                            placeholder=""
                             value={formData.notes}
                             onChange={handleChange}
-                            className="w-full pl-11 pr-4 py-3.5 bg-neutral-900 border border-white/10 rounded-2xl text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all shadow-sm resize-none"
+                            className="w-full pl-11 pr-4 py-3 bg-neutral-900 border border-white/10 rounded-2xl text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all shadow-sm resize-none"
                           />
                         </div>
                       </div>
@@ -584,14 +767,14 @@ Hi SK Smart Investments, please confirm my appointment slot. Thank you!`;
               </AnimatePresence>
             </div>
 
-            {/* Navigation & Submit Footer */}
-            <div className="mt-8 sm:mt-10 pt-5 sm:pt-6 border-t border-slate-200/60 dark:border-white/10 flex items-center justify-between">
+            {/* Navigation & Submit Sticky/Integrated Footer */}
+            <div className="sticky bottom-0 z-20 bg-neutral-900/95 backdrop-blur-xl border-t border-white/10 pt-4 pb-1 px-2 mt-6 flex items-center justify-between">
               <div>
                 {currentStep > 1 && (
                   <button
                     type="button"
                     onClick={handlePrevStep}
-                    className="px-4 py-2 sm:px-6 sm:py-3 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm text-slate-300 bg-neutral-800 hover:bg-neutral-700 transition-all"
+                    className="px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl font-bold text-xs sm:text-sm text-slate-300 bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-800 transition-none cursor-pointer"
                   >
                     Back
                   </button>
@@ -603,90 +786,32 @@ Hi SK Smart Investments, please confirm my appointment slot. Thank you!`;
                   <button
                     type="button"
                     onClick={handleNextStep}
-                    className="px-6 py-2.5 sm:px-8 sm:py-3 rounded-lg sm:rounded-xl font-extrabold text-xs sm:text-sm text-neutral-950 bg-brand-accent hover:bg-brand-accent transition-all shadow-md flex items-center space-x-2"
+                    className="px-6 py-3 sm:px-8 sm:py-3.5 rounded-xl font-extrabold text-xs sm:text-sm text-neutral-950 bg-brand-accent hover:bg-brand-accent active:bg-brand-accent focus:bg-brand-accent transition-none shadow-lg flex items-center space-x-2 cursor-pointer"
                   >
                     <span>Next Step</span>
                     <FaArrowRight className="text-xs" />
                   </button>
                 ) : (
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                  <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="px-6 py-3 sm:px-8 sm:py-3 rounded-lg sm:rounded-xl font-extrabold text-xs sm:text-sm text-neutral-950 bg-gradient-to-r from-brand-accent via-brand-accent to-brand-accent hover:from-brand-accent hover:to-brand-accent shadow-[0_0_15px_rgba(251,191,36,0.4)] flex items-center justify-center space-x-2 sm:space-x-3 transition-all cursor-pointer relative overflow-hidden group"
+                    className="px-6 py-3 sm:px-8 sm:py-3.5 rounded-xl font-extrabold text-xs sm:text-sm text-neutral-950 bg-brand-accent hover:bg-brand-accent active:bg-brand-accent focus:bg-brand-accent transition-none shadow-lg flex items-center justify-center space-x-2 sm:space-x-3 cursor-pointer"
                   >
-                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
                     {isSubmitting ? (
-                      <span className="relative z-10 whitespace-nowrap">Processing...</span>
+                      <span className="whitespace-nowrap">Processing...</span>
                     ) : (
-                      <span className="relative z-10 flex items-center space-x-2 sm:space-x-3 whitespace-nowrap">
-                        <FaWhatsapp className="text-lg sm:text-xl animate-pulse" />
+                      <span className="flex items-center space-x-2 sm:space-x-3 whitespace-nowrap">
+                        <FaWhatsapp className="text-lg sm:text-xl" />
                         <span>Confirm Booking</span>
                       </span>
                     )}
-                  </motion.button>
+                  </button>
                 )}
               </div>
             </div>
 
           </form>
         </motion.div>
-
-        {/* Corporate Address & Contact Info Footer */}
-        <div className="p-6 sm:p-8 rounded-[2rem] bg-neutral-950 dark:bg-neutral-900 text-white flex flex-col md:flex-row items-center justify-between gap-8 border border-white/10 shadow-2xl relative overflow-hidden z-10">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-3xl pointer-events-none" />
-          
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 relative z-10 w-full md:w-auto">
-            <div className="relative w-full sm:w-56 h-28 rounded-2xl overflow-hidden border border-white/20 shadow-md shrink-0">
-              <iframe
-                src="https://maps.google.com/maps?q=104%20MD%20Plaza%20West%20Raja%20Street%20Kanchipuram%20631502&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="SK Smart Corporate HQ Map"
-                className="w-full h-full"
-              />
-              <a 
-                href="https://maps.google.com/?q=104+MD+Plaza+West+Raja+Street+Kanchipuram+631502"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="absolute bottom-1.5 right-1.5 px-2 py-0.5 bg-black/85 text-white text-[10px] font-bold rounded border border-white/20 backdrop-blur-md"
-              >
-                Directions ↗
-              </a>
-            </div>
-            <div className="space-y-1.5">
-              <h4 className="text-base font-bold text-white tracking-wide">SK Smart Corporate HQ</h4>
-              <div className="inline-flex items-center space-x-2 mt-1 px-3 py-1 bg-white/5 rounded-lg border border-white/10">
-                <FaClock className="text-brand-accent text-xs" />
-                <p className="text-xs text-slate-300 font-semibold">Mon - Sat: 9:00 AM - 7:00 PM</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-4 shrink-0 relative z-10 w-full md:w-auto">
-            <a
-              href="tel:+919994451300"
-              className="flex-1 md:flex-none text-center px-6 py-3.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-sm font-bold text-white transition-all backdrop-blur-sm"
-            >
-              Call Us
-            </a>
-            <a
-              href="https://wa.me/919994451300"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 md:flex-none flex items-center justify-center space-x-2 px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-bold transition-all shadow-[0_0_15px_rgba(5,150,105,0.4)]"
-            >
-              <FaWhatsapp className="text-lg" />
-              <span>Message</span>
-            </a>
-          </div>
-        </div>
-
       </div>
 
       {/* Confirmation Modal - Ticket Style */}

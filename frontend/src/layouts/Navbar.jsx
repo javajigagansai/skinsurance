@@ -290,14 +290,15 @@ export const Navbar = () => {
           <div className="hidden lg:flex items-center gap-2 xl:gap-3.5">
             
             {/* Language Selector */}
-            <div className="relative" ref={langDropdownRef}>
+            <div className="relative notranslate" translate="no" ref={langDropdownRef}>
               <button
                 onClick={() => setShowLangDropdown(!showLangDropdown)}
-                className="flex items-center gap-1 xl:gap-1.5 text-[10.5px] xl:text-sm font-bold transition-colors cursor-pointer px-2 py-1 xl:px-2.5 xl:py-1.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 text-neutral-800 dark:text-neutral-200 hover:text-brand-accent"
+                className="flex items-center gap-1 xl:gap-1.5 text-[10.5px] xl:text-sm font-bold transition-colors cursor-pointer px-2 py-1 xl:px-2.5 xl:py-1.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 text-neutral-800 dark:text-neutral-200 hover:text-brand-accent notranslate"
+                translate="no"
                 aria-label="Select Language"
               >
                 <FaGlobe className="text-[10px] xl:text-xs text-brand-accent" />
-                <span>{languages.find(l => l.code === currentLang)?.label || 'EN'}</span>
+                <span className="notranslate font-bold" translate="no">{languages.find(l => l.code === currentLang)?.label || 'EN'}</span>
                 <FaChevronDown className={`text-[7px] xl:text-[8px] transition-transform duration-200 ${showLangDropdown ? 'rotate-180' : ''}`} />
               </button>
 
@@ -308,16 +309,18 @@ export const Navbar = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.98 }}
                     transition={{ duration: 0.18 }}
-                    className="absolute right-0 mt-2 w-32 xl:w-36 bg-white dark:bg-neutral-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-xl z-50 overflow-hidden text-left p-1"
+                    className="absolute right-0 mt-2 w-32 xl:w-36 bg-white dark:bg-neutral-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-xl z-50 overflow-hidden text-left p-1 notranslate"
+                    translate="no"
                   >
                     {languages.map((lang) => (
                       <button
                         key={lang.code}
+                        translate="no"
                         onClick={() => {
                           setCurrentLang(lang.code);
                           setShowLangDropdown(false);
                         }}
-                        className={`w-full px-2.5 py-1.5 xl:px-3 xl:py-2 text-[11px] xl:text-xs rounded-xl transition-colors text-left font-bold cursor-pointer ${
+                        className={`w-full px-2.5 py-1.5 xl:px-3 xl:py-2 text-[11px] xl:text-xs rounded-xl transition-colors text-left font-bold cursor-pointer notranslate ${
                           currentLang === lang.code 
                             ? 'text-neutral-950 bg-brand-accent font-black' 
                             : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-white/5'
@@ -381,14 +384,15 @@ export const Navbar = () => {
               bottomContent={(closeMenu) => (
                 <div className="flex flex-col space-y-4">
                   {/* Mobile Language */}
-                  <div className="flex items-center justify-center space-x-4 mb-2">
-                    <div className="relative flex justify-center">
+                  <div className="flex items-center justify-center space-x-4 mb-2 notranslate" translate="no">
+                    <div className="relative flex justify-center notranslate" translate="no">
                       <button
                         onClick={() => setShowLangDropdown(!showLangDropdown)}
-                        className="flex items-center space-x-1.5 text-xs font-bold transition-colors cursor-pointer text-black dark:text-white hover:text-brand-accent dark:hover:text-brand-accent"
+                        className="flex items-center space-x-1.5 text-xs font-bold transition-colors cursor-pointer text-black dark:text-white hover:text-brand-accent dark:hover:text-brand-accent notranslate"
+                        translate="no"
                       >
                         <FaGlobe className="text-xs text-brand-accent" />
-                        <span>{languages.find(l => l.code === currentLang)?.name || 'English'}</span>
+                        <span className="notranslate" translate="no">{languages.find(l => l.code === currentLang)?.name || 'English (EN)'}</span>
                         <FaChevronDown className={`text-[9px] transition-transform ${showLangDropdown ? 'rotate-180' : ''}`} />
                       </button>
 
@@ -399,16 +403,18 @@ export const Navbar = () => {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute top-full mt-2 w-36 bg-white dark:bg-[#0A0A0A] border border-black/10 dark:border-white/10 rounded-2xl shadow-xl z-50 overflow-hidden text-center p-1"
+                            className="absolute top-full mt-2 w-36 bg-white dark:bg-[#0A0A0A] border border-black/10 dark:border-white/10 rounded-2xl shadow-xl z-50 overflow-hidden text-center p-1 notranslate"
+                            translate="no"
                           >
                             {languages.map((lang) => (
                               <button
                                 key={lang.code}
+                                translate="no"
                                 onClick={() => {
                                   setCurrentLang(lang.code);
                                   setShowLangDropdown(false);
                                 }}
-                                className={`w-full px-2.5 py-1.5 text-[11px] transition-colors text-center font-bold rounded-xl cursor-pointer ${
+                                className={`w-full px-2.5 py-1.5 text-[11px] transition-colors text-center font-bold rounded-xl cursor-pointer notranslate ${
                                   currentLang === lang.code 
                                     ? 'text-neutral-950 bg-brand-accent' 
                                     : 'text-black dark:text-white hover:bg-neutral-100 dark:hover:bg-white/5'

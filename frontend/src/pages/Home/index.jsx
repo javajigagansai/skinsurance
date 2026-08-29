@@ -322,7 +322,7 @@ export const Home = () => {
               <div className="flex items-center justify-center w-full pt-2 sm:pt-4">
                 <button
                   onClick={handleBookCall}
-                  className="px-6 py-3 sm:px-7 sm:py-3.5 rounded-xl sm:rounded-2xl bg-brand-accent text-neutral-950 text-xs sm:text-sm font-extrabold uppercase tracking-wider hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-neutral-950 transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:scale-95 flex items-center gap-2.5 cursor-pointer"
+                  className="px-6 py-3 sm:px-7 sm:py-3.5 rounded-xl sm:rounded-2xl bg-brand-accent text-neutral-950 text-xs sm:text-sm font-extrabold uppercase tracking-wider hover:bg-brand-accent active:bg-brand-accent focus:bg-brand-accent shadow-md flex items-center gap-2.5 cursor-pointer"
                 >
                   <FaPhoneAlt className="text-xs sm:text-sm" />
                   <span>Get a Free Consultation</span>

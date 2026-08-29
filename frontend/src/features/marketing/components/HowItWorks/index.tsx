@@ -91,16 +91,14 @@ export const HowItWorks = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex flex-col justify-center">
         
         {/* ── Section Header ── */}
-        <div className="w-full mb-6 sm:mb-8 text-center overflow-hidden">
+        <div className="w-full mb-8 sm:mb-12 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 12 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-950 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center"
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-950 dark:text-white uppercase tracking-[-0.025em] [word-spacing:0.26em] leading-[1.15] font-['Plus_Jakarta_Sans',sans-serif]"
           >
-            <span className="inline-block">HOW</span>
-            <span className="inline-block">IT</span>
-            <span className="inline-block">WORKS</span>
+            HOW IT WORKS
           </motion.h2>
         </div>
 

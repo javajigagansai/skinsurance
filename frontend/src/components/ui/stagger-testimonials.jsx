@@ -94,12 +94,9 @@ export const StaggerTestimonials = ({ testimonials = defaultTestimonials }) => {
     <section className="relative w-full min-h-screen flex flex-col justify-center snap-start py-12 sm:py-16 lg:py-20 border-t border-black/5 dark:border-white/5 bg-transparent transition-colors duration-300 overflow-hidden select-none">
       
       {/* ── Section Header with Title ── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 sm:mb-8 w-full text-center overflow-hidden">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-950 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center">
-          <span className="inline-block">WHAT</span>
-          <span className="inline-block">OUR</span>
-          <span className="inline-block">CLIENTS</span>
-          <span className="inline-block">SAY</span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12 w-full text-center">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-950 dark:text-white uppercase tracking-[-0.025em] [word-spacing:0.26em] leading-[1.15] font-['Plus_Jakarta_Sans',sans-serif]">
+          WHAT OUR CLIENTS SAY
         </h2>
       </div>
 

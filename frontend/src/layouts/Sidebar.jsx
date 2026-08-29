@@ -14,6 +14,7 @@ export const Sidebar = ({ collapsed, setCollapsed }) => {
 
   const items = [
     { name: 'Plans Manager', icon: FaIcons.FaFolderOpen, path: '/dashboard' },
+    { name: 'Profile & Autofill Info', icon: FaIcons.FaUserEdit, path: '/dashboard/profile' },
     { name: 'Awards & Achievements', icon: FaIcons.FaTrophy, path: '/dashboard/awards' },
     { name: 'Consultation Leads', icon: FaIcons.FaHeadset, path: '/dashboard/leads' },
     { name: 'Hero Flyers & Banners', icon: FaIcons.FaImage, path: '/dashboard/flyers' },

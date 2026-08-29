@@ -46,7 +46,7 @@ export const Footer = () => {
               </div>
             </Link>
 
-            <div className="flex items-center flex-wrap gap-2.5 pt-1">
+            <div className="w-full max-w-[295px] flex items-center justify-between pt-1 translate-x-3 sm:translate-x-4">
               {[
                 { name: "Facebook", icon: FaFacebook, url: "https://www.facebook.com/profile.php?id=61592452371528", color: "text-blue-500 hover:text-white border-blue-500/30 bg-blue-500/10 hover:bg-blue-600" },
                 { name: "Instagram", icon: FaInstagram, url: "https://www.instagram.com/sk_smartinvestments/", color: "text-pink-500 hover:text-white border-pink-500/30 bg-pink-500/10 hover:bg-pink-600" },
@@ -200,7 +200,7 @@ export const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 pt-6 text-center">
           <p className="text-xs text-neutral-400 font-medium tracking-wide">
-            {t('footer_rights')}
+            {t('footer_rights') || '© 2026 All Rights Reserved'}
           </p>
         </div>
       </div>

@@ -18,16 +18,83 @@ const REQUIREMENTS = [
   'Existing Policy Claim Assistance'
 ];
 
+import { useAuth } from '../../../auth/contexts/AuthContext';
+
 export const LeadCaptureSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.15 });
+  const { user } = useAuth();
 
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    requirement: REQUIREMENTS[0]
+  const [formData, setFormData] = useState(() => {
+    const initial = {
+      name: '',
+      phone: '',
+      email: '',
+      requirement: REQUIREMENTS[0]
+    };
+    try {
+      const savedAuth = localStorage.getItem('sk_auth_user') || sessionStorage.getItem('sk_auth_user');
+      const savedLead = localStorage.getItem('sk_lead_submitted') || sessionStorage.getItem('sk_lead_submitted');
+      let name = '';
+      let phone = '';
+      let email = '';
+      if (savedAuth) {
+        const u = JSON.parse(savedAuth);
+        name = u.name || u.fullName || u.displayName || u.username || '';
+        phone = u.phone || u.mobile || u.phoneNumber || '';
+        email = u.email || '';
+      }
+      if (savedLead) {
+        const l = JSON.parse(savedLead);
+        if (!name) name = l.fullName || l.name || '';
+        if (!phone) phone = l.phone || l.mobile || '';
+        if (!email) email = l.email || '';
+      }
+      if (name) initial.name = name;
+      if (phone) initial.phone = phone;
+      if (email) initial.email = email;
+    } catch (e) {}
+    return initial;
   });
+
+  useEffect(() => {
+    let name = user?.name || user?.fullName || user?.displayName || '';
+    let phone = user?.phone || user?.mobile || user?.phoneNumber || '';
+    let email = user?.email || '';
+
+    if (!name || !phone || !email) {
+      try {
+        const savedAuth = localStorage.getItem('sk_auth_user') || sessionStorage.getItem('sk_auth_user');
+        if (savedAuth) {
+          const u = JSON.parse(savedAuth);
+          if (!name) name = u.name || u.fullName || u.displayName || u.username || '';
+          if (!phone) phone = u.phone || u.mobile || u.phoneNumber || '';
+          if (!email) email = u.email || '';
+        }
+      } catch (e) {}
+    }
+
+    if (!name || !phone || !email) {
+      try {
+        const savedLead = localStorage.getItem('sk_lead_submitted') || sessionStorage.getItem('sk_lead_submitted');
+        if (savedLead) {
+          const l = JSON.parse(savedLead);
+          if (!name) name = l.fullName || l.name || '';
+          if (!phone) phone = l.phone || l.mobile || '';
+          if (!email) email = l.email || '';
+        }
+      } catch (e) {}
+    }
+
+    if (name || phone || email) {
+      setFormData(prev => ({
+        ...prev,
+        name: prev.name || name || '',
+        phone: prev.phone || phone || '',
+        email: prev.email || email || ''
+      }));
+    }
+  }, [user]);
 
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -65,6 +132,15 @@ export const LeadCaptureSection = () => {
         source: 'Home Lead Capture',
         createdAt: new Date().toISOString()
       });
+
+      try {
+        localStorage.setItem('sk_lead_submitted', JSON.stringify({
+          fullName: formData.name.trim(),
+          phone: formData.phone.trim(),
+          email: formData.email.trim(),
+          submittedAt: new Date().toISOString()
+        }));
+      } catch (e) {}
 
       setSubmitted(true);
       setFormData({

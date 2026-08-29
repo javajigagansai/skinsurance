@@ -705,7 +705,7 @@ export const deleteConsultationLead = async (id, user = null) => {
 export const DEFAULT_AWARDS_DATA = [
   {
     id: 'award-1',
-    title: 'Dream Agency Elite Aspirant Award',
+    title: 'DREAM AGENCY ELITE ASPIRANT AWARD',
     category: 'Industry Leadership',
     tag: 'INDUSTRY LEADERSHIP',
     year: '2024',
@@ -718,7 +718,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-2',
-    title: 'MDRT Aspirant Achievement',
+    title: 'MDRT ASPIRANT ACHIEVEMENT',
     category: 'Global Benchmark',
     tag: 'GLOBAL BENCHMARK',
     year: '2023',
@@ -731,7 +731,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-3',
-    title: 'InfinPro Consultant Excellence',
+    title: 'INFINPRO CONSULTANT EXCELLENCE',
     category: 'Consulting Merit',
     tag: 'CONSULTING MERIT',
     year: '2023',
@@ -743,7 +743,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-4',
-    title: 'Tambaram Branch Performance Excellence',
+    title: 'TAMBARAM BRANCH PERFORMANCE EXCELLENCE',
     category: 'Branch Leadership',
     tag: 'BRANCH LEADERSHIP',
     year: '2023',
@@ -755,7 +755,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-5',
-    title: 'Dronacharya Branch Excellence Award',
+    title: 'DRONACHARYA BRANCH EXCELLENCE AWARD',
     category: 'Tata AIA Recognition',
     tag: 'TATA AIA RECOGNITION',
     year: '2022',
@@ -767,7 +767,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-6',
-    title: 'Outstanding Performer Award',
+    title: 'OUTSTANDING PERFORMER AWARD',
     category: 'Annual Excellence',
     tag: 'ANNUAL EXCELLENCE',
     year: '2022',
@@ -779,7 +779,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-7',
-    title: 'Million Dollar Club Qualifier',
+    title: 'MILLION DOLLAR CLUB QUALIFIER',
     category: 'Sales Excellence',
     tag: 'SALES EXCELLENCE',
     year: '2022',
@@ -791,7 +791,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-8',
-    title: 'Pragati Business Growth Excellence',
+    title: 'PRAGATI BUSINESS GROWTH EXCELLENCE',
     category: 'Innovation & Growth',
     tag: 'INNOVATION & GROWTH',
     year: '2021',
@@ -803,7 +803,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-9',
-    title: 'Family Inspiration Recognition',
+    title: 'FAMILY INSPIRATION RECOGNITION',
     category: 'Community Impact',
     tag: 'COMMUNITY IMPACT',
     year: '2021',
@@ -815,7 +815,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-10',
-    title: 'Malaysia Training Conclave Qualifier',
+    title: 'MALAYSIA TRAINING CONCLAVE QUALIFIER',
     category: 'International Merit',
     tag: 'INTERNATIONAL MERIT',
     year: '2020',
@@ -827,7 +827,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-11',
-    title: 'Dream Agency Aspirant Recognition',
+    title: 'DREAM AGENCY ASPIRANT RECOGNITION',
     category: 'High Potential',
     tag: 'HIGH POTENTIAL',
     year: '2020',
@@ -839,7 +839,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-12',
-    title: 'Leadership Appreciation Certificate',
+    title: 'LEADERSHIP APPRECIATION CERTIFICATE',
     category: 'Organizational Leadership',
     tag: 'ORGANIZATIONAL LEADERSHIP',
     year: '2019',
@@ -851,7 +851,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-13',
-    title: 'Donautsav Business Excellence Award',
+    title: 'DONAUTSAV BUSINESS EXCELLENCE AWARD',
     category: 'Business Excellence',
     tag: 'BUSINESS EXCELLENCE',
     year: '2019',
@@ -863,7 +863,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-14',
-    title: 'Business Growth Achievement Certificate',
+    title: 'BUSINESS GROWTH ACHIEVEMENT CERTIFICATE',
     category: 'Capacity Building',
     tag: 'CAPACITY BUILDING',
     year: '2018',
@@ -875,7 +875,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-15',
-    title: 'MDRT Aspirant Excellence Award',
+    title: 'MDRT ASPIRANT EXCELLENCE AWARD',
     category: 'Performance Benchmark',
     tag: 'PERFORMANCE BENCHMARK',
     year: '2018',
@@ -887,7 +887,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-16',
-    title: 'AI & Technology Learning Certificate',
+    title: 'AI & TECHNOLOGY LEARNING CERTIFICATE',
     category: 'Digital Innovation',
     tag: 'DIGITAL INNOVATION',
     year: '2024',
@@ -899,7 +899,7 @@ export const DEFAULT_AWARDS_DATA = [
   },
   {
     id: 'award-17',
-    title: 'Dream Agency Branch Champion',
+    title: 'DREAM AGENCY BRANCH CHAMPION',
     category: 'Branch Excellence',
     tag: 'BRANCH EXCELLENCE',
     year: '2021',
@@ -917,14 +917,25 @@ export const getAwards = async () => {
       const colRef = collection(db, 'awards');
       const snapshot = await getDocs(colRef);
       if (!snapshot.empty) {
-        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-          .sort((a, b) => (Number(a.priority) || 999) - (Number(b.priority) || 999));
+        return snapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            title: (data.title || '').toUpperCase()
+          };
+        }).sort((a, b) => (Number(a.priority) || 999) - (Number(b.priority) || 999));
       }
     }
     const local = localStorage.getItem('sk_awards_local');
     if (local) {
       const parsed = JSON.parse(local);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed.map(a => ({
+          ...a,
+          title: (a.title || '').toUpperCase()
+        }));
+      }
     }
     localStorage.setItem('sk_awards_local', JSON.stringify(DEFAULT_AWARDS_DATA));
     return [...DEFAULT_AWARDS_DATA];

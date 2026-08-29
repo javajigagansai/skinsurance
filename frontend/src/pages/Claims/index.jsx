@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FaShieldAlt, FaHeartbeat, FaCar, FaUserShield, FaPhoneAlt, FaWhatsapp, 
   FaCheckCircle, FaArrowRight, FaArrowLeft, FaHeadset, FaFileAlt, FaHospital, 
   FaClipboardCheck, FaCalendarAlt, FaClock, FaCheck, FaBuilding, FaUserCheck,
-  FaFileContract, FaCheckSquare, FaBriefcase
+  FaFileContract, FaCheckSquare, FaBriefcase, FaUserCheck as FaUserCheckIcon
 } from 'react-icons/fa';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../../components/ui/Accordion';
+import { useAuth } from '../../features/auth/contexts/AuthContext';
 
 export const Claims = () => {
+  const { user } = useAuth();
+
   // Wizard State (from Claims2)
   const [claimMode, setClaimMode] = useState(null); // null | 'new_claim' | 'claim_help'
   const [step, setStep] = useState(1);
@@ -17,18 +20,162 @@ export const Claims = () => {
   const [claimSubType, setClaimSubType] = useState('Cashless Hospitalization');
   const [preferredAction, setPreferredAction] = useState('whatsapp'); // 'whatsapp' | 'meeting'
   
-  // Client Details
-  const [formData, setFormData] = useState({
-    fullName: '',
-    phone: '',
-    email: '',
-    policyNumber: '',
-    locationOrHospital: '',
-    incidentDate: '',
-    preferredDate: '',
-    preferredTime: '10:00 AM - 01:00 PM',
-    notes: ''
+  // Helper to extract saved user/lead details
+  const getAutoFillDetails = () => {
+    let name = user?.name || user?.fullName || user?.displayName || '';
+    let phone = user?.phone || user?.mobile || user?.phoneNumber || '';
+    let email = user?.email || '';
+    let dob = user?.dob || user?.dateOfBirth || '';
+    let city = user?.city || '';
+    let pincode = user?.pincode || user?.zipCode || '';
+
+    // Check localStorage user profile
+    try {
+      const savedProfile = localStorage.getItem('sk_user_profile');
+      if (savedProfile) {
+        const p = JSON.parse(savedProfile);
+        if (!name) name = p.fullName || p.name || '';
+        if (!phone) phone = p.phone || p.mobile || '';
+        if (!email) email = p.email || '';
+        if (!dob) dob = p.dob || p.dateOfBirth || '';
+        if (!city) city = p.city || '';
+        if (!pincode) pincode = p.pincode || p.zipCode || '';
+      }
+    } catch (e) {}
+
+    // Check persisted auth user
+    if (!name || !phone || !email || !dob || !city || !pincode) {
+      try {
+        const savedAuth = localStorage.getItem('sk_auth_user') || sessionStorage.getItem('sk_auth_user');
+        if (savedAuth) {
+          const u = JSON.parse(savedAuth);
+          if (!name) name = u.name || u.fullName || u.displayName || u.username || '';
+          if (!phone) phone = u.phone || u.mobile || u.phoneNumber || '';
+          if (!email) email = u.email || '';
+          if (!dob) dob = u.dob || u.dateOfBirth || '';
+          if (!city) city = u.city || '';
+          if (!pincode) pincode = u.pincode || u.zipCode || '';
+        }
+      } catch (e) {}
+    }
+
+    // Check previously submitted lead info
+    if (!name || !phone || !email || !dob || !city || !pincode) {
+      try {
+        const savedLead = localStorage.getItem('sk_lead_submitted') || sessionStorage.getItem('sk_lead_submitted');
+        if (savedLead) {
+          const l = JSON.parse(savedLead);
+          if (!name) name = l.fullName || l.name || '';
+          if (!phone) phone = l.phone || l.mobile || '';
+          if (!email) email = l.email || '';
+          if (!dob) dob = l.dob || l.dateOfBirth || '';
+          if (!city) city = l.city || '';
+          if (!pincode) pincode = l.pincode || l.zipCode || '';
+        }
+      } catch (e) {}
+    }
+
+    // Check local consultation leads
+    if (!name || !phone || !email || !dob || !city || !pincode) {
+      try {
+        const savedLeads = localStorage.getItem('sk_consultation_leads_local');
+        if (savedLeads) {
+          const list = JSON.parse(savedLeads);
+          if (Array.isArray(list) && list.length > 0) {
+            const first = list[0];
+            if (!name) name = first.name || first.fullName || '';
+            if (!phone) phone = first.phone || first.mobile || '';
+            if (!email) email = first.email || '';
+            if (!dob) dob = first.dob || '';
+            if (!city) city = first.city || '';
+            if (!pincode) pincode = first.pincode || '';
+          }
+        }
+      } catch (e) {}
+    }
+
+    return { name, phone, email, dob, city, pincode };
+  };
+
+  // Client Details with initial autofill
+  const [formData, setFormData] = useState(() => {
+    const initial = {
+      fullName: '',
+      phone: '',
+      email: '',
+      dob: '',
+      city: '',
+      pincode: '',
+      policyNumber: '',
+      locationOrHospital: '',
+      incidentDate: '',
+      preferredDate: '',
+      preferredTime: '10:00 AM - 01:00 PM',
+      notes: ''
+    };
+    try {
+      const savedProfile = localStorage.getItem('sk_user_profile');
+      const savedAuth = localStorage.getItem('sk_auth_user') || sessionStorage.getItem('sk_auth_user');
+      const savedLead = localStorage.getItem('sk_lead_submitted') || sessionStorage.getItem('sk_lead_submitted');
+      
+      let name = '';
+      let phone = '';
+      let email = '';
+      let dob = '';
+      let city = '';
+      let pincode = '';
+
+      if (savedProfile) {
+        const p = JSON.parse(savedProfile);
+        name = p.fullName || p.name || '';
+        phone = p.phone || p.mobile || '';
+        email = p.email || '';
+        dob = p.dob || p.dateOfBirth || '';
+        city = p.city || '';
+        pincode = p.pincode || p.zipCode || '';
+      }
+      if (savedAuth) {
+        const u = JSON.parse(savedAuth);
+        if (!name) name = u.name || u.fullName || u.displayName || u.username || '';
+        if (!phone) phone = u.phone || u.mobile || u.phoneNumber || '';
+        if (!email) email = u.email || '';
+        if (!dob) dob = u.dob || u.dateOfBirth || '';
+        if (!city) city = u.city || '';
+        if (!pincode) pincode = u.pincode || u.zipCode || '';
+      }
+      if (savedLead) {
+        const l = JSON.parse(savedLead);
+        if (!name) name = l.fullName || l.name || '';
+        if (!phone) phone = l.phone || l.mobile || '';
+        if (!email) email = l.email || '';
+        if (!dob) dob = l.dob || l.dateOfBirth || '';
+        if (!city) city = l.city || '';
+        if (!pincode) pincode = l.pincode || l.zipCode || '';
+      }
+
+      if (name) initial.fullName = name;
+      if (phone) initial.phone = phone;
+      if (email) initial.email = email;
+      if (dob) initial.dob = dob;
+      if (city) initial.city = city;
+      if (pincode) initial.pincode = pincode;
+    } catch (e) {}
+    return initial;
   });
+
+  // Re-sync autofill whenever user object or step changes
+  useEffect(() => {
+    const { name, phone, email, dob, city, pincode } = getAutoFillDetails();
+    setFormData(prev => ({
+      ...prev,
+      fullName: prev.fullName || name || '',
+      phone: prev.phone || phone || '',
+      email: prev.email || email || '',
+      dob: prev.dob || dob || '',
+      city: prev.city || city || '',
+      pincode: prev.pincode || pincode || ''
+    }));
+  }, [user, step, claimMode]);
 
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -121,17 +268,36 @@ export const Claims = () => {
 
 👤 *Policyholder / Nominee:* ${formData.fullName}
 📞 *Mobile Number:* ${formData.phone}
+🎂 *Date of Birth (DOB):* ${formData.dob || 'Not provided'}
+🏙️ *City:* ${formData.city || 'Not provided'}
+📮 *Pincode:* ${formData.pincode || 'Not provided'}
 📧 *Email Address:* ${formData.email || 'Not provided'}
 🆔 *Policy Number:* ${formData.policyNumber || 'Will provide on call'}
 📍 *Hospital / Garage / Location:* ${formData.locationOrHospital || 'Not specified'}
 
 ${preferredAction === 'meeting' ? `📅 *Requested Meeting Date:* ${formData.preferredDate || 'Earliest available'}
 ⏰ *Preferred Time Slot:* ${formData.preferredTime}` : ''}
-💬 *Additional Remarks:* ${formData.notes || 'None'}
+💬 *Additional Remarks / Query:* ${formData.notes || 'None'}
 ----------------------------------------
 Hi SK Smart Investments Claims Desk, please review my details and initiate assistance.`;
 
     const encoded = encodeURIComponent(text);
+    
+    // Save details to localStorage so future interactions and other forms are remembered
+    try {
+      const payload = {
+        fullName: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        dob: formData.dob,
+        city: formData.city,
+        pincode: formData.pincode,
+        submittedAt: new Date().toISOString()
+      };
+      localStorage.setItem('sk_lead_submitted', JSON.stringify(payload));
+      localStorage.setItem('sk_user_profile', JSON.stringify(payload));
+    } catch (e) {}
+
     window.open(`https://wa.me/919994451300?text=${encoded}`, '_blank');
     setIsSuccess(true);
   };
@@ -168,7 +334,7 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
 
         <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
-            <h1 className="text-4xl sm:text-5xl lg:text-[70px] font-black text-black dark:text-white leading-[1.05] tracking-tight mb-6 uppercase font-['Plus_Jakarta_Sans',sans-serif]">
+            <h1 className="text-4xl sm:text-5xl lg:text-[70px] font-black text-black dark:text-white leading-[1.05] tracking-tight mb-6 uppercase font-['Plus_Jakarta_Sans',sans-serif] [word-spacing:0.18em]">
               We Help You <br />
               <span className="text-[#FFB300] dark:text-brand-accent">
                 Through Every Claim.
@@ -184,7 +350,7 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
             <div className="flex flex-wrap items-center gap-4">
               <a 
                 href="#claim-action-hub"
-                className="px-7 py-3.5 bg-brand-accent text-neutral-950 font-black uppercase tracking-wider text-xs sm:text-sm hover:bg-neutral-950 hover:text-white dark:hover:bg-white dark:hover:text-neutral-950 transition-all rounded-xl shadow-md hover:shadow-xl active:scale-95 flex items-center gap-2.5 cursor-pointer"
+                className="px-7 py-3.5 bg-brand-accent text-neutral-950 font-black uppercase tracking-wider text-xs sm:text-sm hover:bg-brand-accent hover:text-neutral-950 active:bg-brand-accent active:text-neutral-950 rounded-xl shadow-md flex items-center gap-2.5 cursor-pointer"
               >
                 <span>File or Track Claim</span>
                 <FaArrowRight className="text-xs" />
@@ -192,7 +358,7 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
 
               <a 
                 href="tel:+919994451300"
-                className="px-7 py-3.5 bg-red-600 border border-red-500 text-white font-bold uppercase tracking-wider text-xs sm:text-sm hover:bg-red-500 transition-colors flex items-center gap-2.5 shadow-[0_0_16px_rgba(220,38,38,0.35)] rounded-xl active:scale-95"
+                className="px-7 py-3.5 bg-red-600 border border-red-500 text-white font-bold uppercase tracking-wider text-xs sm:text-sm hover:bg-red-500 transition-colors flex items-center gap-2.5 shadow-[0_0_16px_rgba(220,38,38,0.35)] rounded-xl"
               >
                 <FaPhoneAlt /> 
                 <span>24/7 Emergency Support</span>
@@ -241,7 +407,7 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
             <span>Interactive Claim Assistant</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight font-['Plus_Jakarta_Sans',sans-serif] text-[#FFB300] dark:text-brand-accent">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[34px] xl:text-[38px] font-extrabold uppercase tracking-[-0.02em] [word-spacing:0.20em] font-['Plus_Jakarta_Sans',sans-serif] text-neutral-950 dark:text-white whitespace-normal sm:whitespace-nowrap">
             Filing a Claim is Now Made Easy
           </h2>
           <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 max-w-xl mx-auto">
@@ -572,13 +738,21 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
                   {/* STEP 3: CONTACT INFO & SUBMIT */}
                   {step === 3 && (
                     <div className="space-y-5">
-                      <div className="space-y-1">
-                        <h3 className="text-lg sm:text-xl font-black text-neutral-950 dark:text-white uppercase">
-                          3. Policyholder Contact Details
-                        </h3>
-                        <p className="text-xs text-neutral-500 dark:text-neutral-400">
-                          Please enter your details so our team can coordinate directly.
-                        </p>
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-1 border-b border-slate-100 dark:border-white/5">
+                        <div className="space-y-1">
+                          <h3 className="text-lg sm:text-xl font-black text-neutral-950 dark:text-white uppercase">
+                            3. Policyholder Contact Details
+                          </h3>
+                          <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                            Please enter your details so our team can coordinate directly.
+                          </p>
+                        </div>
+                        {(formData.fullName || formData.phone) && (
+                          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-[11px] font-bold self-start sm:self-center shadow-2xs">
+                            <FaCheckCircle className="text-xs shrink-0" />
+                            <span>Auto-filled from {user ? 'your logged-in account' : 'your profile'}</span>
+                          </div>
+                        )}
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -606,6 +780,48 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
                             placeholder="Enter 10-digit mobile number"
                             value={formData.phone}
                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                            className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-neutral-950 border border-slate-200 dark:border-white/10 text-xs sm:text-sm font-bold text-neutral-900 dark:text-white focus:outline-none focus:border-brand-accent shadow-2xs"
+                          />
+                        </div>
+                      </div>
+
+                      {/* DOB, City, Pincode Row */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="space-y-1">
+                          <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider">
+                            Date of Birth (DOB)
+                          </label>
+                          <input
+                            type="date"
+                            value={formData.dob}
+                            onChange={(e) => setFormData({ ...formData, dob: e.target.value })}
+                            className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-neutral-950 border border-slate-200 dark:border-white/10 text-xs sm:text-sm font-bold text-neutral-900 dark:text-white focus:outline-none focus:border-brand-accent shadow-2xs"
+                          />
+                        </div>
+
+                        <div className="space-y-1">
+                          <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider">
+                            City
+                          </label>
+                          <input
+                            type="text"
+                            placeholder=""
+                            value={formData.city}
+                            onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                            className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-neutral-950 border border-slate-200 dark:border-white/10 text-xs sm:text-sm font-bold text-neutral-900 dark:text-white focus:outline-none focus:border-brand-accent shadow-2xs"
+                          />
+                        </div>
+
+                        <div className="space-y-1">
+                          <label className="block text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider">
+                            Pincode
+                          </label>
+                          <input
+                            type="text"
+                            placeholder=""
+                            maxLength={6}
+                            value={formData.pincode}
+                            onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
                             className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-neutral-950 border border-slate-200 dark:border-white/10 text-xs sm:text-sm font-bold text-neutral-900 dark:text-white focus:outline-none focus:border-brand-accent shadow-2xs"
                           />
                         </div>
@@ -648,7 +864,7 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
                         </label>
                         <input
                           type="text"
-                          placeholder="e.g. Need urgent TPA cashless approval / Query regarding discharge bill deductions"
+                          placeholder=""
                           value={formData.notes}
                           onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                           className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-neutral-950 border border-slate-200 dark:border-white/10 text-xs sm:text-sm font-bold text-neutral-900 dark:text-white focus:outline-none focus:border-brand-accent shadow-2xs"
@@ -658,7 +874,7 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
                       <div className="pt-3 space-y-2">
                         <button
                           type="submit"
-                          className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-500 text-neutral-950 font-black text-xs sm:text-sm uppercase tracking-wider shadow-[0_6px_20px_rgba(245,158,11,0.3)] hover:shadow-xl active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
+                          className="w-full py-4 px-6 rounded-2xl bg-brand-accent text-neutral-950 font-black text-xs sm:text-sm uppercase tracking-wider hover:bg-brand-accent active:bg-brand-accent shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all"
                         >
                           <FaWhatsapp className="text-base" />
                           <span>
@@ -686,7 +902,7 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
       {/* ── 3. NEED TO MAKE A CLAIM? (Categories Overview) ── */}
       <section className="py-20 px-6 lg:px-12 max-w-[1440px] mx-auto border-b border-black/10 dark:border-white/10">
         <div className="text-center md:text-left mb-12">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black dark:text-white tracking-tight uppercase">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-black dark:text-white tracking-[-0.025em] [word-spacing:0.26em] uppercase leading-[1.15]">
             Major Claim Categories
           </h2>
           <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 mt-2">
@@ -750,18 +966,18 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
         </div>
       </section>
 
-      {/* ── 4. 24/7 PRIORITY HOTLINE BANNER ── */}
+      {/* ── 4. PRIORITY CLAIM DESK ── */}
       <section className="py-20 px-6 lg:px-12 max-w-[1440px] mx-auto border-b border-black/10 dark:border-white/10">
         <div className="bg-white dark:bg-neutral-900 border border-black/10 dark:border-white/10 p-8 sm:p-12 lg:p-16 rounded-3xl relative overflow-hidden shadow-sm">
           <div className="absolute top-0 right-0 w-1/2 h-full bg-brand-accent/5 blur-[100px] pointer-events-none" />
           
           <div className="relative z-10 flex flex-col lg:flex-row gap-10 lg:gap-16 justify-between items-start lg:items-center">
-            <div className="max-w-2xl">
+            <div className="max-w-3xl flex-1">
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-px bg-brand-accent"></div>
                 <span className="text-[#FFB300] dark:text-brand-accent font-bold tracking-[0.2em] uppercase text-xs">Priority Access</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black dark:text-white tracking-tight mb-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] xl:text-[44px] font-bold text-black dark:text-white tracking-tight mb-4 whitespace-normal sm:whitespace-nowrap font-['Plus_Jakarta_Sans',sans-serif] [word-spacing:0.20em]">
                 IMMEDIATE CLAIM ASSISTANCE
               </h2>
               <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-400 font-light leading-relaxed">
@@ -771,14 +987,14 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
             
             <div className="flex flex-col gap-6 w-full md:min-w-[300px] md:w-auto">
               <a 
-                href="tel:+919994451300"
+                href="tel:+919994451300" 
                 className="border-l-4 border-brand-accent pl-5 group"
               >
                 <p className="text-neutral-500 text-xs font-bold uppercase tracking-wider mb-1">24/7 Dedicated Hotline</p>
                 <p className="text-2xl sm:text-3xl font-bold text-black dark:text-white group-hover:text-amber-500 transition-colors">+91 99944 51300</p>
               </a>
               <a 
-                href="mailto:skinvestments2025@gmail.com"
+                href="mailto:skinvestments2025@gmail.com" 
                 className="border-l-4 border-black/20 dark:border-white/20 pl-5 group"
               >
                 <p className="text-neutral-500 text-xs font-bold uppercase tracking-wider mb-1">Priority Email</p>
@@ -791,7 +1007,7 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
 
       {/* ── 5. PROCESS: WHAT HAPPENS AFTER YOU CONTACT US? ── */}
       <section className="py-20 px-6 lg:px-12 max-w-[1440px] mx-auto border-b border-black/10 dark:border-white/10">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black dark:text-white tracking-tight mb-12 uppercase">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-black dark:text-white tracking-tight mb-12 uppercase whitespace-normal sm:whitespace-nowrap font-['Plus_Jakarta_Sans',sans-serif] [word-spacing:0.20em]">
           WHAT HAPPENS AFTER YOU CONTACT US?
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
@@ -816,8 +1032,8 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
       {/* ── 6. WHAT DOCUMENTS WILL I NEED? ── */}
       <section className="py-20 px-6 lg:px-12 max-w-[1440px] mx-auto border-b border-black/10 dark:border-white/10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-          <div className="lg:col-span-4">
-            <h2 className="text-3xl sm:text-4xl font-bold text-black dark:text-white tracking-tight mb-6 uppercase">
+          <div className="lg:col-span-5">
+            <h2 className="text-2xl sm:text-3xl lg:text-[28px] xl:text-[32px] font-bold text-black dark:text-white tracking-tight mb-6 uppercase whitespace-normal sm:whitespace-nowrap font-['Plus_Jakarta_Sans',sans-serif] [word-spacing:0.20em]">
               WHAT DOCUMENTS WILL I NEED?
             </h2>
             <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-6">
@@ -840,12 +1056,12 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
             </div>
           </div>
           
-          <div className="lg:col-span-8">
+          <div className="lg:col-span-7">
              <div className="bg-white dark:bg-neutral-900 border border-black/10 dark:border-white/10 p-8 sm:p-12 rounded-3xl shadow-sm">
                 <h3 className="text-xl sm:text-2xl font-bold text-black dark:text-white mb-6 border-b border-black/10 dark:border-white/10 pb-4">
                   {docTabs.find(t => t.id === activeDocTab)?.label.toUpperCase()} CHECKLIST
                 </h3>
-                <ul className="space-y-3.5 mb-8">
+                <ul className="space-y-3.5">
                   {docsData[activeDocTab].map((doc, i) => (
                     <li key={i} className="flex items-center gap-3.5 text-sm sm:text-base text-black dark:text-white font-medium bg-black/[0.02] dark:bg-black/40 p-4 rounded-xl border border-black/5 dark:border-white/5">
                       <FaCheckSquare className="text-[#FFB300] dark:text-brand-accent text-lg shrink-0" /> 
@@ -853,9 +1069,6 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
                     </li>
                   ))}
                 </ul>
-                <div className="p-4 rounded-xl bg-brand-accent/[0.08] dark:bg-brand-accent/10 border-l-4 border-brand-accent text-neutral-800 dark:text-brand-accent text-xs sm:text-sm">
-                  <strong className="text-amber-700 dark:text-brand-accent">Note:</strong> Exact documents can vary depending on your insurer and specific incident circumstances. Our advisors will audit your paperwork before submission.
-                </div>
              </div>
           </div>
         </div>
@@ -866,7 +1079,7 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
            
            <div>
-             <h2 className="text-3xl sm:text-4xl font-bold text-black dark:text-white tracking-tight mb-10 uppercase">
+             <h2 className="text-2xl sm:text-3xl lg:text-[28px] xl:text-[34px] font-bold text-black dark:text-white tracking-tight mb-10 uppercase whitespace-normal sm:whitespace-nowrap font-['Plus_Jakarta_Sans',sans-serif] [word-spacing:0.20em]">
                WHY HAVE US HANDLE YOUR CLAIM?
              </h2>
              <ul className="space-y-8">
@@ -878,7 +1091,7 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
                  { title: 'END-TO-END ADVOCACY', desc: 'From pre-audit of medical bills to dispute escalation, we stay by your side.' },
                ].map((item, i) => (
                  <li key={i} className="border-l-4 border-red-600 dark:border-red-500 pl-5">
-                   <h4 className="text-lg font-bold text-red-600 dark:text-red-500 mb-1 font-['Plus_Jakarta_Sans',sans-serif]">{item.title}</h4>
+                   <h4 className="text-lg font-bold text-red-600 dark:border-red-500 mb-1 font-['Plus_Jakarta_Sans',sans-serif]">{item.title}</h4>
                    <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">{item.desc}</p>
                  </li>
                ))}
@@ -886,7 +1099,7 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
            </div>
 
            <div>
-             <h2 className="text-3xl sm:text-4xl font-bold text-black dark:text-white tracking-tight mb-10 uppercase">
+             <h2 className="text-2xl sm:text-3xl lg:text-[28px] xl:text-[34px] font-bold text-black dark:text-white tracking-tight mb-10 uppercase whitespace-normal sm:whitespace-nowrap font-['Plus_Jakarta_Sans',sans-serif] [word-spacing:0.20em]">
                FREQUENTLY ASKED QUESTIONS
              </h2>
              <Accordion type="single" collapsible className="space-y-0">
@@ -908,8 +1121,8 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
 
       {/* ── 8. FINAL ACTION CTA ── */}
       <section className="py-24 px-6 lg:px-12 bg-black dark:bg-white text-white dark:text-black text-center">
-        <div className="max-w-4xl mx-auto space-y-6">
-          <h2 className="text-4xl sm:text-6xl font-black uppercase tracking-tight leading-tight">
+        <div className="max-w-5xl mx-auto space-y-6">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-[54px] font-extrabold uppercase tracking-[-0.025em] [word-spacing:0.18em] leading-[1.15] whitespace-normal sm:whitespace-nowrap">
             Don't Handle Your Claim Alone.
           </h2>
           <p className="text-base sm:text-xl font-medium text-neutral-400 dark:text-neutral-600 max-w-2xl mx-auto">
@@ -918,13 +1131,13 @@ Hi SK Smart Investments Claims Desk, please review my details and initiate assis
           <div className="pt-4 flex flex-wrap justify-center gap-4">
             <a 
               href="#claim-action-hub" 
-              className="px-8 py-4 bg-brand-accent text-neutral-950 font-black uppercase tracking-wider text-xs sm:text-sm hover:bg-neutral-900 hover:text-white dark:hover:bg-neutral-100 transition-all rounded-2xl shadow-xl active:scale-95"
+              className="px-8 py-4 bg-brand-accent text-neutral-950 font-black uppercase tracking-wider text-xs sm:text-sm rounded-2xl shadow-xl hover:bg-brand-accent hover:text-neutral-950 active:bg-brand-accent active:text-neutral-950 focus:bg-brand-accent focus:text-neutral-950 flex items-center justify-center cursor-pointer"
             >
               Submit Claim Details
             </a>
             <a 
               href="tel:+919994451300" 
-              className="px-8 py-4 bg-white/10 dark:bg-black/10 text-white dark:text-black border border-white/20 dark:border-black/20 font-bold uppercase tracking-wider text-xs sm:text-sm hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white transition-all rounded-2xl active:scale-95 flex items-center gap-2"
+              className="px-8 py-4 bg-brand-accent text-neutral-950 font-black uppercase tracking-wider text-xs sm:text-sm rounded-2xl shadow-xl hover:bg-brand-accent hover:text-neutral-950 active:bg-brand-accent active:text-neutral-950 focus:bg-brand-accent focus:text-neutral-950 flex items-center justify-center gap-2 cursor-pointer"
             >
               <FaPhoneAlt className="text-xs" />
               <span>Talk to Claims Officer</span>

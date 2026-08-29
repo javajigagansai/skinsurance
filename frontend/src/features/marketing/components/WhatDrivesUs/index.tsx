@@ -23,7 +23,7 @@ const PILLARS: MissionPillar[] = [
   // ── ROW 1: Pillars 1, 2, 3 ──
   {
     num: '01',
-    title: 'Personalized Solutions',
+    title: 'PERSONALIZED SOLUTIONS',
     desc: 'Deliver tailored insurance and wealth preservation blueprints aligned with individual family milestones.',
     icon: FaLightbulb,
     colorClass: 'text-amber-800 dark:text-amber-300',
@@ -32,7 +32,7 @@ const PILLARS: MissionPillar[] = [
   },
   {
     num: '02',
-    title: 'Premium Products',
+    title: 'PREMIUM PRODUCTS',
     desc: 'Curate top-tier policies from India’s leading insurers with maximum claim clearance and competitive premiums.',
     icon: FaShieldAlt,
     colorClass: 'text-blue-800 dark:text-blue-300',
@@ -41,7 +41,7 @@ const PILLARS: MissionPillar[] = [
   },
   {
     num: '03',
-    title: 'Expert Guidance',
+    title: 'EXPERT GUIDANCE',
     desc: 'Simplify complex clauses through unbiased advice from certified advisors with over 22 years of field expertise.',
     icon: FaUserTie,
     colorClass: 'text-emerald-800 dark:text-emerald-300',
@@ -52,7 +52,7 @@ const PILLARS: MissionPillar[] = [
   // ── ROW 2: Pillars 4, 5, 6 ──
   {
     num: '04',
-    title: 'Seamless Digital Support',
+    title: 'SEAMLESS DIGITAL SUPPORT',
     desc: 'Ensure rapid policy issuance, digital onboarding, annual portfolio reviews, and frictionless renewals.',
     icon: FaFileContract,
     colorClass: 'text-purple-800 dark:text-purple-300',
@@ -61,7 +61,7 @@ const PILLARS: MissionPillar[] = [
   },
   {
     num: '05',
-    title: 'Claims Advocacy',
+    title: 'CLAIMS ADVOCACY',
     desc: 'Provide dedicated on-ground hospitalization coordination and end-to-end claim settlement assistance.',
     icon: FaMedal,
     colorClass: 'text-rose-800 dark:text-rose-300',
@@ -70,7 +70,7 @@ const PILLARS: MissionPillar[] = [
   },
   {
     num: '06',
-    title: 'Visionary Leadership',
+    title: 'VISIONARY LEADERSHIP',
     desc: 'Lead with absolute integrity, ethical governance, and a steadfast commitment to generational security.',
     icon: FaHandshake,
     colorClass: 'text-indigo-800 dark:text-indigo-300',
@@ -109,7 +109,7 @@ const PillarCard: React.FC<PillarCardProps> = ({ pillar, idx }) => {
 
         {/* Content */}
         <div>
-          <h3 className="text-lg sm:text-xl font-extrabold text-neutral-950 dark:text-white tracking-tight mb-2 font-['Plus_Jakarta_Sans',sans-serif]">
+          <h3 className="text-lg sm:text-xl font-extrabold text-neutral-950 dark:text-white tracking-tight mb-2 uppercase font-['Plus_Jakarta_Sans',sans-serif]">
             {pillar.title}
           </h3>
           <p className="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 font-normal leading-relaxed font-['Inter',sans-serif]">
@@ -127,11 +127,9 @@ export const WhatDrivesUs: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white uppercase leading-tight font-['Plus_Jakarta_Sans',sans-serif] w-full flex flex-wrap justify-center items-center gap-x-2 sm:gap-x-2.5 md:gap-x-3 text-center">
-            <span className="inline-block">WHAT</span>
-            <span className="inline-block">DRIVES</span>
-            <span className="inline-block">US</span>
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-950 dark:text-white uppercase tracking-[-0.025em] [word-spacing:0.26em] leading-[1.15] font-['Plus_Jakarta_Sans',sans-serif]">
+            WHAT DRIVES US
           </h2>
         </div>
 
